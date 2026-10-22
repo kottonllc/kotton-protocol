@@ -28,7 +28,7 @@ and it runs on every pull request.
 
 ## What does not bend
 
-- A merged RFC is never edited; a later one supersedes it.
+- Once the first tag exists, a merged RFC is never edited; a later one supersedes it.
 - A shipped message's meaning never changes under a version that shipped it
   ([`VERSIONING.md`](VERSIONING.md)).
 - No repository but this one defines a request.

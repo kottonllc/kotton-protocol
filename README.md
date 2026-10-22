@@ -3,7 +3,7 @@
 The protocol: what crosses between Kotton's processes, and what it means.
 
 **Pre-alpha. Unversioned. No tag yet.** Nothing here is stable, and nothing should be built
-against a commit as if it were a release. The first tag follows the first two RFCs.
+against a commit as if it were a release. The first tag follows the versioning check.
 
 Kotton exists so that the people who generate data are the people who own it. The system that
 makes that true is several processes, each holding exactly the authority it acts on, talking
@@ -21,8 +21,8 @@ implementations exist to prove it, not to be mandatory.
 - [`papers/`](papers/): what the platform is for ([the ownership thesis](papers/ownership-thesis.md))
   and how it is achieved ([the confinement thesis](papers/confinement-thesis.md)).
 
-The protocol and type crates arrive here from the reference repository after the first
-distribution tag, as RFC 0001 says. Until then this repository is prose.
+The protocol and type crates arrive here from the reference repository when their turn comes,
+as RFC 0001's table says. Until then this repository is prose.
 
 ## Licence
 
