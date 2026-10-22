@@ -2,20 +2,22 @@
 
 ## Context
 
-One repository held every crate: the daemons that hold keys, the compositor, the sandbox and
-the apps it runs, inference, messaging, orgs, the web client, and the tools that build and
-check them. The process boundaries were drawn with care, and the crates were grouped by whose
-authority they act on; but one workspace is one build, one lint, one release, and a crate one
-binary links is a crate every binary pays for. The daemon came to link the sandbox, the
-surface, messaging, orgs and inference whether or not a release turned them on; the vault,
-which exists to hold ciphertext it cannot read, linked inference; the crate that names what
-crosses between processes linked the inference backend. Nothing marked what a tagged release
-packed, so no part could be released without the rest, and the work had no order, because
-everything advanced at once.
+Kotton exists so that the people who generate data are the people who own it. Ownership is
+value and standing: who holds the thing, who can be paid for it, and who must answer when it
+is demanded. A person who owns their data can be asked for it, and nobody else can be asked
+instead, because nobody else has it to give.
 
-The first cut took the release's tree out of the whole into a repository of its own, proved
-to build and test alone. That answered what the first release holds. It left the question of
-what everything else is, and what joins the pieces.
+The system that makes that true is several processes, each holding exactly the authority it
+acts on, talking over channels. A daemon holds a person's keys and store. A compositor owns
+the display and draws the prompts an app must never draw. A sandbox host runs apps and holds
+no keys. A vault keeps sealed packs it cannot open. A relay exchanges addresses and carries
+circuits and holds no inbox. A gateway is the door the network knocks on and can reach no
+local verb. Each is a trust level, and the boundaries between them are where the design lives.
+
+A boundary between processes is a contract: what one may ask of another, what crosses with the
+request, what each side must verify, and what the answer means. That contract is the protocol,
+and it is what makes the pieces composable: anyone may write a client, a compositor, a desktop,
+a vault or a gateway, and a person may install the one they trust.
 
 ## Decision
 
@@ -30,13 +32,14 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-cli` | the CLI and its REPL mode: unprivileged, built from the protocol and the client library alone and held to that by a check; ships its archive |
 | `kotton-relay` | the relay; ships its archive |
 | `kotton-vault` | the vault; ships its archive |
+| `kotton-gateway` | the door from the network: `khttpd`, the HTTP and WebSocket process a browser reaches; trust path, holding a remote-origin token and reaching no local-tier verb; one implementation among any that speak the gateway's surface of the protocol |
+| `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page; an app, one client among any |
 | `kotton-compositor` | the reference compositor: the trusted display path, the prompts an app must never draw, input routing; one compositor among any that speak the compositor surface |
 | `kotton-desktop` | the reference desktop: the home screen, the dock, the overlays, the first-party apps; an app like any other, one desktop among any |
 | `kotton-sdk` | the language bindings of the app surface |
 | `kotton-infer` | the inference runtime, the first native guest |
-| `kotton-web` | the browser and phone client, the pairing page, the gateway |
 | `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines, the signed sums over the set |
-| `kotton-ahead` | the reference: the whole as it was, read-only, until the last piece is cut from it |
+| `kotton-ahead` | the reference: the whole in one tree, read-only, from which each repository is cut when its turn comes |
 | `kotton-kernel` | reserved: the capability kernel, the last implementation of this protocol; empty until the protocol is stable enough that bare metal is a defined task |
 
 No repository but this one defines a request. A change a dependent needs lands here first, as
@@ -48,8 +51,12 @@ crate boundary is drawn where there is an authority boundary. The system's daemo
 crates that are the system's insides, not the contract, and stay in one workspace, each
 binary held to the crates it may link.
 
+Repositories are named for the surface or the role, never for the technology that delivers
+them: terminal, desktop, portal; gateway, relay, vault. The rule binds repositories; a crate
+inside one may still be named for what it does.
+
 The protocol and the language bindings are Apache-2.0, so that anyone may implement them.
-The implementations are AGPL-3.0-or-later, as the trust path has been.
+The implementations are AGPL-3.0-or-later, as the trust path is.
 
 ## Consequences
 
@@ -59,23 +66,22 @@ The implementations are AGPL-3.0-or-later, as the trust path has been.
   what makes any desktop safe, and a person installs the one they trust; a desktop is an app,
   and nobody is required to use the reference one. The sandbox host is the system's, so that
   a desktop can be untrusted at all.
-- "Wire" gives way to "protocol". The protocol is what a message means; the wire format is
-  how it is encoded, versioned under the meaning. The pages that say "over the wire" are
-  corrected as they move.
-- The protocol needs discipline it did not have: a version, a changelog naming the RFC for
-  each change, and a check that a shipped message's meaning does not change under a version
-  that shipped it. That is the price of developing in parallel, and it is what lets anyone
-  write a client, a compositor, a desktop, or a vault.
+- The gateway and the portal are two trust levels, so two repositories: the gateway decides
+  what the network may ask; the portal is what a person opens, and it is held to the protocol
+  alone, like the desktop and the CLI. The pairing page goes with the portal: it is something
+  a person opens, and the door it walks through is the gateway's.
+- The protocol is what a message means; the wire format is how it is encoded, versioned under
+  the meaning. The protocol carries a version, a changelog naming the RFC for each change, and
+  a check that a shipped message's meaning does not change under a version that shipped it.
+  That is the price of developing in parallel, and it is what lets anyone write a client, a
+  compositor, a desktop, or a vault.
 - The vault and the inference runtime are the first tests of the contract: a vault must need
-  nothing but the protocol and a disk, and today it links half the system. What a vault needs
-  to know, and nothing else, is the next RFC after the versioning check.
+  nothing but the protocol and a disk. What a vault needs to know, and nothing else, is the
+  next RFC after the versioning check.
 - Tooling is not copied repository by repository: the gates every repository runs are one
   small versioned crate and one reusable workflow; the gates that read prose live here, with
   the prose. The integration suite belongs to the distribution and tests archives, since
   "the composed release works" is the distribution's property.
-- The earlier plan, which froze everything the first release did not pack on a branch to be
-  revived piece by piece, is replaced by this one. A frozen branch said what was not
-  shipping; a repository says what it is.
 - The word "kernel" is reserved for the kernel. The daemons are the system.
 
 ## Reaches

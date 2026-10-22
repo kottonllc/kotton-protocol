@@ -3,7 +3,7 @@
 The protocol: what crosses between Kotton's processes, and what it means.
 
 **Pre-alpha. Unversioned. No tag yet.** Nothing here is stable, and nothing should be built
-against a commit as if it were a release. The first tag follows the first two RFCs.
+against a commit as if it were a release. The first tag follows the versioning check.
 
 Kotton exists so that the people who generate data are the people who own it. The system that
 makes that true is several processes, each holding exactly the authority it acts on, talking
