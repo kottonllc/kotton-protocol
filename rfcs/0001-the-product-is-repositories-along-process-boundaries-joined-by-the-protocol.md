@@ -12,12 +12,16 @@ acts on, talking over channels. A daemon holds a person's keys and store. A comp
 the display and draws the prompts an app must never draw. A sandbox host runs apps and holds
 no keys. A vault keeps sealed packs it cannot open. A relay exchanges addresses and carries
 circuits and holds no inbox. A gateway is the door the network knocks on and can reach no
-local verb. Each is a trust level, and the boundaries between them are where the design lives.
+local-tier verb. Each is a trust level, and the boundaries between them are where the design
+lives.
 
 A boundary between processes is a contract: what one may ask of another, what crosses with the
 request, what each side must verify, and what the answer means. That contract is the protocol,
 and it is what makes the pieces composable: anyone may write a client, a compositor, a desktop,
 a vault or a gateway, and a person may install the one they trust.
+
+What, then, is a repository: which boundaries are drawn as repositories, what each holds, and
+what joins them?
 
 ## Decision
 
@@ -33,7 +37,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-relay` | the relay: address exchange and circuits between devices, vaults and gateways; holds no inbox and reads no pack; ships its archive |
 | `kotton-vault` | the vault: keeps sealed packs it cannot open, for devices, the relay and the person who runs it; no apps, no display, no plaintext verb; ships its archive |
 | `kotton-gateway` | the door from the network: `khttpd`, the HTTP and WebSocket process a browser reaches; trust path, holding a remote-origin token and reaching no local-tier verb; one implementation among any that speak the gateway's surface of the protocol |
-| `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page; an app, one client among any |
+| `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page: an unprivileged client, built from the protocol and the client library alone and held to that by a check; one client among any |
 | `kotton-compositor` | the reference compositor: the trusted display path, the prompts an app must never draw, input routing; one compositor among any that speak the compositor surface |
 | `kotton-desktop` | the reference desktop: the home screen, the dock, the overlays, the first-party apps; an app like any other, one desktop among any |
 | `kotton-sdk` | the language bindings of the app surface |
@@ -56,8 +60,9 @@ them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `rel
 `compositor` and `infer` name roles a process plays; `protocol`, `sdk` and `dist` name what an
 implementer, an app developer or an installer takes; `ahead` names the reference's role, the
 tree each repository is cut from; `kernel` names the role reserved for the last implementation.
-The system carries the bare name, because it is what the others are parts of or doors to. The
-rule binds repositories; a crate inside one may still be named for what it does.
+The system carries the bare name: it is the node, the root of trust, which every other
+repository reaches, implements against, or holds ciphertext for. The rule binds repositories; a
+crate inside one may still be named for what it does.
 
 The protocol and the language bindings are Apache-2.0, so that anyone may implement them.
 The implementations are AGPL-3.0-or-later, as the trust path is.
