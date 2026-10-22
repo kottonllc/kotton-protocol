@@ -18,11 +18,15 @@ The row for `kotton-web` is replaced by two:
 
 | Repository | What it is |
 |---|---|
-| `kotton-gateway` | the door from the network: `khttpd` and the gateway pieces; trust path; one implementation among any that speak the gateway's surface of the protocol |
+| `kotton-gateway` | the door from the network: `khttpd`, the HTTP and WebSocket process a browser reaches; trust path, holding a remote-origin token and reaching no local-tier verb; one implementation among any that speak the gateway's surface of the protocol |
 | `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page; an app, one client among any |
 
-Nothing else in RFC 0001 changes. "Portal" is the design's own word for the page, and it would
-still be the right word if the page were served some other way.
+Repositories are named for the surface or the role, never for the technology that delivers
+them: terminal, desktop, portal; gateway, relay, vault. The rule binds repositories; a crate
+inside one may still be named for what it does.
+
+Nothing else in RFC 0001 changes. "Portal" names what the page is, a way through to a person's
+things at home, and it would still be the right word if the page were served some other way.
 
 ## Consequences
 
@@ -30,9 +34,14 @@ still be the right word if the page were served some other way.
   repository, cut when its rung comes, under the rule RFC 0001 gives.
 - The portal is held to the protocol alone, like the desktop and the CLI: it may not need
   anything a stranger's client could not also have.
-- Repositories are named for the surface or the role, never for the technology that delivers
-  them: terminal, desktop, portal; gateway, relay, vault.
+- The pairing page goes with the portal, not the gateway: it is something a person opens, and
+  the door it walks through is the gateway's.
 
 ## Reaches
 
-The organisation's page, and the two repositories when they are cut.
+- The organisation's page, where the two repositories are listed.
+- `kotton`, the system repository, which today holds the gateway process as `core/khttpd` and
+  the page and its pairing page as `client/web` and `client/web-pair`. Those move to the two
+  repositories when they are cut.
+- The two repositories themselves, when they are cut.
+- No protocol version: this RFC changes names and boundaries, not the wire.
