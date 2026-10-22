@@ -55,8 +55,9 @@ Repositories are named for the surface or the role, never for the technology tha
 them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `relay`, `vault`,
 `compositor` and `infer` name roles a process plays; `protocol`, `sdk` and `dist` name what an
 implementer, an app developer or an installer takes; `ahead` names the reference's role, the
-tree each repository is cut from. The rule binds repositories; a crate inside one may still be
-named for what it does.
+tree each repository is cut from; `kernel` names the role reserved for the last implementation.
+The system carries the bare name, because it is what the others are parts of or doors to. The
+rule binds repositories; a crate inside one may still be named for what it does.
 
 The protocol and the language bindings are Apache-2.0, so that anyone may implement them.
 The implementations are AGPL-3.0-or-later, as the trust path is.
