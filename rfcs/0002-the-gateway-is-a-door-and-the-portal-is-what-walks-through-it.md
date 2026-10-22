@@ -44,4 +44,5 @@ things at home, and it would still be the right word if the page were served som
   the page and its pairing page as `client/web` and `client/web-pair`. Those move to the two
   repositories when they are cut.
 - The two repositories themselves, when they are cut.
-- No protocol version: this RFC changes names and boundaries, not the wire.
+- No protocol version: this RFC changes the names and boundaries of repositories, not the
+  protocol. No request, type or encoding changes.
