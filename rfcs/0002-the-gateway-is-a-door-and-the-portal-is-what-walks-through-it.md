@@ -1,0 +1,38 @@
+# 0002: The gateway is a door, and the portal is what walks through it
+
+## Context
+
+RFC 0001's table names one repository, `kotton-web`, for "the browser and phone client, the
+pairing page, the gateway". That puts two trust levels in one name, the same fault the table
+avoids elsewhere by separating the compositor from the desktop. The gateway, `khttpd`, is a
+process in the system's table: the HTTP and WebSocket door for a browser, holding a
+remote-origin token and able to reach no local-tier verb. It decides what the network may ask.
+The client that a person opens in a browser, on a phone or anywhere else, is an app that
+speaks the protocol through that door, and anyone could write another.
+
+The name "web" also named the delivery, not the thing, as "http" would have named the wire.
+
+## Decision
+
+The row for `kotton-web` is replaced by two:
+
+| Repository | What it is |
+|---|---|
+| `kotton-gateway` | the door from the network: `khttpd` and the gateway pieces; trust path; one implementation among any that speak the gateway's surface of the protocol |
+| `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page; an app, one client among any |
+
+Nothing else in RFC 0001 changes. "Portal" is the design's own word for the page, and it would
+still be the right word if the page were served some other way.
+
+## Consequences
+
+- The system's process table gains nothing: `khttpd` was already a process. It gains a
+  repository, cut when its rung comes, under the rule RFC 0001 gives.
+- The portal is held to the protocol alone, like the desktop and the CLI: it may not need
+  anything a stranger's client could not also have.
+- Repositories are named for the surface or the role, never for the technology that delivers
+  them: terminal, desktop, portal; gateway, relay, vault.
+
+## Reaches
+
+The organisation's page, and the two repositories when they are cut.
