@@ -18,9 +18,9 @@ repository, beside the code.
 3. **An assessor and a reviewer read it** before it merges, as for any pull request: does it
    decide what it says, does it keep every principle, does it leave a seam toward the north
    star where it concedes something.
-4. **Once a tag has shipped it, it is not edited.** A later RFC supersedes it and says so.
-   Before the first tag, nothing depends on an RFC by version, and it may be rewritten through
-   a pull request like any page.
+4. **Once the first tag exists, a merged RFC is not edited.** A later RFC supersedes it and
+   says so. Before the first tag, nothing depends on an RFC by version, and one may be
+   rewritten through a pull request like any page.
 5. **Each repository it reaches** gets an issue naming the RFC, and the change lands there
    through that repository's own loop. The protocol's change lands here first, tagged; the
    dependents take the tag.

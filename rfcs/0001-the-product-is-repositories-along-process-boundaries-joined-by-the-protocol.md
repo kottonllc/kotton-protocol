@@ -30,15 +30,15 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-protocol` | the contract: the protocol and type crates; what crosses and any side must verify (the pack envelope, log verification, the admission handshake, the pairing types); the client library; the app surface, defined once, with WIT as its Wasm binding; the handle type that is a file descriptor on today's platforms and a capability later; the RFCs; the pages that describe the whole; the versioning rule |
 | `kotton` | the system: the user daemon, the device daemon, the QUIC acceptor, the sync watcher, the device-owner tool, and the sandbox host as a process of its own that holds no keys; ships the system archive |
 | `kotton-cli` | the CLI and its REPL mode: unprivileged, built from the protocol and the client library alone and held to that by a check; ships its archive |
-| `kotton-relay` | the relay; ships its archive |
-| `kotton-vault` | the vault; ships its archive |
+| `kotton-relay` | the relay: address exchange and circuits between devices, vaults and gateways; holds no inbox and reads no pack; ships its archive |
+| `kotton-vault` | the vault: keeps sealed packs it cannot open, for devices, the relay and the person who runs it; no apps, no display, no plaintext verb; ships its archive |
 | `kotton-gateway` | the door from the network: `khttpd`, the HTTP and WebSocket process a browser reaches; trust path, holding a remote-origin token and reaching no local-tier verb; one implementation among any that speak the gateway's surface of the protocol |
 | `kotton-portal` | the page a person opens from any browser, on any device, to reach their things at home, and the pairing page; an app, one client among any |
 | `kotton-compositor` | the reference compositor: the trusted display path, the prompts an app must never draw, input routing; one compositor among any that speak the compositor surface |
 | `kotton-desktop` | the reference desktop: the home screen, the dock, the overlays, the first-party apps; an app like any other, one desktop among any |
 | `kotton-sdk` | the language bindings of the app surface |
-| `kotton-infer` | the inference runtime, the first native guest |
-| `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines, the signed sums over the set |
+| `kotton-infer` | the inference runtime, the first native guest: no key, no store, no network |
+| `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines a person types to install and run it, the signed sums over the set |
 | `kotton-ahead` | the reference: the whole in one tree, read-only, from which each repository is cut when its turn comes |
 | `kotton-kernel` | reserved: the capability kernel, the last implementation of this protocol; empty until the protocol is stable enough that bare metal is a defined task |
 
@@ -52,8 +52,11 @@ crates that are the system's insides, not the contract, and stay in one workspac
 binary held to the crates it may link.
 
 Repositories are named for the surface or the role, never for the technology that delivers
-them: terminal, desktop, portal; gateway, relay, vault. The rule binds repositories; a crate
-inside one may still be named for what it does.
+them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `relay`, `vault`,
+`compositor` and `infer` name roles a process plays; `protocol`, `sdk` and `dist` name what an
+implementer, an app developer or an installer takes; `ahead` names the reference's role, the
+tree each repository is cut from. The rule binds repositories; a crate inside one may still be
+named for what it does.
 
 The protocol and the language bindings are Apache-2.0, so that anyone may implement them.
 The implementations are AGPL-3.0-or-later, as the trust path is.

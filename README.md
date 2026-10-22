@@ -21,8 +21,8 @@ implementations exist to prove it, not to be mandatory.
 - [`papers/`](papers/): what the platform is for ([the ownership thesis](papers/ownership-thesis.md))
   and how it is achieved ([the confinement thesis](papers/confinement-thesis.md)).
 
-The protocol and type crates arrive here from the reference repository after the first
-distribution tag, as RFC 0001 says. Until then this repository is prose.
+The protocol and type crates arrive here from the reference repository when their turn comes,
+as RFC 0001's table says. Until then this repository is prose.
 
 ## Licence
 
