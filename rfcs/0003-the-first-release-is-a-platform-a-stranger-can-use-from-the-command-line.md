@@ -35,14 +35,15 @@ The CLI and the REPL are one parser. `kotton <verb>` runs one verb; `kotton` alo
 REPL, which unlocks once, holds a current drive and directory, adds `cd`, `pwd`, `clear`,
 `help` and `exit` (and `quit`, its alias) and a prompt that shows who and where, and otherwise
 runs the same verbs without the prefix. Nothing else exists in one that does not exist in the
-other, and a check holds the two trees equal. The REPL has no pipe of its own: the shell has
-one, and a person who wants `head`, `grep` or `sort` over a file has `cat` and the shell.
+other, and a check holds the two trees equal. The REPL's syntax, not verbs, is a pipe `|`
+between verbs and `>` and `>>` into a drive path, because inside the REPL there is no shell to
+supply them; from a terminal the shell's own do the same over `kotton cat` and `kotton cp -`.
 
 ### Conventions
 
 - Files use the words a person already knows, at the top level: `ls`, `cat`, `cp`, `mv`, `rm`,
-  `mkdir`, `rmdir`, `touch`, and beside them `edit`, `open`, `diff`, `search`, `versions`,
-  `restore`, `trash`. A
+  `mkdir`, `rmdir`, `touch`, `find`, `grep`, `head`, `tail`, `wc`, `sort`, and beside them
+  `edit`, `open`, `diff`, `search`, `versions`, `restore`, `trash`. A
   path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
   own filesystem, as it is for `scp`; in the REPL, where there is a current drive, a bare path
   is that drive's and `host:` names the machine. `cp` copies between the machine and a drive in
@@ -94,19 +95,21 @@ so and names the setting. `pin <drive> whole` is "collect all my things". `sync`
 device's drives, now. What a device pins is a sealed record in the drive, as RFC 0002 says.
 
 **Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
-pinned or not · `edit <path>` (the editor in the process; the file is read from the sealed tree
-into memory and written back sealed, and Kotton writes nothing to a disk in between; what the
-machine pages out of memory is the machine's, as for every process, and the buffer can be
-locked in memory as key material already is) · `open <path>` ·
-`diff <path>` (text: between versions or conflict copies) · `search <query>` (names and text,
-on this device, over what it pins and the index it fetches, which is a sealed object in the
-drive like any other) · `versions <path>` · `restore <path> --version <n>` · `trash
-list|restore|empty`. Versions live in the drive and every device sees them, under the store's
-one switch per file. A deleted thing stays in the drive's trash for thirty days, then one of
-the person's own devices asks the drive to purge it. That is the request from the person's
-machine the store requires: `rm` is the person asking for erasure in thirty days, `trash empty`
-is asking for it now, and nothing but those two asks. Thirty days is the earliest, since the
-purge waits for one of the person's devices to be awake, and compaction waits for it.
+pinned or not · `find <path> [-name <glob>]` (names under a path) · `grep <pattern> <path>...`
+(the content of the paths named; text only) · `head` · `tail` · `wc` · `sort` · `edit <path>`
+(the editor in the process; the file is read from the sealed tree into memory and written back
+sealed, and Kotton writes nothing to a disk in between; what the machine pages out of memory is
+the machine's, as for every process, and the buffer can be locked in memory as key material
+already is) · `open <path>` · `diff <path>` (text: between versions or conflict copies) ·
+`search <query>` (names and text, on this device, over what it pins and the index it fetches,
+which is a sealed object in the drive like any other) · `versions <path>` · `restore <path>
+--version <n>` · `trash list|restore|empty`. Versions live in the drive and every device sees
+them, under the store's one switch per file. A deleted thing stays in the drive's trash for
+thirty days, then one of the person's own devices asks the drive to purge it. That is the
+request from the person's machine the store requires: `rm` is the person asking for erasure in
+thirty days, `trash empty` is asking for it now, and nothing but those two asks. Thirty days is
+the earliest, since the purge waits for one of the person's devices to be awake, and compaction
+waits for it.
 
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
@@ -214,10 +217,10 @@ what the platform is from the command line.
 | `session list\|end` | `identity session list\|end` |
 | `logs` | `doctor logs`; `log` is the access log, a different thing under a near name, said here on purpose |
 | `secrets` | `secret` |
-| `find`, `grep` | `search` |
-| `head`, `tail`, `sort`, `wc`, `date`, `echo`, `env`, `export`, `unset`, the REPL's pipe | leave; the shell has them |
+| `find`, `grep`, `head`, `tail`, `wc`, `sort` | unchanged, at the top; `search` is the index and a different thing |
+| `date`, `echo`, `env`, `export`, `unset` | leave; they are the shell's, not a file's |
 | `daemon` | `status` and `doctor` |
-| `cd`, `pwd`, `clear`, `help`, `exit`, `quit` | the REPL's own, unchanged |
+| `cd`, `pwd`, `clear`, `help`, `exit`, `quit`, the pipe | the REPL's own, unchanged; `>` and `>>` join the pipe |
 | `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
 | `sync` (all paired devices) | `sync`, this device's drives: a device is not a target (RFC 0002) |
 | `sync now [--node <id>] [--no-wait]` | `sync`; `--node` leaves with the device as a target |
