@@ -31,7 +31,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 
 | Repository | What it is |
 |---|---|
-| `kotton-protocol` | the contract: the protocol and type crates; what crosses and any side must verify (the pack envelope, log verification, the admission handshake, the pairing types); the client library; the app surface, defined once, with WIT as its Wasm binding; the handle type that is a file descriptor on today's platforms and a capability later; the RFCs; the pages that describe the whole; the versioning rule |
+| `kotton-protocol` | the contract: the protocol and type crates; what crosses and any side must verify (the pack envelope, log verification, the admission handshake, the pairing types, the native-guest contract); the client library; the app surface, defined once, with WIT as its Wasm binding; the handle type that is a file descriptor on today's platforms and a capability later; the RFCs; the pages that describe the whole; the versioning rule |
 | `kotton` | the system: the user daemon, the device daemon, the QUIC acceptor, the sync watcher, the device-owner tool, and the sandbox host as a process of its own that holds no keys; ships the system archive |
 | `kotton-cli` | the CLI and its REPL mode: unprivileged, built from the protocol and the client library alone and held to that by a check; ships its archive |
 | `kotton-relay` | the relay: address exchange and circuits between devices, vaults and gateways; holds no inbox and reads no pack; ships its archive |
@@ -41,7 +41,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-compositor` | the reference compositor: the trusted display path, the prompts an app must never draw, input routing; one compositor among any that speak the compositor surface |
 | `kotton-desktop` | the reference desktop: the home screen, the dock, the overlays, the first-party apps; an app like any other, one desktop among any |
 | `kotton-sdk` | the language bindings of the app surface |
-| `kotton-infer` | the inference runtime, the first native guest: no key, no store, no network |
+| `kotton-infer` | the inference runtime: the first native guest, confined by the system's sandbox host under the native-guest contract |
 | `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines a person types to install and run it, the signed sums over the set |
 | `kotton-ahead` | the reference: the whole in one tree, read-only, from which each repository is cut when its turn comes |
 | `kotton-kernel` | reserved: the capability kernel, the last implementation of this protocol; empty until the protocol is stable enough that bare metal is a defined task |
@@ -54,6 +54,12 @@ A repository boundary is drawn where there is a versioned contract between the s
 crate boundary is drawn where there is an authority boundary. The system's daemons share
 crates that are the system's insides, not the contract, and stay in one workspace, each
 binary held to the crates it may link.
+
+A native guest is a process the system's sandbox host spawns and confines: it is given its
+channel to the daemon at spawn and nothing else, no key, no store, no network. What crosses
+that channel, and what the guest may assume, is one contract the protocol defines and holds for
+every guest; no guest carries its own cage, and the check that a guest's code reaches nothing
+else is the host's, not the guest's.
 
 Repositories are named for the surface or the role, never for the technology that delivers
 them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `relay`, `vault`,
