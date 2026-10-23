@@ -101,7 +101,8 @@ is cut.
 - One handshake replaces one and a half. Mutual TLS stops carrying identity, so a drive may be
   reached over a transport that cannot do it, and a vault behind a TLS terminator is one
   implementation among any. On the QUIC path two key exchanges then run, QUIC's own beneath the
-  protocol's; that cost is accepted for one identity story over every transport. "Nothing listens for strangers" becomes "nothing answers a stranger
+  protocol's; that cost is accepted for one identity story over every transport. "Nothing
+listens for strangers" becomes "nothing answers a stranger
   past the handshake", and the threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
 - Two of a person's devices on different networks have no direct verb; what one is to hand the
