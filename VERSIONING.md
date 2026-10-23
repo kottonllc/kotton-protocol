@@ -43,13 +43,14 @@ A binary built from a tag reports the tag's version with the commit after `+`: `
 `0.1.0+abc1234`, and `v0.1.0-dev.1` gives `0.1.0-dev.1+abc1234`. A binary built from any other
 commit reports a version derived from `git describe --tags` that sorts after the nearest tag
 and before any tag that could follow it: after a release, the next patch's zeroth snapshot plus
-the count, so `v0.1.0-12-gabc1234` is reported as `0.1.1-dev.0.12+abc1234`; after a snapshot
-or a candidate, that tag's word and number plus the count, so `v0.1.0-dev.1-3-gdef5678` is
-reported as `0.1.0-dev.1.3+def5678`. Numeric identifiers compare as numbers, so
-`dev.0.12 < dev.1 < dev.1.3 < dev.2 < rc.1 < ` the release, and no derived version has the
-precedence of a tag. The part after `+` is build metadata and never affects ordering. There is no build counter: a release
-is built once, from a tag, and its sums name its bytes. If one source is ever built twice
-with different bytes, the build's run number goes after the `+` and nowhere else.
+the count, so `v0.1.0-12-gabc1234` is reported as `0.1.1-dev.0.12+abc1234`; after a snapshot or
+a candidate, that tag's word and number plus the count, so `v0.1.0-dev.1-3-gdef5678` is
+reported as `0.1.0-dev.1.3+def5678`. Numeric identifiers compare as numbers, so `dev.0.12 <
+dev.1 < dev.1.3 < dev.2 < rc.1 < ` the release, and no derived version has the precedence of a
+tag. The part after `+` is build metadata and never affects ordering. There is no build
+counter: a release is built once, from a tag, and its sums name its bytes. If one source is
+ever built twice with different bytes, the build's run number goes after the `+` and nowhere
+else.
 
 ## The check
 
