@@ -51,10 +51,15 @@ that exists is the first transport, and until the handshake exists it keeps its 
 nothing past delivery, as RFC 0001's row says; in this model the circuit a device needs most
 is the one to its drive.
 
-**Devices know each other.** Pairing and admission stay, and a device recognises the person's
-other devices. Recognition is the identity layer, not replication. An act between two devices
-with no drive between them, a transfer of bytes on one network or a link, is a verb the person
-invokes, one at a time, over the same transports; this RFC builds none.
+**Devices know each other, and a person may hand one device's things to another directly.**
+Pairing and admission stay, and a device recognises the person's other devices. Recognition is
+the identity layer, not replication. An act between two devices with no drive between them is a
+verb the person invokes, one at a time, over the same transports. The first such verb is a
+transfer: a person on one device names a file or folder and one of their other devices on the
+same network or link; that device's person is asked, and says where it lands; the bytes cross
+directly under the handshake, and nothing is replicated afterwards. It is built on the QUIC
+path that exists, right after the model's edges above, and it is the shape every later nearby
+verb takes.
 
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
 can decline to serve. Principle XIII is kept by three means the person controls: a device may
@@ -78,16 +83,16 @@ offers the first; the other two are the drive's verbs when the vault is cut.
   implementation among any. "Nothing listens for strangers" becomes "nothing answers a stranger
   past the handshake", and the threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
-- Nearby-device features, a transfer without a relay, two devices on one network sharing a
-  fetch, working together with no drive reachable, are later verbs on these layers. Nothing
-  here forecloses them, and nothing here builds them.
+- The direct transfer is the first nearby-device verb. Two devices on one network sharing a
+  fetch, or working together with no drive reachable, are later verbs on the same layers; nothing
+  here forecloses them.
 
 ## Reaches
 
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
   handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`,
   `enrol`.
-- `kotton-cli`: the keep policy's verbs and the bare `sync`.
+- `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs and the keep policy's types. No protocol
   version is named: nothing is tagged, so no shipped message changes meaning.
