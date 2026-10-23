@@ -18,6 +18,16 @@ minor number, and that is how this repository uses it:
 Every tag is `v<major>.<minor>.<patch>` on `main`, and every change on `main` between tags is
 one the next tag will carry.
 
+## Pre-release tags
+
+Two pre-release words exist, and nothing else is used. `vX.Y.Z-dev.N` is a snapshot: a tagged
+commit that builds and installs so a pipeline can be proved, promising nothing; any
+implementation repository may tag one, and the distribution's lock may name one. `vX.Y.Z-rc.N`
+is a candidate for `vX.Y.Z`, and only the distribution tags one, since only the distribution
+is what a person installs. Pre-release words compare as text, so `dev` sorts before `rc` and
+both before the release. This repository tags no pre-release: a commit between its tags is
+pinned by hash, as below.
+
 ## Between tags
 
 A dependent that needs a change before it is tagged pins the commit:
