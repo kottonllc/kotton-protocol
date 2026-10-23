@@ -32,14 +32,17 @@ this RFC.
 ### One command tree, two ways in
 
 The CLI and the REPL are one parser. `kotton <verb>` runs one verb; `kotton` alone enters the
-REPL, which unlocks once, holds a current drive and directory, adds `cd` and `pwd` and a prompt
-that shows who and where, and otherwise runs the same verbs without the prefix. Nothing exists
-in one that does not exist in the other, and a check holds the two trees equal.
+REPL, which unlocks once, holds a current drive and directory, adds `cd`, `pwd`, `clear`,
+`help` and `exit` and a prompt that shows who and where, and otherwise runs the same verbs
+without the prefix. Nothing else exists in one that does not exist in the other, and a check
+holds the two trees equal. The REPL has no pipe of its own: the shell has one, and a person who
+wants `head`, `grep` or `sort` over a file has `cat` and the shell.
 
 ### Conventions
 
 - Files use the words a person already knows, at the top level: `ls`, `cat`, `cp`, `mv`, `rm`,
-  `mkdir`, and beside them `edit`, `open`, `diff`, `search`, `versions`, `restore`, `trash`. A
+  `mkdir`, `rmdir`, `touch`, and beside them `edit`, `open`, `diff`, `search`, `versions`,
+  `restore`, `trash`. A
   path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
   own filesystem, as it is for `scp`; in the REPL, where there is a current drive, a bare path
   is that drive's and `host:` names the machine. `cp` copies between the machine and a drive in
@@ -53,7 +56,9 @@ in one that does not exist in the other, and a check holds the two trees equal.
   write standard input and output, so the shell does the rest.
 - Text is detected by content, as git detects it, never by extension: text gets line diffs and
   conflicts a person can read side by side; everything else is bytes and gets two named
-  versions to choose between. The CLI renders nothing and ships no editor.
+  versions to choose between. The CLI renders nothing. It ships one editor, a plain text
+  editor that runs in the process and holds the file in memory, so that the ordinary edit puts
+  nothing in the clear on any disk; the machine's own editor is reached by `open`.
 
 ### What a person can do
 
@@ -62,14 +67,17 @@ in one that does not exist in the other, and a check holds the two trees equal.
 line; a phrase is stored nowhere and is never shown again; an earlier phrase stays able to
 recover until a rotation retires it) · `rotate` (new keys under the same identity, from a
 phrase, with the contest window the identity page describes; earlier phrases are retired by it)
-· `recover` (take an identity back on a new machine) · `rm` · `whoami`. `id` is the short form.
+· `recover` (take an identity back on a new machine) · `session list|end` (the sessions the
+daemon holds for this identity, and ending one) · `rm` · `whoami`. `id` is the short form.
 
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
 other side) · `list` (with last seen and what each pins) · `show` · `rename` · `rm <device>`
 (revoke it: refused at its next connection to every drive and device; if it may be in someone
 else's hands the person is told to `identity rotate`, which retires the keys it held under the
-identity page's rule) · `bind` (bind this identity to this device's hardware) · `reset` (start
-this device fresh).
+identity page's rule) · `bind` (bind this identity to this device's hardware) · `receive
+off|10m|always` (whether this device listens and answers on the local network so another of the
+person's devices can `send` to it; off until told, and `always` is said back at every `status`)
+· `reset` (start this device fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -82,20 +90,26 @@ told otherwise; a device paired later pins nothing until told; a full device sho
 so and names the setting. `pin <drive> whole` is "collect all my things". `sync` syncs this
 device's drives, now. What a device pins is a sealed record in the drive, as RFC 0002 says.
 
-**Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` on drive paths, pinned or not · `edit
-<path>` · `open <path>` · `diff <path>` (text: between versions or conflict copies) · `search
-<query>` (names and text, on this device, over what it pins and the index it fetches) ·
-`versions <path>` · `restore <path> --version <n>` · `trash list|restore|empty`. Versions live
-in the drive and every device sees them, under the store's one switch per file. A deleted thing
-stays in the drive's trash for thirty days, then one of the person's own devices asks the drive
-to purge it. That is the request from the person's machine the store requires: `rm` is the
-person asking for erasure in thirty days, `trash empty` is asking for it now, and nothing but
-those two asks. Compaction waits for the window.
+**Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
+pinned or not · `edit <path>` (the editor in the process; the file is read from the sealed tree
+into memory and written back sealed, and nothing touches a disk in between) · `open <path>` ·
+`diff <path>` (text: between versions or conflict copies) · `search <query>` (names and text,
+on this device, over what it pins and the index it fetches, which is a sealed object in the
+drive like any other) · `versions <path>` · `restore <path> --version <n>` · `trash
+list|restore|empty`. Versions live in the drive and every device sees them, under the store's
+one switch per file. A deleted thing stays in the drive's trash for thirty days, then one of
+the person's own devices asks the drive to purge it. That is the request from the person's
+machine the store requires: `rm` is the person asking for erasure in thirty days, `trash empty`
+is asking for it now, and nothing but those two asks. Thirty days is the earliest, since the
+purge waits for one of the person's devices to be awake, and compaction waits for it.
 
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
-lands; nothing afterwards) · `share create <folder> <contact> [--rw]` (a contact sees it among
-their drives) · `share list` · `share revoke`.
+lands; nothing afterwards) · `share create <folder> <contact>` (a sealed copy under the
+contact's key, as the conversations page has it: the original is never re-keyed, what the
+contact changes is their copy, and my landlord learns nothing of who holds one) · `share list`
+· `share revoke` (no further copy goes; what went stays theirs). A folder two people hold as
+one is a grant the protocol has not shaped, and is not here.
 
 **Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
 send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` · `message attach
@@ -112,10 +126,12 @@ may ship one as one app among any.
 **The keychain.** `secret set|get|list|rm|generate` (passwords and tokens as sealed records
 with a verb a person reaches for; passkeys wait for a browser or an OS to present them to).
 
-**Host.** `host mint` (the lines that stand up a relay and a vault) · `host list` · `host
-health` · `host relay set|clear|status` (which relay this device stands at) · `host relay
-rule|invite|forget` and `host vault people|invite|digits|space|drop|stand|move|forget`
-(operating a relay or a vault of your own, for the people you admit).
+**Host.** `host mint` (the lines that stand up a relay and a vault) · `host enrol <line>` (the
+operator completes the key `mint` made, from a relay's line, a vault's, or a host's one line
+for both; no digits, since it is their own) · `host list` · `host health` · `host relay
+set|clear|status` (which relay this device stands at) · `host relay rule|invite|forget` and
+`host vault people|invite|digits|space|drop|stand|move|forget` (operating a relay or a vault of
+your own, for the people you admit).
 
 **Seeing it.** `status` (daemon, drives, devices, host, what is syncing, and what arrived: a
 message, a share, a transfer offer, delivered to the daemon without polling, held sealed by the
@@ -123,8 +139,9 @@ drive while a device is asleep as messages are, and shown here and by `inbox`) �
 this device's daemon was asked: which device or app read or wrote what, when, from where; kept
 as sealed records on this device, shown per device, and replicated to a drive only if the
 person pins it there, so no host learns a person's rhythm from it; it does not see reads of
-ciphertext at a host nor what happens to a copy handed out) · `doctor` (the machine's fitness)
-· `repl`.
+ciphertext at a host nor what happens to a copy handed out) · `doctor` (the machine's fitness,
+and `doctor logs` for the daemon's own event log, which is about the daemon and not about the
+person) · `repl`.
 
 ### Where it runs
 
@@ -146,18 +163,14 @@ managed host, no hosted offering run by Kotton LLC, and no phone, at `v0.1.0`.
 Nothing of a person's is on a disk in the clear unless they said so, once, for that thing. The
 ways out, each explicit: `cat` writes to the terminal and never to disk; `cp` from a drive to a
 machine path writes plaintext there because the person named the path; `open` hands a plaintext
-copy to the machine's own program and says where it put it; `edit` writes a private temporary
-(a directory the daemon makes, readable by the person alone) for the length of one edit, hands
-it to the person's `$EDITOR`, re-seals the result and removes the temporary. Removing is not
-erasing on a modern filesystem, and an editor's own swap or backup files are the editor's;
-`edit` says so once, and a temporary left by a crash is reported by `status` until it is
-removed. `send` lands in the receiving device's sealed tree and puts nothing in the clear. What
-a program outside Kotton does with a copy is governed by the machine: the person's editor is
-the machine's program, launched for them, and Kotton's guarantee covers what Kotton confines. A
-confined editor, an app in the sandbox that reads and writes the sealed tree through the app
-surface with no plaintext on any disk, replaces `edit` and most uses of `open`; it is the
-desktop's and the SDK's, named here as the way back and not built here. The session token on
-disk is a defect the first release fixes.
+copy to the machine's own program and says where it put it, and that copy is the person's to
+remove; `edit` puts nothing anywhere, because the editor is in the process. What a program
+outside Kotton does with a copy is governed by the machine: Kotton's guarantee covers what
+Kotton confines. `send` lands in the receiving device's sealed tree and puts nothing in the
+clear. A confined editor, an app in the sandbox that reads and writes the sealed tree through
+the app surface, is the desktop's and the SDK's, and replaces most uses of `open`; it is named
+here as the way back and not built here. The session token on disk is a defect the first
+release fixes.
 
 ### Not in `v0.1.0`, on purpose
 
@@ -170,7 +183,8 @@ what the platform is from the command line.
 
 ## Consequences
 
-- The command tree is rewritten once, to this list. Every verb in the tree today has a place
+- The command tree is rewritten once, to this list. Every verb in the tree today, the CLI's
+  (`docs/cli/reference.md`) and the REPL's registry (`client/shell/src/commands`), has a place
   or leaves, as the table says:
 
 | Today | At `v0.1.0` |
@@ -183,10 +197,20 @@ what the platform is from the command line.
 | `id bind-device` | `device bind` |
 | `device add/join/list` | unchanged |
 | `device name`, `device revoke`, `device reset` | `device rename`, `device rm`, `device reset` |
-| `device admit <vault invite>` | `drive enrol`; `--browser` and `--gateway` leave with the portal |
+| `device admit <vault invite>` | `drive enrol`, the tenant accepting a vault by its invite; `--browser` and `--gateway` leave with the portal |
+| `device add --blind` | leaves with `device admit` |
 | `keep` | `cp -r <folder> <drive>:/` |
-| `enrol` | `drive enrol` |
-| `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir` join them at the top |
+| `enrol <relay line\|vault line\|host line>` | `host enrol <line>`, the operator completing their own key |
+| `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir`, `rmdir`, `touch` join them at the top |
+| `ted` | `edit`: the editor in the process, kept because it puts nothing in the clear |
+| `door status\|closed\|10m\|always` | `device receive off\|10m\|always` |
+| `session list\|end` | `identity session list\|end` |
+| `logs` | `doctor logs`; `log` is the access log, a different thing under a near name, said here on purpose |
+| `secrets` | `secret` |
+| `find`, `grep` | `search` |
+| `head`, `tail`, `sort`, `wc`, `date`, `echo`, `env`, `export`, `unset`, the REPL's pipe | leave; the shell has them |
+| `daemon` | `status` and `doctor` |
+| `cd`, `pwd`, `clear`, `help`, `exit` | the REPL's own, unchanged |
 | `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
 | `sync` (all paired devices) | `sync`, this device's drives: a device is not a target (RFC 0002) |
 | `sync now [--node <id>] [--no-wait]` | `sync`; `--node` leaves with the device as a target |
@@ -206,8 +230,9 @@ what the platform is from the command line.
 | `app`, `extension`, `handler` | leave with the sandbox and the desktop |
 | `model`, `config inference` | leave with inference |
 
-- A check holds the CLI's generated reference to this list: a verb in the binary and not here,
-  or here and not in the binary, fails lint; the REPL's tree is held equal to the CLI's.
+- A check holds both trees to this list: every clap subcommand and every verb the REPL's
+  registry registers is either in the Decision or in a "Today" cell of the table, and nothing
+  in the Decision is absent from the binary; the REPL's tree is held equal to the CLI's.
 - `v0.1.0` is tagged when every line above is testable by a stranger, and not before. When
   the work lands is the distribution's tracking issue's to say, not this RFC's.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
@@ -223,5 +248,8 @@ what the platform is from the command line.
   keychain and the access log as record schemas.
 - `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
   `v0.1.0` itself.
-- `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written.
+- `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written; the
+  adapter waits on the RFC that RFC 0001 reserves for what a vault needs to know, since "a
+  vault is its verbs over a transport and a store" is that RFC's to settle, and stated here
+  as the rule the adapter is held to.
 - RFC 0002, edited in place (no tag exists): the per-device choice is set with `pin`.
