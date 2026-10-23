@@ -58,16 +58,18 @@ in one that does not exist in the other, and a check holds the two trees equal.
 ### What a person can do
 
 **Identity.** `identity create <name>` (a passphrase, once) · `list` · `use` · `show` · `lock`
-· `unlock` · `set-passphrase` · `recovery` (regenerate the recovery words and print them with
-the vault line; the words are stored nowhere, so they are never shown again, only replaced) ·
-`rotate` (new keys under the same identity, from the words, after a compromise) · `recover`
-(take an identity back on a new machine) · `rm` · `whoami`. `id` is the short form.
+· `unlock` · `set-passphrase` · `recovery` (add a recovery phrase and print it with the vault
+line; a phrase is stored nowhere and is never shown again; an earlier phrase stays able to
+recover until a rotation retires it) · `rotate` (new keys under the same identity, from a
+phrase, with the contest window the identity page describes; earlier phrases are retired by it)
+· `recover` (take an identity back on a new machine) · `rm` · `whoami`. `id` is the short form.
 
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
 other side) · `list` (with last seen and what each pins) · `show` · `rename` · `rm <device>`
-(revoke it and rotate the keys it held, so a lost or stolen device is refused at its next
-connection and can open nothing new) · `bind` (bind this identity to this device's hardware) ·
-`reset` (start this device fresh).
+(revoke it: refused at its next connection to every drive and device; if it may be in someone
+else's hands the person is told to `identity rotate`, which retires the keys it held under the
+identity page's rule) · `bind` (bind this identity to this device's hardware) · `reset` (start
+this device fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -84,8 +86,10 @@ device's drives, now. What a device pins is a sealed record in the drive, as RFC
 <path>` · `open <path>` · `diff <path>` (text: between versions or conflict copies) · `search
 <query>` (names and text, on this device, over what it pins and the index it fetches) ·
 `versions <path>` · `restore <path> --version <n>` · `trash list|restore|empty`. Versions live
-in the drive and every device sees them, under the store's one switch per file. A deleted thing
-stays in the drive's trash for thirty days and is then purged; compaction waits for the window.
+in the drive and every device sees them, under the store's one switch per file; today a version
+is one device's, so this is store work the drive model asks for. A deleted thing stays in the
+drive's trash for thirty days; after that the person's own device asks the drive to purge it,
+since only a request from the person's machine purges, and compaction waits for the window.
 
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
@@ -99,41 +103,47 @@ send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
 Records are typed, sealed, in a drive, read from every device: the layer under contacts and
-every future app. A schema is declared by whoever ships it; none is Kotton's by right, and one
-nobody at Kotton has seen works like any other. A calendar is an app on records, not a
-primitive; Kotton may ship one as one app among any.
+every future app. Today records reach only a person's own devices; their replication to a drive
+is store work the drive model asks for, and the keychain, the pins and a pinned `log` rest on
+it. A schema is declared by whoever ships it; none is Kotton's by right, and one nobody at
+Kotton has seen works like any other. A calendar is an app on records, not a primitive; Kotton
+may ship one as one app among any.
 
 **The keychain.** `secret set|get|list|rm|generate` (passwords and tokens as sealed records
 with a verb a person reaches for; passkeys wait for a browser or an OS to present them to).
 
 **Host.** `host mint` (the lines that stand up a relay and a vault) · `host list` · `host
 health` · `host relay set|clear|status` (which relay this device stands at) · `host relay
-rule|invite|forget` and `host vault people|invite|space|drop|stand|move|forget` (operating a
-relay or a vault of your own, for the people you admit).
+rule|invite|forget` and `host vault people|invite|digits|space|drop|stand|move|forget`
+(operating a relay or a vault of your own, for the people you admit).
 
 **Seeing it.** `status` (daemon, drives, devices, host, what is syncing, and what arrived: a
-message, a share, a transfer offer, delivered to the daemon without polling and shown here and
-by `inbox`) · `log` (what this device's daemon was asked: which device or app read or wrote
-what, when, from where; kept as sealed records on this device, shown per device, and replicated
-to a drive only if the person pins it there, so no host learns a person's rhythm from it; it
-does not see reads of ciphertext at a host nor what happens to a copy handed out) · `doctor`
-(the machine's fitness) · `repl`.
+message, a share, a transfer offer, delivered to the daemon without polling, held sealed by the
+drive while a device is asleep as messages are, and shown here and by `inbox`) · `log` (what
+this device's daemon was asked: which device or app read or wrote what, when, from where; kept
+as sealed records on this device, shown per device, and replicated to a drive only if the
+person pins it there, so no host learns a person's rhythm from it; it does not see reads of
+ciphertext at a host nor what happens to a copy handed out) · `doctor` (the machine's fitness)
+· `repl`.
 
 ### Where it runs
 
-Devices: Linux, macOS and Windows, on x86_64 and arm64, installed by the nine lines (a
-PowerShell installer on Windows, verifying the same signature with the OpenSSH the system
-carries). The code is written for all three (the socket, keychain and sandbox providers each
-have a Windows form) and has been built and run on two; a Windows build and its tests run in
-the gate from the second sprint on, so that what the owner uses every day is what the release
-is held to. Hosts: a Linux machine the person controls, at home or rented from any provider
-that sells one (a DigitalOcean droplet is this, and its S3-shaped object store is a shelf the
-vault already speaks), stood up by the lines `host mint` prints; and one managed host that
-sells no machine, Cloudflare, as the first adapter under the rule that a vault is its verbs
-over a transport and a store, with no provider named outside the adapter. The portability claim
-is tested between those two: a drive moved from a vault on a rented machine to the adapter and
-back, under the same key, every device following. No second managed host, no hosted offering
-run by Kotton LLC, and no phone, at `v0.1.0`.
+Devices: Linux, macOS and Windows, on x86_64, and arm64 where the release builds it, installed
+by the nine lines (a PowerShell installer on Windows, verifying the same signature with the
+OpenSSH the system carries). The code is written for all three: the socket, keychain and
+sandbox providers each have a Windows form. It is built and run in a gate on Linux; it has been
+built and run on Windows by hand and not in any gate, and the check that holds Windows today is
+a grep for Unix-only calls, because `ring` needs a Windows toolchain to compile. From the
+second sprint a Windows runner builds and tests the tree on every pull request, so that what
+the owner uses every day is what the release is held to. Hosts: a Linux machine the person
+controls, at home or rented from any provider that sells one (a DigitalOcean droplet is this,
+and its S3-shaped object store is a shelf the vault already speaks), stood up by the lines
+`host mint` prints; and one managed host that sells no machine, Cloudflare, as the first
+adapter under the rule that a vault is its verbs over a transport and a store, with no provider
+named outside the adapter. The portability claim is tested between those two: a drive moved
+from a vault on a rented machine to the adapter and back, under the same key, every device
+following. No second managed host, no hosted offering run by Kotton LLC, and no phone, at
+`v0.1.0`.
 
 ### What leaves the sealed tree, and when
 
@@ -146,12 +156,12 @@ it to the person's `$EDITOR`, re-seals the result and removes the temporary. Rem
 erasing on a modern filesystem, and an editor's own swap or backup files are the editor's;
 `edit` says so once, and a temporary left by a crash is reported by `status` until it is
 removed. `send` lands in the receiving device's sealed tree and puts nothing in the clear. What
-a program outside Kotton does with a copy is governed by the machine: Kotton starts `$EDITOR`
-for the person but does not run it, and its guarantee covers what it runs. A confined editor,
-an app in the sandbox that reads and writes the sealed tree through the app surface with no
-plaintext on any disk, replaces `edit` and most uses of `open`; it is the desktop's and the
-SDK's, named here as the way back and not built here. The session token on disk is a defect the
-first release fixes.
+a program outside Kotton does with a copy is governed by the machine: the person's editor is
+the machine's program, launched for them, and Kotton's guarantee covers what Kotton confines. A
+confined editor, an app in the sandbox that reads and writes the sealed tree through the app
+surface with no plaintext on any disk, replaces `edit` and most uses of `open`; it is the
+desktop's and the SDK's, named here as the way back and not built here. The session token on
+disk is a defect the first release fixes.
 
 ### Not in `v0.1.0`, on purpose
 
@@ -181,7 +191,9 @@ what the platform is from the command line.
 | `device admit <vault invite>` | `drive enrol`; `--browser` and `--gateway` leave with the portal |
 | `keep` | `cp -r <folder> <drive>:/` |
 | `enrol` | `drive enrol` |
-| `cp`, `cat`, `sync`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir` join them at the top |
+| `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir` join them at the top |
+| `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
+| `sync [--push\|--pull] <remote>` | `sync`, this device's drives |
 | `host:` | kept in the REPL only; from the shell a bare path is the machine's |
 | `mint` | `host mint` |
 | `relay set/clear/status` | `host relay set/clear/status` |
@@ -200,25 +212,25 @@ what the platform is from the command line.
 - A check holds the CLI's generated reference to this list: a verb in the binary and not here,
   or here and not in the binary, fails lint; the REPL's tree is held equal to the CLI's.
 - The groups land in sprints, and the sprint plan in the distribution's tracking issue is
-  amended to match: identity, devices, drives, pins, files and `status` with the drive model;
-  `send` with the direct transfer; `share`, messages, records, the keychain, `log`, `trash`,
-  `search` and the Cloudflare adapter after; `v0.1.0` is tagged when every line is testable by
-  a stranger, which is the walk.
+  amended to match: the Windows runner in the gate and identity, devices, drives, pins, files
+  and `status` with the drive model; `send` with the direct transfer; `share`, messages,
+  records, the keychain, `log`, `trash`, `search` and the Cloudflare adapter after; `v0.1.0` is
+  tagged when every line is testable by a stranger, which is the walk.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
   asked, which is the thesis made visible without making the asking visible to anyone else.
 
 ## Reaches
 
-- `kotton`: the daemon's side of every verb above, the trash and search, the access log, the
-  rotation on `device rm`, notifications delivered to the daemon, the session token fix.
+- `kotton`: the daemon's side of every verb above; versions that travel with the drive and
+  records that replicate to it (store work); the trash and search; the access log;
+  notifications delivered to the daemon and held by the drive; the Windows runner in the gate;
+  the session token fix.
 - `kotton-cli`: the command tree, the REPL, the generated reference and the check that holds it
   to this list.
 - `kotton-protocol`: the request types the new verbs cross with (the trash, the access log's
   query, the share's grant shape, the notification), in `v0.1.0` or a patch after it; the
   keychain and the access log as record schemas.
-- `kotton-dist`: the nine lines and the guide, rewritten to the tree; the sprint plan in its
-  tracking issue; `v0.1.0` itself.
+- `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
+  the sprint plan in its tracking issue; `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written.
 - RFC 0002, edited in place (no tag exists): the per-device choice is set with `pin`.
-
-
