@@ -122,14 +122,14 @@ is cut.
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
   handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
-  work there), the pins and budget the daemon enforces, the keep settings as records and the
+  work there), the pins and budget the daemon enforces, the pin settings as records and the
   fetch that collects a drive whole, the two notices, `enrol`, and the daemon's side of the
   transfer: the offer received, the prompt asked, the bytes placed.
-- `kotton-cli`: the keep policy's verbs and its default as a setting, the collecting verb, the
+- `kotton-cli`: the pin policy's verbs and its default as a setting, the collecting verb, the
   bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
-- `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
-  transfer's offer, acceptance, refusal and stream, the record type a keep setting is, and the
+- `kotton-protocol`: the handshake, the drive's verbs, the pin policy's types, and the
+  transfer's offer, acceptance, refusal and stream, the record type a pin setting is, and the
   question a daemon puts to a terminal session and its answer, shipping in the first tag,
   `v0.1.0`, which follows the golden-encoding check, or in a patch after it, since each is a
   new request.
