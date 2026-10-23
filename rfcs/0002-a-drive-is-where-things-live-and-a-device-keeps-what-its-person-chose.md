@@ -4,8 +4,8 @@
 
 Replication is by location today. A named root has members, the devices that hold its key, and
 targets, the places it is kept; a person adds a vault as a target with `sync add`, and the
-engine runs one worker per target. A mount may pin paths and cap its cache. So the pieces of a
-drive exist. What is not decided is the model they serve: members replicate to one another as
+engine runs one worker per target. A mount records pins and a cache budget that nothing yet
+reads. So the pieces of a drive exist, some as records. What is not decided is the model they serve: members replicate to one another as
 well as to targets, the bare `sync` verb fans out to every node the person has paired, the
 first-release page says a second device "brings the other's things", and enrolling a vault
 asks "keep your things here too?". A person reading those sees a mesh that copies everything
@@ -36,12 +36,13 @@ changes to the drive and takes the drive's changes for the folders it keeps. A d
 target of another device; devices replicate to drives, and read from them. The bare `sync` verb
 syncs this device's drives, not every node.
 
-**A device proves itself to a drive under its device key, in the protocol.** Pairing introduces
-a device's key to a person's set, as it does now. After that, every connection a device opens
-to a drive or to another device begins with a handshake under that key, defined by the protocol
-and run the same way over every transport; it is the signed form of the exchange the browser's
-door already runs, and it keys the channel, so the transport need add no confidentiality of its
-own. A drive accepts a connection only from a key in the set it admits, and a key removed from
+**Each side proves itself under its key, in the protocol.** Pairing introduces a device's key
+to a person's set, as it does now. After that, every connection a device opens to a drive or to
+another device begins with a handshake under both keys, defined by the protocol and run the
+same way over every transport: the device signs for itself and the drive signs for itself, so
+nothing standing between them, a relay included, can answer as either. It is the signed form of
+the exchange the browser's door already runs, and it keys the channel, so the transport need add
+no confidentiality of its own. A drive accepts a connection only from a key in the set it admits, and a key removed from
 the set is refused at its next connection. A transport carries bytes and confers no identity:
 QUIC on a local network or across the internet, a circuit through a relay, and a link such as
 Bluetooth are transports, and a drive is reached over any of them the same way. The QUIC path
@@ -73,8 +74,9 @@ offers the first; the other two are the drive's verbs when the vault is cut.
   `sync` verb's fan-out leave the engine.
 - The person's choices are the policy. A device holds the folders it was told to keep; a device
   with no reachable drive has those and nothing else, as every drive a person has used behaves.
-- A drive orders what it receives and holds every version it is given; devices that hold the
-  key resolve what the order means. A drive that cannot read a pack cannot merge it.
+- A drive orders what it receives; devices that hold the key resolve what the order means. A
+  drive that cannot read a pack cannot merge it. What a drive retains of older versions is the
+  drive's verbs' question, when the vault is cut.
 - A second device joins by being paired and told which folders to keep. The first-release
   page's line for a second device says that, and `enrol` stops asking whether to keep things
   on a vault: a vault is where things are kept.
@@ -90,12 +92,13 @@ offers the first; the other two are the drive's verbs when the vault is cut.
 ## Reaches
 
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
-  handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`,
-  `enrol`.
+  handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`
+  (today a vault keeps one pool per tenant; several drives for one person on one vault is new
+  work there), the pins and budget the daemon enforces, `enrol`.
 - `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
-- `kotton-protocol`: the handshake, the drive's verbs and the keep policy's types. No protocol
-  version is named: nothing is tagged, so no shipped message changes meaning.
+- `kotton-protocol`: the handshake, the drive's verbs and the keep policy's types, shipping in
+  the first tag, `v0.1.0`, which follows the golden-encoding check.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
   corrected in the pull request that changes it.
