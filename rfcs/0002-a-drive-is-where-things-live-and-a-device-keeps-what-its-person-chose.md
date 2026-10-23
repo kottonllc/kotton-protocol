@@ -77,20 +77,23 @@ the model's edges above.
 
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
 can decline to serve. Principle XIII is kept by one means the person alone controls: a device
-that keeps every folder of a drive holds the whole of it, and needs nobody. The platform's
-default is that the device that creates a drive keeps it whole and a device paired later keeps
-nothing until told; the default is a setting, per person and per device, and a person may
-choose the other way. Whenever no device of the person's keeps a drive whole, the person is
-told so, where they choose what each device keeps; when a device that keeps a drive whole runs
-short of room, it says so and names the setting that keeps less. One verb collects: a person
-tells any device to keep a drive whole, and it fetches what it lacks. What each device keeps is
-a record in the drive, sealed like any other, so every device of the person reads it and none
-but theirs can; the telling is a device's own reading of those records, and the drive learns
-nothing from them. Two more things help and are not exits: a drive may be exported whole,
-sealed, to another drive or a disk, which needs the landlord to be serving; and a person may
-have several drives, which are as full as something filled them. The first release has the
-default, the telling and the collecting verb; the export is the drive's verbs' when the vault
-is cut.
+that keeps every folder of a drive holds the whole of it, and needs nobody. Every device of the
+person's sees every drive they have; what differs is whether it keeps a drive whole or fetches
+on demand. Each device has one default for the drives it has not been told about, and a person
+sets a drive or a folder the other way on that device; the first device's default is whole and
+a device paired later defaults to on demand, and a person may choose otherwise on any of them.
+Whatever its default, the device that creates a drive keeps that drive whole until told
+otherwise, so something holds the whole from the first day. Whenever no device of the person's
+keeps a drive whole, the person is told so, where they choose what each device keeps; when a
+device that keeps a drive whole runs short of room, it says so and names the setting that keeps
+less. One verb collects: a person tells any device to keep a drive whole, and it fetches what
+it lacks. What each device keeps, its default and its exceptions, is a record in the drive,
+sealed like any other, so every device of the person reads it and none but theirs can; the
+telling is a device's own reading of those records, and the drive learns nothing from them. Two
+more things help and are not exits: a drive may be exported whole, sealed, to another drive or
+a disk, which needs the landlord to be serving; and a person may have several drives, which are
+as full as something filled them. The first release has the default, the telling and the
+collecting verb; the export is the drive's verbs' when the vault is cut.
 
 ## Consequences
 
@@ -101,9 +104,9 @@ is cut.
 - A drive orders what it receives; devices that hold the key resolve what the order means. A
   drive that cannot read a pack cannot merge it. What a drive retains of older versions is the
   drive's verbs' question, when the vault is cut.
-- A second device joins by being paired and told which folders to keep. The first-release
-  page's line for a second device says that, and `enrol` stops asking whether to keep things on
-  a vault: a vault is where things are kept.
+- A second device joins by being paired; it sees every drive on demand, and is told which to
+  keep whole. The first-release page's line for a second device says that, and `enrol` stops
+  asking whether to keep things on a vault: a vault is where things are kept.
 - One handshake replaces one and a half. Mutual TLS stops carrying identity, so a drive may be
   reached over a transport that cannot do it, and a vault behind a TLS terminator is one
   implementation among any. On the QUIC path two key exchanges then run, QUIC's own beneath the
