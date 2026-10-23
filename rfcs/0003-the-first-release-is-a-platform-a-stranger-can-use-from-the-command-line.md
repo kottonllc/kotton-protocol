@@ -36,9 +36,9 @@ REPL, which unlocks once, holds a current drive and directory, adds `cd`, `pwd`,
 `help` and `exit` (and `quit`, its alias) and a prompt that shows who and where, and otherwise
 runs the same verbs without the prefix. Nothing else exists in one that does not exist in the
 other, and a check holds the two trees equal. The REPL's syntax, not verbs, is a pipe `|`
-between verbs, `;`, `&&` and `||` between commands, and `>` and `>>` into a drive path, because
-inside the REPL there is no shell to supply them; from a terminal the shell's own do the same
-over `kotton cat` and `kotton cp -`.
+between verbs, `;`, `&&` and `||` between commands, and `>` and `>>` into a drive path and
+never into `host:`, because inside the REPL there is no shell to supply them; from a terminal
+the shell's own do the same over `kotton cat` and `kotton cp -`.
 
 ### Conventions
 
@@ -55,7 +55,8 @@ over `kotton cat` and `kotton cp -`.
   files.
 - Output is for a person by default and `--json` on every `list` and `show`; exit codes mean
   something (0 done, 1 refused with the reason on stderr, 2 usage); `cat` and `cp` read and
-  write standard input and output, so the shell does the rest.
+  write standard input and output, and `grep`, `head`, `tail`, `wc` and `sort` read it, so the
+  shell and the REPL's pipe do the rest.
 - Text is detected by content, as git detects it, never by extension: text gets line diffs and
   conflicts a person can read side by side; everything else is bytes and gets two named
   versions to choose between. The CLI renders no document and ships one editor, a plain text
@@ -213,7 +214,7 @@ what the platform is from the command line.
 | `device add --blind` | leaves; the tenant's acceptance is `drive enrol`, by invite |
 | `keep` | `cp -r <folder> <drive>:/` |
 | `enrol <relay line\|vault line\|host line>` | `host enrol <line>`, the operator completing their own key |
-| `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir`, `rmdir`, `touch` join them at the top |
+| `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir`, `rmdir`, `touch` join them at the top, with the six below |
 | `ted` | `edit`: the editor in the process, kept because it puts nothing in the clear |
 | `door status\|closed\|10m\|always` | `device receive off\|10m\|always` |
 | `session list\|end` | `identity session list\|end` |
