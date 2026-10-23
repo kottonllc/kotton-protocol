@@ -31,10 +31,10 @@ tenancy, wherever the vault runs.
 
 **A device keeps what its person chose.** For each drive and each folder, the person says
 whether this device keeps a local copy or fetches on demand; the mount's pins and cache budget
-are that choice. Sync is a device keeping its chosen folders current with the drive: it sends
-its changes to the drive and takes the drive's changes for the folders it keeps. A device is
-not a target of another device; devices replicate to drives, and read from them. The bare
-`sync` verb syncs this device's drives, not every node.
+are that choice, and `pin` is the verb that sets it. Sync is a device keeping its chosen
+folders current with the drive: it sends its changes to the drive and takes the drive's changes
+for the folders it keeps. A device is not a target of another device; devices replicate to
+drives, and read from them. The bare `sync` verb syncs this device's drives, not every node.
 
 **Each side proves itself under its key, in the protocol.** Pairing introduces a device's key
 to a person's set, as it does now. After that, every connection a device opens to a drive or to
