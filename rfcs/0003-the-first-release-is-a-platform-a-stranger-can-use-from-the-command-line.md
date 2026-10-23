@@ -225,7 +225,7 @@ what the platform is from the command line.
 | `config status`, `net` | `status` |
 | `config paths` | `doctor` |
 | `config relay` | `host relay` |
-| `grant revoke` | leaves: a share is a copy, and a copy is not taken back |
+| `grant revoke` (an app's capability envelope) | leaves with the sandbox and the desktop, beside `app` |
 | `grant import`, `issuer`, `records init/invite`, `org` | leave with organisations |
 | `records import/export`, `import` (`.ics`), `record open` | `record import/export`, `record get` |
 | `contact`, `message`, `schema` | unchanged |
