@@ -78,8 +78,9 @@ the model's edges above.
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
 can decline to serve. Principle XIII is kept by one means the person alone controls: a device
 that keeps every folder of a drive holds the whole of it, and needs nobody. Every device of the
-person's sees every drive they have; what differs is whether it keeps a drive whole or fetches
-on demand. Each device has one default for the drives it has not been told about, and a person
+person's sees every drive they have, by default; a device's aperture, set at pairing, may
+narrow that. What differs otherwise is whether a device keeps a drive whole or fetches on
+demand. Each device has one default for the drives it has not been told about, and a person
 sets a drive or a folder the other way on that device: the nearest setting wins, a folder's
 over its drive's over the device's default, and `default` at any level means follow the one
 above; the first device's default is whole and a device paired later defaults to on demand, and
