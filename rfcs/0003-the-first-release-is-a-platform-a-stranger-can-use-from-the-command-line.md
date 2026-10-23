@@ -56,9 +56,10 @@ one, and a person who wants `head`, `grep` or `sort` over a file has `cat` and t
   write standard input and output, so the shell does the rest.
 - Text is detected by content, as git detects it, never by extension: text gets line diffs and
   conflicts a person can read side by side; everything else is bytes and gets two named
-  versions to choose between. The CLI renders nothing. It ships one editor, a plain text
-  editor that runs in the process and holds the file in memory, so that the ordinary edit puts
-  nothing in the clear on any disk; the machine's own editor is reached by `open`.
+  versions to choose between. The CLI renders no document and ships one editor, a plain text
+  editor in the terminal that runs in the process and holds the file in memory, so that the
+  ordinary edit puts nothing in the clear on any disk; the machine's own editor is reached by
+  `open`.
 
 ### What a person can do
 
@@ -93,7 +94,8 @@ device's drives, now. What a device pins is a sealed record in the drive, as RFC
 
 **Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
 pinned or not · `edit <path>` (the editor in the process; the file is read from the sealed tree
-into memory and written back sealed, and nothing touches a disk in between) · `open <path>` ·
+into memory and written back sealed, and Kotton writes nothing to a disk in between; what the
+machine pages out of memory is the machine's, as for every process) · `open <path>` ·
 `diff <path>` (text: between versions or conflict copies) · `search <query>` (names and text,
 on this device, over what it pins and the index it fetches, which is a sealed object in the
 drive like any other) · `versions <path>` · `restore <path> --version <n>` · `trash
