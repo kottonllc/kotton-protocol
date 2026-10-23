@@ -83,11 +83,14 @@ nothing until told; the default is a setting, per person and per device, and a p
 choose the other way. Whenever no device of the person's keeps a drive whole, the person is
 told so, where they choose what each device keeps; when a device that keeps a drive whole runs
 short of room, it says so and names the setting that keeps less. One verb collects: a person
-tells any device to keep a drive whole, and it fetches what it lacks. Two more things help and
-are not exits: a drive may be exported whole, sealed, to another drive or a disk, which needs
-the landlord to be serving; and a person may have several drives, which are as full as
-something filled them. The first release has the default, the telling and the collecting verb;
-the export is the drive's verbs' when the vault is cut.
+tells any device to keep a drive whole, and it fetches what it lacks. What each device keeps is
+a record in the drive, sealed like any other, so every device of the person reads it and none
+but theirs can; the telling is a device's own reading of those records, and the drive learns
+nothing from them. Two more things help and are not exits: a drive may be exported whole,
+sealed, to another drive or a disk, which needs the landlord to be serving; and a person may
+have several drives, which are as full as something filled them. The first release has the
+default, the telling and the collecting verb; the export is the drive's verbs' when the vault
+is cut.
 
 ## Consequences
 
@@ -119,16 +122,19 @@ the export is the drive's verbs' when the vault is cut.
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
   handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
-  work there), the pins and budget the daemon enforces, `enrol`, and the daemon's side of the
+  work there), the pins and budget the daemon enforces, the keep settings as records and the
+  fetch that collects a drive whole, the two notices, `enrol`, and the daemon's side of the
   transfer: the offer received, the prompt asked, the bytes placed.
 - `kotton-cli`: the keep policy's verbs and its default as a setting, the collecting verb, the
   bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
-  transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a
-  terminal session and its answer, shipping in the first tag, `v0.1.0`, which follows the
-  golden-encoding check, or in a patch after it, since each is a new request.
-- `kotton-compositor`: the transfer's prompt, where a device has one.
+  transfer's offer, acceptance, refusal and stream, the record type a keep setting is, and the
+  question a daemon puts to a terminal session and its answer, shipping in the first tag,
+  `v0.1.0`, which follows the golden-encoding check, or in a patch after it, since each is a
+  new request.
+- `kotton-compositor`: the transfer's prompt, where a device has one. `kotton-desktop`: the keep
+  settings and the collecting verb as a surface, one desktop among any.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
   corrected in the pull request that changes it.
