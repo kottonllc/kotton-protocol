@@ -41,11 +41,14 @@ to a person's set, as it does now. After that, every connection a device opens t
 another device begins with a handshake under both keys, defined by the protocol and run the
 same way over every transport: each side signs for itself, a device for itself and a drive or
 the other device for itself, so nothing standing between them, a relay included, can answer as
-either. It is the signed form of the exchange the browser's door already runs, and it keys the
-channel, so the transport need add no confidentiality of its own. A drive accepts a connection
-only from a key in the set it admits, and a key removed from the set is refused at its next
-connection. A transport carries bytes and confers no identity: QUIC on a local network or
-across the internet, a circuit through a relay, and a link such as Bluetooth are transports,
+either. It is the signed form that the browser's door already runs of the exchange pairing runs
+unsigned: an ephemeral exchange keys the channel first, and the keys and the signatures over
+the transcript cross only inside it, so the path sees ephemeral values, authentication tags and
+ciphertext and never a durable key. The transport need add no confidentiality of its own, and a
+relay or a nearby listener learns no more of who is talking than it does now. A drive accepts a
+connection only from a key in the set it admits, and a key removed from the set is refused at
+its next connection. A transport carries bytes and confers no identity: QUIC on a local network
+or across the internet, a circuit through a relay, and a link such as Bluetooth are transports,
 and a drive is reached over any of them the same way. The QUIC path that exists is the first
 transport, and until the handshake exists it keeps its mutual TLS.
 
@@ -73,10 +76,15 @@ acceptance, the refusal and the stream. It is built on the QUIC path that exists
 the model's edges above.
 
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
-can decline to serve. Principle XIII is kept by three means the person controls: a device may
-keep every folder of a drive, so one device holds a full copy; a drive may be exported whole,
-sealed, to another drive or a disk; and a person may have several drives. The first release
-offers the first; the other two are the drive's verbs when the vault is cut.
+can decline to serve. Principle XIII is kept by one means the person alone controls: a device
+that keeps every folder of a drive holds the whole of it, and needs nobody. So the device that
+creates a drive keeps it whole until its person says otherwise; a device paired later keeps
+nothing until told; and whenever no device of the person's keeps a drive whole, the person is
+told so, where they choose what each device keeps. Two more things help and are not exits: a
+drive may be exported whole, sealed, to another drive or a disk, which needs the landlord to be
+serving; and a person may have several drives, which are as full as something filled them. The
+first release has the default and the telling; the export is the drive's verbs' when the vault
+is cut.
 
 ## Consequences
 
@@ -92,9 +100,12 @@ offers the first; the other two are the drive's verbs when the vault is cut.
   a vault: a vault is where things are kept.
 - One handshake replaces one and a half. Mutual TLS stops carrying identity, so a drive may be
   reached over a transport that cannot do it, and a vault behind a TLS terminator is one
-  implementation among any. "Nothing listens for strangers" becomes "nothing answers a stranger
+  implementation among any. On the QUIC path two key exchanges then run, QUIC's own beneath the
+  protocol's; that cost is accepted for one identity story over every transport. "Nothing listens for strangers" becomes "nothing answers a stranger
   past the handshake", and the threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
+- Two of a person's devices on different networks have no direct verb; what one is to hand the
+  other goes by way of a drive.
 - The direct transfer is the first nearby-device verb. Two devices on one network sharing a
   fetch, or working together with no drive reachable, are later verbs on the same layers, each
   decided by its own RFC; nothing here forecloses them.
@@ -109,8 +120,9 @@ offers the first; the other two are the drive's verbs when the vault is cut.
 - `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
-  transfer's offer, acceptance, refusal and stream, shipping in the first tag, `v0.1.0`, which
-  follows the golden-encoding check.
+  transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a terminal
+  session and its answer, shipping in the first tag, `v0.1.0`, which follows the golden-encoding
+  check, or in a patch after it, since each is a new request.
 - `kotton-compositor`: the transfer's prompt, where a device has one.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
