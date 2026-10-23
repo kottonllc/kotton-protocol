@@ -56,11 +56,20 @@ is the one to its drive.
 Pairing and admission stay, and a device recognises the person's other devices. Recognition is
 the identity layer, not replication. An act between two devices with no drive between them is a
 verb the person invokes, one at a time, over the same transports. The first such verb is a
-transfer: a person on one device names a file or folder and one of their other devices on the
-same network or link; that device's person is asked, and says where it lands; the bytes cross
-directly under the handshake, and nothing is replicated afterwards. It is built on the QUIC
-path that exists, right after the model's edges above, and it is the shape every later nearby
-verb takes.
+transfer. On one device a person names something that device holds, a file or folder from its
+local tree or from a folder it keeps, and one of their other devices. The two must reach each
+other directly, on one network; a transfer is refused when only a relay joins them, and a link
+such as Bluetooth joins them when a transport for it exists. The receiving device asks its
+person: where it has a compositor, the compositor draws the prompt, as it draws every prompt an
+app must never draw; where it has only a terminal session, the daemon asks there; a device with
+nobody to answer refuses when the offer times out. The person says where the bytes land. They
+cross under whatever proves identity on that transport at the time, mutual TLS on the QUIC path
+today and the protocol's handshake once it exists, and the two devices are in no standing
+relationship afterwards: the receiving device is not a target of the sending one. What landed is
+the receiver's, and if it landed in a folder the receiver keeps on a drive, the receiver's own
+sync carries it there as it carries any change. The protocol defines the offer, the acceptance,
+the refusal and the stream. It is built on the QUIC path that exists, right after the model's
+edges above.
 
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
 can decline to serve. Principle XIII is kept by three means the person controls: a device may
@@ -86,19 +95,22 @@ offers the first; the other two are the drive's verbs when the vault is cut.
   past the handshake", and the threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
 - The direct transfer is the first nearby-device verb. Two devices on one network sharing a
-  fetch, or working together with no drive reachable, are later verbs on the same layers; nothing
-  here forecloses them.
+  fetch, or working together with no drive reachable, are later verbs on the same layers, each
+  decided by its own RFC; nothing here forecloses them.
 
 ## Reaches
 
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
   handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
-  work there), the pins and budget the daemon enforces, `enrol`.
+  work there), the pins and budget the daemon enforces, `enrol`, and the daemon's side of the
+  transfer: the offer received, the prompt asked, the bytes placed.
 - `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
-- `kotton-protocol`: the handshake, the drive's verbs and the keep policy's types, shipping in
-  the first tag, `v0.1.0`, which follows the golden-encoding check.
+- `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
+  transfer's offer, acceptance, refusal and stream, shipping in the first tag, `v0.1.0`, which
+  follows the golden-encoding check.
+- `kotton-compositor`: the transfer's prompt, where a device has one.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
   corrected in the pull request that changes it.
