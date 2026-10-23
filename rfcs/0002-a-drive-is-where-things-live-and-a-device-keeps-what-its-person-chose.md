@@ -121,8 +121,8 @@ the export is the drive's verbs' when the vault is cut.
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
   work there), the pins and budget the daemon enforces, `enrol`, and the daemon's side of the
   transfer: the offer received, the prompt asked, the bytes placed.
-- `kotton-cli`: the keep policy's verbs and its default as a setting, the collecting verb, the bare
-  `sync`, and the transfer verb.
+- `kotton-cli`: the keep policy's verbs and its default as a setting, the collecting verb, the
+  bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
   transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a
