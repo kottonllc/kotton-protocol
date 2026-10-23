@@ -78,8 +78,9 @@ else's hands the person is told to `identity rotate`, which retires the keys it 
 identity page's rule) · `bind` (bind this identity to this device's hardware) · `receive
 off|10m|always` (whether this device has a listener and an announcement on the network it is
 on, so another of the person's devices there can find it and `send` to it; off until told,
-since a relay introduces the person's devices otherwise, and `always` is said back at every
-`status`) · `reset` (start this device fresh).
+since a relay introduces the person's devices otherwise; `always` is said back at every
+`status`, and is refused where the platform has no announcement) · `reset` (start this device
+fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -95,7 +96,8 @@ device's drives, now. What a device pins is a sealed record in the drive, as RFC
 **Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
 pinned or not · `edit <path>` (the editor in the process; the file is read from the sealed tree
 into memory and written back sealed, and Kotton writes nothing to a disk in between; what the
-machine pages out of memory is the machine's, as for every process) · `open <path>` ·
+machine pages out of memory is the machine's, as for every process, and the buffer can be
+locked in memory as key material already is) · `open <path>` ·
 `diff <path>` (text: between versions or conflict copies) · `search <query>` (names and text,
 on this device, over what it pins and the index it fetches, which is a sealed object in the
 drive like any other) · `versions <path>` · `restore <path> --version <n>` · `trash
@@ -152,15 +154,16 @@ person) · `repl`.
 Devices: Linux, macOS and Windows on x86_64, and Linux and macOS on arm64; Windows on arm64 has
 never been built and is not promised here. Each is installed by the nine lines (a PowerShell
 installer on Windows, verifying the same signature with the OpenSSH the system carries). Each
-of the three is built and tested in the gate on every pull request, Windows included, so that
-what a person runs is what the release was held to. Hosts: a Linux machine the person controls,
-at home or rented from any provider that sells one (a DigitalOcean droplet is this, and its
-S3-shaped object store is a shelf the vault already speaks), stood up by the lines `host mint`
-prints; and one managed host that sells no machine, Cloudflare, as the first adapter under the
-rule that a vault is its verbs over a transport and a store, with no provider named outside the
-adapter. The portability claim is tested between those two: a drive moved from a vault on a
-rented machine to the adapter and back, under the same key, every device following. No second
-managed host, no hosted offering run by Kotton LLC, and no phone, at `v0.1.0`.
+of the three operating systems is built and tested in the gate on every pull request, Windows
+included, so that what a person runs is what the release was held to. Hosts: a Linux machine
+the person controls, at home or rented from any provider that sells one (a DigitalOcean droplet
+is this, and its S3-shaped object store is a shelf the vault already speaks), stood up by the
+lines `host mint` prints; and one managed host that sells no machine, Cloudflare, as the first
+adapter under the rule that a vault is its verbs over a transport and a store, with no provider
+named outside the adapter. The portability claim is tested between those two: a drive moved
+from a vault on a rented machine to the adapter and back, under the same key, every device
+following. No second managed host, no hosted offering run by Kotton LLC, and no phone, at
+`v0.1.0`.
 
 ### What leaves the sealed tree, and when
 
@@ -202,7 +205,7 @@ what the platform is from the command line.
 | `device add/join/list` | unchanged |
 | `device name`, `device revoke`, `device reset` | `device rename`, `device rm`, `device reset` |
 | `device admit <vault invite>` | `drive enrol`, the tenant accepting a vault by its invite; `--browser` and `--gateway` leave with the portal |
-| `device add --blind` | leaves with `device admit` |
+| `device add --blind` | leaves; the tenant's acceptance is `drive enrol`, by invite |
 | `keep` | `cp -r <folder> <drive>:/` |
 | `enrol <relay line\|vault line\|host line>` | `host enrol <line>`, the operator completing their own key |
 | `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir`, `rmdir`, `touch` join them at the top |
