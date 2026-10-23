@@ -121,12 +121,19 @@ does not see reads of ciphertext at a host nor what happens to a copy handed out
 
 ### Where it runs
 
-Devices: Linux and macOS, on x86_64 and arm64, installed by the nine lines; Windows waits,
-since its install, keychain and launcher do not exist. Hosts: a Linux machine the person
-controls, at home or rented, Ubuntu on x86_64, stood up by the lines `host mint` prints; and
-one managed host, Cloudflare, as the first adapter under the rule that a vault is its verbs
-over a transport and a store, with no provider named outside the adapter. No second managed
-host, no hosted offering run by Kotton LLC, and no phone, at `v0.1.0`.
+Devices: Linux, macOS and Windows, on x86_64 and arm64, installed by the nine lines (a
+PowerShell installer on Windows, verifying the same signature with the OpenSSH the system
+carries). The code is written for all three (the socket, keychain and sandbox providers each
+have a Windows form) and has been built and run on two; a Windows build and its tests run in
+the gate from the second sprint on, so that what the owner uses every day is what the release
+is held to. Hosts: a Linux machine the person controls, at home or rented from any provider
+that sells one (a DigitalOcean droplet is this, and its S3-shaped object store is a shelf the
+vault already speaks), stood up by the lines `host mint` prints; and one managed host that
+sells no machine, Cloudflare, as the first adapter under the rule that a vault is its verbs
+over a transport and a store, with no provider named outside the adapter. The portability claim
+is tested between those two: a drive moved from a vault on a rented machine to the adapter and
+back, under the same key, every device following. No second managed host, no hosted offering
+run by Kotton LLC, and no phone, at `v0.1.0`.
 
 ### What leaves the sealed tree, and when
 
@@ -213,4 +220,5 @@ what the platform is from the command line.
   tracking issue; `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written.
 - RFC 0002, edited in place (no tag exists): the per-device choice is set with `pin`.
+
 
