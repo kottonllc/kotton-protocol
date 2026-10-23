@@ -80,20 +80,22 @@ can decline to serve. Principle XIII is kept by one means the person alone contr
 that keeps every folder of a drive holds the whole of it, and needs nobody. Every device of the
 person's sees every drive they have; what differs is whether it keeps a drive whole or fetches
 on demand. Each device has one default for the drives it has not been told about, and a person
-sets a drive or a folder the other way on that device; the first device's default is whole and
-a device paired later defaults to on demand, and a person may choose otherwise on any of them.
-Whatever its default, the device that creates a drive keeps that drive whole until told
-otherwise, so something holds the whole from the first day. Whenever no device of the person's
-keeps a drive whole, the person is told so, where they choose what each device keeps; when a
-device that keeps a drive whole runs short of room, it says so and names the setting that keeps
-less. One verb collects: a person tells any device to keep a drive whole, and it fetches what
-it lacks. What each device keeps, its default and its exceptions, is a record in the drive,
-sealed like any other, so every device of the person reads it and none but theirs can; the
-telling is a device's own reading of those records, and the drive learns nothing from them. Two
-more things help and are not exits: a drive may be exported whole, sealed, to another drive or
-a disk, which needs the landlord to be serving; and a person may have several drives, which are
-as full as something filled them. The first release has the default, the telling and the
-collecting verb; the export is the drive's verbs' when the vault is cut.
+sets a drive or a folder the other way on that device: the nearest setting wins, a folder's
+over its drive's over the device's default, and `default` at any level means follow the one
+above; the first device's default is whole and a device paired later defaults to on demand, and
+a person may choose otherwise on any of them. Whatever its default, the device that creates a
+drive keeps that drive whole until told otherwise, so something holds the whole from the first
+day. Whenever no device of the person's keeps a drive whole, the person is told so, where they
+choose what each device keeps; when a device that keeps a drive whole runs short of room, it
+says so and names the setting that keeps less. One verb collects: a person tells any device to
+keep a drive whole, and it fetches what it lacks. What each device keeps, its default and its
+exceptions, is a record in the drive, sealed like any other, so every device of the person
+reads it and none but theirs can; the telling is a device's own reading of those records, and
+the drive learns nothing from them. Two more things help and are not exits: a drive may be
+exported whole, sealed, to another drive or a disk, which needs the landlord to be serving; and
+a person may have several drives, which are as full as something filled them. The first release
+has the default, the telling and the collecting verb; the export is the drive's verbs' when the
+vault is cut.
 
 ## Consequences
 
