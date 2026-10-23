@@ -102,8 +102,8 @@ is cut.
   reached over a transport that cannot do it, and a vault behind a TLS terminator is one
   implementation among any. On the QUIC path two key exchanges then run, QUIC's own beneath the
   protocol's; that cost is accepted for one identity story over every transport. "Nothing
-listens for strangers" becomes "nothing answers a stranger
-  past the handshake", and the threat model says so when the system changes.
+  listens for strangers" becomes "nothing answers a stranger past the handshake", and the
+  threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
 - Two of a person's devices on different networks have no direct verb; what one is to hand the
   other goes by way of a drive.
@@ -121,9 +121,9 @@ listens for strangers" becomes "nothing answers a stranger
 - `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
-  transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a terminal
-  session and its answer, shipping in the first tag, `v0.1.0`, which follows the golden-encoding
-  check, or in a patch after it, since each is a new request.
+  transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a
+  terminal session and its answer, shipping in the first tag, `v0.1.0`, which follows the
+  golden-encoding check, or in a patch after it, since each is a new request.
 - `kotton-compositor`: the transfer's prompt, where a device has one.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
