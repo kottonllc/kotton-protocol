@@ -91,8 +91,8 @@ The implementations are AGPL-3.0-or-later, as the trust path is.
   That is the price of developing in parallel, and it is what lets anyone write a client, a
   compositor, a desktop, or a vault.
 - The vault and the inference runtime are the first tests of the contract: a vault must need
-  nothing but the protocol and a disk. What a vault needs to know, and nothing else, is the
-  next RFC after the versioning check.
+  nothing but the protocol and a disk. What a vault needs to know, and nothing else, is an RFC
+  of its own.
 - Tooling is not copied repository by repository: the gates every repository runs are one
   small versioned crate and one reusable workflow; the gates that read prose live here, with
   the prose. The integration suite belongs to the distribution and tests archives, since

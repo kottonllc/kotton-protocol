@@ -39,5 +39,5 @@ with different bytes, the build's run number goes after the `+` and nowhere else
 
 A shipped message's meaning and encoding are held by golden encodings: every request and
 reply serialised once per version and committed, so that a change to a shipped message's
-bytes fails the build unless the minor bumps. That check is the first RFC after the one that
-makes this repository, and nothing is tagged `v0.1.0` before it exists.
+bytes fails the build unless the minor bumps. That check lands by its own RFC, and nothing is
+tagged `v0.1.0` before it exists.
