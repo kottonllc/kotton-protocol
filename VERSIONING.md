@@ -15,8 +15,9 @@ minor number, and that is how this repository uses it:
 - A **major** bump is reserved for 1.0, when the protocol is stable enough that a change to a
   shipped message's meaning is a thing that does not happen.
 
-Every tag is `v<major>.<minor>.<patch>` on `main`, and every change on `main` between tags is
-one the next tag will carry.
+Every tag of this repository is `v<major>.<minor>.<patch>` on `main`, and every change on
+`main` between tags is one the next tag will carry. The pre-release and build forms below are
+the ones every repository uses, this one included for builds.
 
 ## Pre-release tags
 
@@ -38,10 +39,15 @@ hash does not order.
 
 ## What a binary says
 
-A binary built from a tag reports the tag's version. A binary built from any other commit
-reports the next patch as a pre-release with the count and the hash, derived from
-`git describe --tags`: `v0.1.0-12-gabc1234` is reported as `0.1.1-dev.12+abc1234`. The part
-after `+` is build metadata and never affects ordering. There is no build counter: a release
+A binary built from a tag reports the tag's version with the commit after `+`: `v0.1.0` gives
+`0.1.0+abc1234`, and `v0.1.0-dev.1` gives `0.1.0-dev.1+abc1234`. A binary built from any other
+commit reports a version derived from `git describe --tags` that sorts after the nearest tag
+and before any tag that could follow it: after a release, the next patch's zeroth snapshot plus
+the count, so `v0.1.0-12-gabc1234` is reported as `0.1.1-dev.0.12+abc1234`; after a snapshot
+or a candidate, that tag's word and number plus the count, so `v0.1.0-dev.1-3-gdef5678` is
+reported as `0.1.0-dev.1.3+def5678`. Numeric identifiers compare as numbers, so
+`dev.0.12 < dev.1 < dev.1.3 < dev.2 < rc.1 < ` the release, and no derived version has the
+precedence of a tag. The part after `+` is build metadata and never affects ordering. There is no build counter: a release
 is built once, from a tag, and its sums name its bytes. If one source is ever built twice
 with different bytes, the build's run number goes after the `+` and nowhere else.
 
