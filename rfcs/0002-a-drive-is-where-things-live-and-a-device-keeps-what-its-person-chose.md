@@ -77,14 +77,17 @@ the model's edges above.
 
 **Exit.** A person's things are on their drives, and a hosted drive is held by a landlord who
 can decline to serve. Principle XIII is kept by one means the person alone controls: a device
-that keeps every folder of a drive holds the whole of it, and needs nobody. So the device that
-creates a drive keeps it whole until its person says otherwise; a device paired later keeps
-nothing until told; and whenever no device of the person's keeps a drive whole, the person is
-told so, where they choose what each device keeps. Two more things help and are not exits: a
-drive may be exported whole, sealed, to another drive or a disk, which needs the landlord to be
-serving; and a person may have several drives, which are as full as something filled them. The
-first release has the default and the telling; the export is the drive's verbs' when the vault
-is cut.
+that keeps every folder of a drive holds the whole of it, and needs nobody. The platform's
+default is that the device that creates a drive keeps it whole and a device paired later keeps
+nothing until told; the default is a setting, per person and per device, and a person may
+choose the other way. Whenever no device of the person's keeps a drive whole, the person is
+told so, where they choose what each device keeps; when a device that keeps a drive whole runs
+short of room, it says so and names the setting that keeps less. One verb collects: a person
+tells any device to keep a drive whole, and it fetches what it lacks. Two more things help and
+are not exits: a drive may be exported whole, sealed, to another drive or a disk, which needs
+the landlord to be serving; and a person may have several drives, which are as full as
+something filled them. The first release has the default, the telling and the collecting verb;
+the export is the drive's verbs' when the vault is cut.
 
 ## Consequences
 
@@ -118,7 +121,8 @@ is cut.
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
   work there), the pins and budget the daemon enforces, `enrol`, and the daemon's side of the
   transfer: the offer received, the prompt asked, the bytes placed.
-- `kotton-cli`: the keep policy's verbs, the bare `sync`, and the transfer verb.
+- `kotton-cli`: the keep policy's verbs and its default as a setting, the collecting verb, the bare
+  `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the keep policy's types, and the
   transfer's offer, acceptance, refusal and stream, and the question a daemon puts to a
