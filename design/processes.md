@@ -10,7 +10,7 @@ crate answers the question "on whose authority does this act?"
 | `kdeviced` | the device daemon; when it runs, starts one `kuserd` per registered user, and reads one entry of the platform keychain, the device operational key, for a supervised child that asks; it can reach no user's data | spawns `kuserd`; the operator CLI `kctl` | a device socket with challenge-response |
 | `kuserd` | the user daemon; opens the platform keychain and reads from it the device operational key and the roots of every user it serves; holds the keys, store, apps, windows and sync engine of those users, and the one peer listener: each user on the machine when `kotton-start` runs it, one user when `kdeviced` starts it | the CLI and REPL, the shell, the sidecars, peers | the user socket; QUIC with mutual TLS to peers |
 | `kuid` | the compositor: owns the draw surface, composites app windows, routes input, draws prompts | `kuserd` only | a socket pair handed to it at spawn, so there is no path to impersonate it on |
-| `kinferd` | the inference runtime: no key, no store, no network | `kuserd` only | a socket pair at spawn; kernel sandboxing on Linux |
+| `kinferd` | the inference runtime: no key, no store, no network | `kuserd` only | a pair of pipes at spawn; kernel sandboxing on Linux |
 | `ksyncd` | watches the local tree and triggers sync; no key | `kuserd` | the user socket with a bootstrap token |
 | `kquicd` | accepts incoming QUIC connections and hands them to the daemon after checking their trust floor; no key | remote devices; `kuserd` | QUIC in; the user socket out |
 | `khttpd` | the HTTP and WebSocket gateway for a browser; holds a remote-origin token and can reach no local-tier verb | a browser; `kuserd` | HTTPS in; the user socket or a relayed circuit out |

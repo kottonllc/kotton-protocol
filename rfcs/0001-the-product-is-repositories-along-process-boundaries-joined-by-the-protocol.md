@@ -51,12 +51,15 @@ a new version; the dependent takes the version. Each repository tags and ships i
 archive; only the distribution says what goes together; a person installs a distribution.
 
 A repository boundary is drawn where there is a versioned contract between the sides. A
-crate boundary is drawn where there is an authority boundary. A native guest is a process the
-system's sandbox host confines, given a socket pair at spawn and no key, no store and no
-network; that contract is the protocol's, held once for every guest, and no guest carries its
-own cage. The system's daemons share
+crate boundary is drawn where there is an authority boundary. The system's daemons share
 crates that are the system's insides, not the contract, and stay in one workspace, each
 binary held to the crates it may link.
+
+A native guest is a process the system's sandbox host spawns and confines: it is given its
+channel to the daemon at spawn and nothing else, no key, no store, no network. What crosses
+that channel, and what the guest may assume, is one contract the protocol defines and holds for
+every guest; no guest carries its own cage, and the check that a guest's code reaches nothing
+else is the host's, not the guest's.
 
 Repositories are named for the surface or the role, never for the technology that delivers
 them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `relay`, `vault`,
