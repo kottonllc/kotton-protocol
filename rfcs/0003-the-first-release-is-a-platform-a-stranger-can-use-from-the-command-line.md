@@ -33,10 +33,10 @@ this RFC.
 
 The CLI and the REPL are one parser. `kotton <verb>` runs one verb; `kotton` alone enters the
 REPL, which unlocks once, holds a current drive and directory, adds `cd`, `pwd`, `clear`,
-`help` and `exit` and a prompt that shows who and where, and otherwise runs the same verbs
-without the prefix. Nothing else exists in one that does not exist in the other, and a check
-holds the two trees equal. The REPL has no pipe of its own: the shell has one, and a person who
-wants `head`, `grep` or `sort` over a file has `cat` and the shell.
+`help` and `exit` (and `quit`, its alias) and a prompt that shows who and where, and otherwise
+runs the same verbs without the prefix. Nothing else exists in one that does not exist in the
+other, and a check holds the two trees equal. The REPL has no pipe of its own: the shell has
+one, and a person who wants `head`, `grep` or `sort` over a file has `cat` and the shell.
 
 ### Conventions
 
@@ -75,9 +75,10 @@ other side) · `list` (with last seen and what each pins) · `show` · `rename` 
 (revoke it: refused at its next connection to every drive and device; if it may be in someone
 else's hands the person is told to `identity rotate`, which retires the keys it held under the
 identity page's rule) · `bind` (bind this identity to this device's hardware) · `receive
-off|10m|always` (whether this device listens and answers on the local network so another of the
-person's devices can `send` to it; off until told, and `always` is said back at every `status`)
-· `reset` (start this device fresh).
+off|10m|always` (whether this device has a listener and an announcement on the network it is
+on, so another of the person's devices there can find it and `send` to it; off until told,
+since a relay introduces the person's devices otherwise, and `always` is said back at every
+`status`) · `reset` (start this device fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -105,15 +106,16 @@ purge waits for one of the person's devices to be awake, and compaction waits fo
 
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
-lands; nothing afterwards) · `share create <folder> <contact>` (a sealed copy under the
-contact's key, as the conversations page has it: the original is never re-keyed, what the
-contact changes is their copy, and my landlord learns nothing of who holds one) · `share list`
-· `share revoke` (no further copy goes; what went stays theirs). A folder two people hold as
-one is a grant the protocol has not shaped, and is not here.
+lands; nothing afterwards) · `share create <path> <contact>` (a sealed copy that becomes
+theirs, delivered like a message and landing under "shared with you" in their tree, as the
+conversations page has it; the original is never re-keyed, a folder is a copy of each file in
+it, and my landlord learns nothing of who holds one) · `share list` (what I have shared and
+what was shared with me). A copy cannot be taken back, so there is no `share revoke`; a folder
+two people hold as one is a grant the protocol has not shaped, and is not here.
 
 **Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
 send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` · `message attach
-<path>` (by reference to a shared folder, never a copy).
+<path>` (the same sealed copy a share is, carried in a message).
 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
@@ -210,7 +212,7 @@ what the platform is from the command line.
 | `find`, `grep` | `search` |
 | `head`, `tail`, `sort`, `wc`, `date`, `echo`, `env`, `export`, `unset`, the REPL's pipe | leave; the shell has them |
 | `daemon` | `status` and `doctor` |
-| `cd`, `pwd`, `clear`, `help`, `exit` | the REPL's own, unchanged |
+| `cd`, `pwd`, `clear`, `help`, `exit`, `quit` | the REPL's own, unchanged |
 | `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
 | `sync` (all paired devices) | `sync`, this device's drives: a device is not a target (RFC 0002) |
 | `sync now [--node <id>] [--no-wait]` | `sync`; `--node` leaves with the device as a target |
@@ -223,7 +225,7 @@ what the platform is from the command line.
 | `config status`, `net` | `status` |
 | `config paths` | `doctor` |
 | `config relay` | `host relay` |
-| `grant revoke` | `share revoke` |
+| `grant revoke` | leaves: a share is a copy, and a copy is not taken back |
 | `grant import`, `issuer`, `records init/invite`, `org` | leave with organisations |
 | `records import/export`, `import` (`.ics`), `record open` | `record import/export`, `record get` |
 | `contact`, `message`, `schema` | unchanged |
@@ -244,8 +246,8 @@ what the platform is from the command line.
 - `kotton-cli`: the command tree, the REPL, the generated reference and the check that holds it
   to this list.
 - `kotton-protocol`: the request types the new verbs cross with (the trash, the access log's
-  query, the share's grant shape, the notification), in `v0.1.0` or a patch after it; the
-  keychain and the access log as record schemas.
+  query, the shared copy and the attachment, the notification), in `v0.1.0` or a patch after
+  it; the keychain and the access log as record schemas.
 - `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
   `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written; the
