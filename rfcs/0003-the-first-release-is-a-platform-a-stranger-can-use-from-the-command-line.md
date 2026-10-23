@@ -86,10 +86,11 @@ device's drives, now. What a device pins is a sealed record in the drive, as RFC
 <path>` · `open <path>` · `diff <path>` (text: between versions or conflict copies) · `search
 <query>` (names and text, on this device, over what it pins and the index it fetches) ·
 `versions <path>` · `restore <path> --version <n>` · `trash list|restore|empty`. Versions live
-in the drive and every device sees them, under the store's one switch per file; today a version
-is one device's, so this is store work the drive model asks for. A deleted thing stays in the
-drive's trash for thirty days; after that the person's own device asks the drive to purge it,
-since only a request from the person's machine purges, and compaction waits for the window.
+in the drive and every device sees them, under the store's one switch per file. A deleted thing
+stays in the drive's trash for thirty days, then one of the person's own devices asks the drive
+to purge it. That is the request from the person's machine the store requires: `rm` is the
+person asking for erasure in thirty days, `trash empty` is asking for it now, and nothing but
+those two asks. Compaction waits for the window.
 
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
@@ -103,9 +104,8 @@ send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
 Records are typed, sealed, in a drive, read from every device: the layer under contacts and
-every future app. Today records reach only a person's own devices; their replication to a drive
-is store work the drive model asks for, and the keychain, the pins and a pinned `log` rest on
-it. A schema is declared by whoever ships it; none is Kotton's by right, and one nobody at
+every future app, and what the keychain, the pins and a pinned `log` are made of. A schema is
+declared by whoever ships it; none is Kotton's by right, and one nobody at
 Kotton has seen works like any other. A calendar is an app on records, not a primitive; Kotton
 may ship one as one app among any.
 
@@ -128,23 +128,18 @@ ciphertext at a host nor what happens to a copy handed out) · `doctor` (the mac
 
 ### Where it runs
 
-Devices: Linux, macOS and Windows on x86_64, and Linux and macOS on arm64; Windows on arm64
-has never been built and is not promised here. Each is installed by the nine lines (a
-PowerShell installer on Windows, verifying the same signature with the OpenSSH the system
-carries). The code is written for all three: the socket, keychain and
-sandbox providers each have a Windows form. It is built and run in a gate on Linux; it has been
-built and run on Windows by hand and not in any gate, and the check that holds Windows today is
-a grep for Unix-only calls, because `ring` needs a Windows toolchain to compile. From the
-second sprint a Windows runner builds and tests the tree on every pull request, so that what
-the owner uses every day is what the release is held to. Hosts: a Linux machine the person
-controls, at home or rented from any provider that sells one (a DigitalOcean droplet is this,
-and its S3-shaped object store is a shelf the vault already speaks), stood up by the lines
-`host mint` prints; and one managed host that sells no machine, Cloudflare, as the first
-adapter under the rule that a vault is its verbs over a transport and a store, with no provider
-named outside the adapter. The portability claim is tested between those two: a drive moved
-from a vault on a rented machine to the adapter and back, under the same key, every device
-following. No second managed host, no hosted offering run by Kotton LLC, and no phone, at
-`v0.1.0`.
+Devices: Linux, macOS and Windows on x86_64, and Linux and macOS on arm64; Windows on arm64 has
+never been built and is not promised here. Each is installed by the nine lines (a PowerShell
+installer on Windows, verifying the same signature with the OpenSSH the system carries). Each
+of the three is built and tested in the gate on every pull request, Windows included, so that
+what a person runs is what the release was held to. Hosts: a Linux machine the person controls,
+at home or rented from any provider that sells one (a DigitalOcean droplet is this, and its
+S3-shaped object store is a shelf the vault already speaks), stood up by the lines `host mint`
+prints; and one managed host that sells no machine, Cloudflare, as the first adapter under the
+rule that a vault is its verbs over a transport and a store, with no provider named outside the
+adapter. The portability claim is tested between those two: a drive moved from a vault on a
+rented machine to the adapter and back, under the same key, every device following. No second
+managed host, no hosted offering run by Kotton LLC, and no phone, at `v0.1.0`.
 
 ### What leaves the sealed tree, and when
 
@@ -175,9 +170,8 @@ what the platform is from the command line.
 
 ## Consequences
 
-- The command tree is rewritten once, to this list, before the first snapshot a stranger is
-  asked to use the platform on (the walk, not the install test). Every verb in the tree today
-  has a place or leaves, as the table says:
+- The command tree is rewritten once, to this list. Every verb in the tree today has a place
+  or leaves, as the table says:
 
 | Today | At `v0.1.0` |
 |---|---|
@@ -214,26 +208,20 @@ what the platform is from the command line.
 
 - A check holds the CLI's generated reference to this list: a verb in the binary and not here,
   or here and not in the binary, fails lint; the REPL's tree is held equal to the CLI's.
-- The groups land in sprints, and the sprint plan in the distribution's tracking issue is
-  amended to match: the Windows runner in the gate and identity, devices, drives, pins, files
-  and `status` with the drive model; `send` with the direct transfer; `share`, messages,
-  records, the keychain, `log`, `trash`, `search` and the Cloudflare adapter after; `v0.1.0` is
-  tagged when every line is testable by a stranger, which is the walk.
+- `v0.1.0` is tagged when every line above is testable by a stranger, and not before. When
+  the work lands is the distribution's tracking issue's to say, not this RFC's.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
   asked, which is the thesis made visible without making the asking visible to anyone else.
 
 ## Reaches
 
-- `kotton`: the daemon's side of every verb above; versions that travel with the drive and
-  records that replicate to it (store work); the trash and search; the access log;
-  notifications delivered to the daemon and held by the drive; the Windows runner in the gate;
-  the session token fix.
+- `kotton`: the daemon's side of every verb above, and a gate that builds and tests Windows.
 - `kotton-cli`: the command tree, the REPL, the generated reference and the check that holds it
   to this list.
 - `kotton-protocol`: the request types the new verbs cross with (the trash, the access log's
   query, the share's grant shape, the notification), in `v0.1.0` or a patch after it; the
   keychain and the access log as record schemas.
 - `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
-  the sprint plan in its tracking issue; `v0.1.0` itself.
+  `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written.
 - RFC 0002, edited in place (no tag exists): the per-device choice is set with `pin`.
