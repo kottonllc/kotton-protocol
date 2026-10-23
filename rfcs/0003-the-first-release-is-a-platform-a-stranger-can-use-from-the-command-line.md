@@ -90,11 +90,15 @@ devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same k
 follows) · `export <drive> <path>` (the whole drive, sealed, to a disk) · `enrol <line>`
 (accept a host's vault as a place for drives; it asks nothing else).
 
-**What this device holds.** `pin <drive>[:/<folder>] whole|on-demand` · `pin list` (and the
-notice when no device pins a drive whole). The device that creates a drive pins it whole until
-told otherwise; a device paired later pins nothing until told; a full device short of room says
-so and names the setting. `pin <drive> whole` is "collect all my things". `sync` syncs this
-device's drives, now. What a device pins is a sealed record in the drive, as RFC 0002 says.
+**What this device holds.** `pin default whole|on-demand` (this device's default for every
+drive it has not been told about: the first device starts at whole, a device paired later at on
+demand) · `pin <drive>[:/<folder>] whole|on-demand|default` (the nearest setting wins, folder
+over drive over the device's default; `default` follows the one above) · `pin list` (what this
+device keeps, its default and its exceptions, and the notice when no device pins a drive
+whole). Every device sees every drive; the device that creates a drive pins it whole until told
+otherwise, whatever its default; a full device short of room says so and names the setting.
+`pin <drive> whole` is "collect all my things". `sync` syncs this device's drives, now. What a
+device pins, default and exceptions, is a sealed record in the drive, as RFC 0002 says.
 
 **Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
 pinned or not · `find [path] [-name <glob>]` (names under a path) · `grep <pattern> [path...]`
