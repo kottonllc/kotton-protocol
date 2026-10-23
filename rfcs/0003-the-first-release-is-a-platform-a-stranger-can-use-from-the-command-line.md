@@ -128,9 +128,10 @@ ciphertext at a host nor what happens to a copy handed out) · `doctor` (the mac
 
 ### Where it runs
 
-Devices: Linux, macOS and Windows, on x86_64, and arm64 where the release builds it, installed
-by the nine lines (a PowerShell installer on Windows, verifying the same signature with the
-OpenSSH the system carries). The code is written for all three: the socket, keychain and
+Devices: Linux, macOS and Windows on x86_64, and Linux and macOS on arm64; Windows on arm64
+has never been built and is not promised here. Each is installed by the nine lines (a
+PowerShell installer on Windows, verifying the same signature with the OpenSSH the system
+carries). The code is written for all three: the socket, keychain and
 sandbox providers each have a Windows form. It is built and run in a gate on Linux; it has been
 built and run on Windows by hand and not in any gate, and the check that holds Windows today is
 a grep for Unix-only calls, because `ring` needs a Windows toolchain to compile. From the
@@ -193,6 +194,8 @@ what the platform is from the command line.
 | `enrol` | `drive enrol` |
 | `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir` join them at the top |
 | `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
+| `sync` (all paired devices) | `sync`, this device's drives: a device is not a target (RFC 0002) |
+| `sync now [--node <id>] [--no-wait]` | `sync`; `--node` leaves with the device as a target |
 | `sync [--push\|--pull] <remote>` | `sync`, this device's drives |
 | `host:` | kept in the REPL only; from the shell a bare path is the machine's |
 | `mint` | `host mint` |

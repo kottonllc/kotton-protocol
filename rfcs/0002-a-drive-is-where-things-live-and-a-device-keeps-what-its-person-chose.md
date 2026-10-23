@@ -134,7 +134,7 @@ is cut.
   `v0.1.0`, which follows the golden-encoding check, or in a patch after it, since each is a
   new request.
 - `kotton-compositor`: the transfer's prompt, where a device has one. `kotton-desktop`: the
-  keep settings and the collecting verb as a surface, one desktop among any.
+  pin settings and the collecting verb as a surface, one desktop among any.
 - `kotton-relay` and `kotton-vault` when cut.
 - `design/processes.md` and `design/threat-model.md` here describe the system as it is and are
   corrected in the pull request that changes it.
