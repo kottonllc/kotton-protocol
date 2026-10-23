@@ -31,7 +31,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 
 | Repository | What it is |
 |---|---|
-| `kotton-protocol` | the contract: the protocol and type crates; what crosses and any side must verify (the pack envelope, log verification, the admission handshake, the pairing types); the client library; the app surface, defined once, with WIT as its Wasm binding; the handle type that is a file descriptor on today's platforms and a capability later; the RFCs; the pages that describe the whole; the versioning rule |
+| `kotton-protocol` | the contract: the protocol and type crates; what crosses and any side must verify (the pack envelope, log verification, the admission handshake, the pairing types, the native-guest contract); the client library; the app surface, defined once, with WIT as its Wasm binding; the handle type that is a file descriptor on today's platforms and a capability later; the RFCs; the pages that describe the whole; the versioning rule |
 | `kotton` | the system: the user daemon, the device daemon, the QUIC acceptor, the sync watcher, the device-owner tool, and the sandbox host as a process of its own that holds no keys; ships the system archive |
 | `kotton-cli` | the CLI and its REPL mode: unprivileged, built from the protocol and the client library alone and held to that by a check; ships its archive |
 | `kotton-relay` | the relay: address exchange and circuits between devices, vaults and gateways; holds no inbox and reads no pack; ships its archive |
