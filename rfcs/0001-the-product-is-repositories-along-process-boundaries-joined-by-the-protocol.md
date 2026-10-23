@@ -41,7 +41,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-compositor` | the reference compositor: the trusted display path, the prompts an app must never draw, input routing; one compositor among any that speak the compositor surface |
 | `kotton-desktop` | the reference desktop: the home screen, the dock, the overlays, the first-party apps; an app like any other, one desktop among any |
 | `kotton-sdk` | the language bindings of the app surface |
-| `kotton-infer` | the inference runtime, the first native guest: no key, no store, no network |
+| `kotton-infer` | the inference runtime: the first native guest, confined by the system's sandbox host under the native-guest contract |
 | `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines a person types to install and run it, the signed sums over the set |
 | `kotton-ahead` | the reference: the whole in one tree, read-only, from which each repository is cut when its turn comes |
 | `kotton-kernel` | reserved: the capability kernel, the last implementation of this protocol; empty until the protocol is stable enough that bare metal is a defined task |
@@ -51,7 +51,10 @@ a new version; the dependent takes the version. Each repository tags and ships i
 archive; only the distribution says what goes together; a person installs a distribution.
 
 A repository boundary is drawn where there is a versioned contract between the sides. A
-crate boundary is drawn where there is an authority boundary. The system's daemons share
+crate boundary is drawn where there is an authority boundary. A native guest is a process the
+system's sandbox host confines, given a socket pair at spawn and no key, no store and no
+network; that contract is the protocol's, held once for every guest, and no guest carries its
+own cage. The system's daemons share
 crates that are the system's insides, not the contract, and stay in one workspace, each
 binary held to the crates it may link.
 
