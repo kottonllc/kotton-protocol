@@ -26,12 +26,29 @@ itself to a drive, and how it reaches one?
 **A drive is where a person's things live.** A drive is a tenancy on a vault: the vault keeps
 sealed packs it cannot open, for the tenants it admits, and a person's drive is their tenancy
 on one, whether they run the vault at home or rent it. A person may have several drives, on one
-vault or many; anything may be kept in one. A device names a drive by the vault's key and the
-tenancy, wherever the vault runs.
+vault or many; anything may be kept in one. Each is a tree the vault keeps for the tenancy, and
+a device names a drive by the vault's key, the tenancy and the tree, wherever the vault runs.
+
+**A drive's name is sealed at the vault that keeps it.** A drive's existence cannot be a record
+inside it, since a device must know a drive is there before it can read anything in it. So a
+device seals the person's name for a drive under the person's key, with the tree as associated
+data, and the vault keeps the sealed name beside the tree and hands it back when asked which
+drives the tenancy has. What is sealed is the name and the drive's origin, the vault and tree
+it was first made as; a name sealed under a second domain, for an unfinished move, marks a tree
+a move has begun, which is not a drive. The tree's id is minted fresh for every vault the drive
+is kept on, so no two landlords hold an identifier in common for one drive. A device learns the
+person's drives from the vaults it reaches: a vault's listing, its names opened under the
+person's key, is the authority for which drives that vault keeps, and a device reads it after
+every pass with that vault and whenever it is asked for its drives, so a drive made or moved on
+one device is known to the others at their next pass and nobody has to tell them. Two finished
+copies that share an origin are one drive kept twice, as a move leaves it for a moment; two
+that do not are two drives. The person's first drive is named `personal`, and it does not move
+while each device's own tree syncs with it at every vault the person has enrolled: it is kept
+at each and lives at none alone.
 
 **A device keeps what its person chose.** For each drive and each folder, the person says
-whether this device keeps a local copy or fetches on demand; the mount's pins and cache budget
-are that choice, and `pin` is the verb that sets it. Sync is a device keeping its chosen
+whether this device keeps a local copy or fetches on demand; the pin settings are that choice,
+`pin` is the verb that sets it, and the mount's cache budget is the room the device gives it. Sync is a device keeping its chosen
 folders current with the drive: it sends its changes to the drive and takes the drive's changes
 for the folders it keeps. A device is not a target of another device; devices replicate to
 drives, and read from them. The bare `sync` verb syncs this device's drives, not every node.
@@ -90,13 +107,25 @@ day. Whenever no device of the person's keeps a drive whole, the person is told 
 choose what each device keeps; when a device that keeps a drive whole runs short of room, it
 says so and names the setting that keeps less. One verb collects: a person tells any device to
 keep a drive whole, and it fetches what it lacks. What each device keeps, its default and its
-exceptions, is a record in the drive, sealed like any other, so every device of the person
-reads it and none but theirs can; the telling is a device's own reading of those records, and
-the drive learns nothing from them. Two more things help and are not exits: a drive may be
-exported whole, sealed, to another drive or a disk, which needs the landlord to be serving; and
-a person may have several drives, which are as full as something filled them. The first release
-has the default, the telling and the collecting verb; the export is the drive's verbs' when the
-vault is cut.
+exceptions, is a record among the person's own, sealed like any other, and the person's records
+are kept in the first drive at each vault they have enrolled, whichever drive a setting is
+about, since a device's default concerns no one drive. So every device of the person reads the
+settings and none but theirs can; each device writes only its own; the telling is a device's
+own reading of those records, and the drive learns nothing from them. Two more things help and
+are not exits: a drive may be exported whole, sealed, to another drive or a disk, which needs
+the landlord to be serving; and a person may have several drives, which are as full as
+something filled them. The first release has the default, the telling and the collecting verb;
+the export is the drive's verbs' when the vault is cut.
+
+**The types.** A pin setting is one record per device and scope: the device, by the identifier
+of the key it presents; the scope, which is the device's default, a drive by the person's name
+for it, or a folder of a drive by its path from the drive's root; and the value, whole or on
+demand. `default` at a drive or a folder is the absence of a record, and a device's own default
+has nothing above it. A drive, as a device describes it to its person, is its name, the vault it
+lives on, its size as the vault last said, the devices that keep it whole as their settings say,
+and whether it is a move left unfinished. A drive's sealed name is its name and its origin. The
+reference implementation defines these today beside its other requests, and they arrive here as
+types when the protocol's type crates do.
 
 ## Consequences
 
@@ -117,6 +146,14 @@ vault is cut.
   listens for strangers" becomes "nothing answers a stranger past the handshake", and the
   threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
+- A vault learns how many drives a tenant has and the size of each, which it sees already, and
+  never their names; a move shows the two landlords only a tree appearing at one and leaving the
+  other. The origin is the person's to read: whoever opens their key learns which vault each
+  drive was first made on.
+- A setting names a drive by the person's name for it, which a move keeps, so a drive moved to
+  another vault keeps its settings and they do not move with it. A person with several vaults
+  has their settings at each, as they have the rest of their records, so leaving one vault
+  takes no setting the others do not hold.
 - Two of a person's devices on different networks have no direct verb; what one is to hand the
   other goes by way of a drive.
 - The direct transfer is the first nearby-device verb. Two devices on one network sharing a
@@ -135,7 +172,8 @@ vault is cut.
   bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the pin policy's types, and the
-  transfer's offer, acceptance, refusal and stream, the record type a pin setting is, and the
+  transfer's offer, acceptance, refusal and stream, the record type a pin setting is, the drive
+  as a device describes it and the form of its sealed name, and the
   question a daemon puts to a terminal session and its answer, shipping in the first tag,
   `v0.1.0`, which follows the golden-encoding check, or in a patch after it, since each is a
   new request.
