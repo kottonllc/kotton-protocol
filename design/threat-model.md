@@ -5,12 +5,13 @@ and not by design," it says so.
 
 ## A vault's landlord
 
-Learns: that a tenant exists, under which operator key, how many bytes it keeps for them and
-when those bytes change, and which packs are read and written and when. Cannot learn: a
-filename, a size, how many files there are, which chunks belong together, or the shape of the
-tree. Cannot be compelled to produce plaintext, because it holds none and has no verb that
-returns any. A warrant yields a byte count. Volume and access pattern are the known leaks;
-fixed allocation and oblivious access are the known answers and are not built.
+Learns: that a tenant exists and under which operator key; how many trees it keeps for them,
+the size of each, and when one appears or leaves; when those bytes change; and which packs are
+read and written and when. Cannot learn: a filename, a file's size, how many files there are,
+which chunks belong together, or the shape of a drive's folders. Cannot be compelled to produce
+plaintext, because it holds none and has no verb that returns any. A warrant yields a byte
+count. Volume and access pattern are the known leaks; fixed allocation and oblivious access are
+the known answers and are not built.
 
 ## A relay's operator
 

@@ -98,7 +98,7 @@ device keeps, its default and its exceptions, and the notice when no device pins
 whole). Every device sees every drive; the device that creates a drive pins it whole until told
 otherwise, whatever its default; a full device short of room says so and names the setting.
 `pin <drive> whole` is "collect all my things". `sync` syncs this device's drives, now. What a
-device pins, default and exceptions, is a sealed record in the drive, as RFC 0002 says.
+device keeps is its own; a drive carries which devices keep it whole, as RFC 0002 says.
 
 **Files.** `ls` · `cat` · `cp` · `mv` · `rm` · `mkdir` · `rmdir` · `touch` on drive paths,
 pinned or not · `find [path] [-name <glob>]` (names under a path) · `grep <pattern> [path...]`
