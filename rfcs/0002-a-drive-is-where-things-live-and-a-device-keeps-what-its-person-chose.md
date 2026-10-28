@@ -108,32 +108,27 @@ drive keeps that drive whole until told otherwise, so something holds the whole 
 day. Whenever no device of the person's keeps a drive whole, the person is told so, where they
 choose what each device keeps; when a device that keeps a drive whole runs short of room, it
 says so and names the setting that keeps less. One verb collects: a person tells any device to
-keep a drive whole, and it fetches what it lacks. What each device keeps is in records, sealed
-like any other, each kept where the fact it states belongs. A device's default is a fact about
-the device, and is among the person's identity records, with their keychain and their set of
-devices. A setting for a drive or a folder is a fact about that drive, and is in that drive's
-own tree, so a drive moved, exported or shared carries its settings with it, and deleting a
-drive deletes them; a record in a drive is never a default, and the type that writes one
-refuses it. Each device writes only its own settings, and for each device and scope the last
-write stands. A device fetches a drive's index before it consults any setting in it, so no
-setting can withhold the index. Every device of the person reads the settings and none but
-theirs can; the telling is a device's own reading of each drive's records, and the drive learns
-nothing from them. A person's settings in a drive are sealed under that person's key, not the
-drive's, so a drive shared with another holder would carry them without showing them. Two more
-things help and are not exits: a drive may be exported whole, sealed, to another drive or a
-disk, which needs the landlord to be serving; and a person may have several drives, which are
-as full as something filled them. The first release has the default, the telling and the
-collecting verb; the export is the drive's verbs' when the vault is cut.
+keep a drive whole, and it fetches what it lacks. A device's pin settings, its default and its
+exceptions, are its own: they are kept on that device, and nothing of them replicates. What a
+device publishes is one claim for each drive it keeps whole, that this device keeps this drive
+whole: a sealed record in that drive, written by that device alone, withdrawn when the device
+stops keeping the drive whole, and counted for nothing once the device is removed. The telling,
+and which devices keep a drive whole, are read from the claims and nothing else, and the drive
+learns nothing from them. A device fetches a drive's index before it consults any claim or
+setting, so neither can withhold the index. This is the shape a person knows from the switch
+other services give each device, keep on this device or online only; the telling is the one
+thing those lack, because here the keeper of record is the person's own device, not the
+service. Two more things help and are not exits: a drive may be exported whole, sealed, to
+another drive or a disk, which needs the landlord to be serving; and a person may have several
+drives, which are as full as something filled them. The first release has the default, the
+telling and the collecting verb; the export is the drive's verbs' when the vault is cut.
 
-**The types.** A pin setting is one record per device and scope: the device, by the identifier
-of the key it presents; the scope, which among the person's identity records is the device's
-default, and in a drive is that drive or a folder of it by its path from the drive's root; and
-the value, whole or on demand. `default` at a drive or a folder is the absence of a record, and
-a device's own default has nothing above it. A drive, as a device describes it to its person,
-is its id, its name, the vault it lives on, its size as the vault last said, the devices that
-keep it whole as their settings say, and whether it is a move left unfinished. A drive's sealed
-name is its name and its id. The reference implementation defines these today beside its other
-requests, and they arrive here as types when the protocol's type crates do.
+**The types.** A claim is one record per device and drive, in that drive: the device, by the
+identifier of the key it presents, and the drive it is about, and nothing else; that it exists
+is the claim. A pin setting is the device's own and is never sent to another device or a vault.
+A drive, as a device describes it to its person, is its id, its name, the vault or vaults that
+keep it, its size as each vault last said, the devices that claim it whole, and whether a move
+of it is unfinished. A drive's sealed name is its name and its id.
 
 ## Consequences
 
@@ -155,13 +150,16 @@ requests, and they arrive here as types when the protocol's type crates do.
   threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
 - A vault learns how many drives a tenant has and the size of each, which it sees already, and
-  never their names or their ids; a move shows the two landlords only a tree appearing at one
-  and leaving the other. Whoever opens the person's key learns each drive's name and id, and
-  from the id nothing of where the drive was first kept.
-- A drive's settings go where the drive goes: a move, an export or a share carries them, and a
-  person with several vaults finds each drive's settings with that drive and their devices'
-  defaults with the rest of their identity records. A drive deleted leaves no setting behind,
-  so the notice that no device keeps a drive whole counts only drives that exist.
+  never their names or their ids; a move shows the two landlords a tree of one size appearing
+  at one and leaving the other, so size and timing remain the leak the threat model names.
+  Whoever opens the person's key learns each drive's name and id, and from the id nothing of
+  where the drive was first kept.
+- A device's settings never leave it: its folders and its default are on it alone, and a device
+  wiped and paired again comes back to on demand. A drive's claims go where the drive goes, so
+  a move or an export carries them, and a drive retired by a move, or deleted when a verb for
+  that exists, leaves no claim behind. A claim withdrawn is a delete and replicates as one, or
+  a device that let a drive go would still be counted. A person's claims in a drive are sealed
+  under that person's key, and under no key a drive's holders would share.
 - Two of a person's devices on different networks have no direct verb; what one is to hand the
   other goes by way of a drive.
 - The direct transfer is the first nearby-device verb. Two devices on one network sharing a
@@ -173,18 +171,17 @@ requests, and they arrive here as types when the protocol's type crates do.
 - `kotton`: the sync engine (members are not targets), `kquicd` and the peer listener (the
   handshake in the protocol; mutual TLS kept until it exists), the drive's verbs in `kvaultd`
   (today a vault keeps one pool per tenant; several drives for one person on one vault is new
-  work there), the pins and budget the daemon enforces, the pin settings as records and the
-  fetch that collects a drive whole, the two notices, `enrol`, and the daemon's side of the
-  transfer: the offer received, the prompt asked, the bytes placed.
+  work there), the pins and budget the daemon enforces, the claims a device keeps a drive whole
+  as records and the fetch that collects a drive whole, the two notices, `enrol`, and the
+  daemon's side of the transfer: the offer received, the prompt asked, the bytes placed.
 - `kotton-cli`: the pin policy's verbs and its default as a setting, the collecting verb, the
   bare `sync`, and the transfer verb.
 - `kotton-dist`: the nine lines' second-device line.
 - `kotton-protocol`: the handshake, the drive's verbs, the pin policy's types, and the
-  transfer's offer, acceptance, refusal and stream, the record type a pin setting is, the drive
-  as a device describes it and the form of its sealed name, and the
-  question a daemon puts to a terminal session and its answer, shipping in the first tag,
-  `v0.1.0`, which follows the golden-encoding check, or in a patch after it, since each is a
-  new request.
+  transfer's offer, acceptance, refusal and stream, the record a claim is, the drive as a device
+  describes it and the form of its sealed name, and the question a daemon puts to a terminal
+  session and its answer, shipping in the first tag, `v0.1.0`, which follows the golden-encoding
+  check, or in a patch after it, since each is a new request.
 - `kotton-compositor`: the transfer's prompt, where a device has one. `kotton-desktop`: the
   pin settings and the collecting verb as a surface, one desktop among any.
 - `kotton-relay` and `kotton-vault` when cut.
