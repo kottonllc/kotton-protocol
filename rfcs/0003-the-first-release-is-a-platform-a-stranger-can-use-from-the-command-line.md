@@ -133,9 +133,10 @@ send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` 
 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
-Records are typed, sealed, in a drive, read from every device: the layer under contacts and
-every future app, and what the keychain, the whole-keeper claims and a pinned `log` are made
-of. A schema is declared by whoever ships it; none is Kotton's by right, and one nobody at
+Records are typed, sealed, in a drive or, as the log is until pinned, on the device that made
+them, and read from every device that holds them: the layer under contacts and every future
+app, and what the keychain, the whole-keeper claims and a pinned `log` are made of.
+A schema is declared by whoever ships it; none is Kotton's by right, and one nobody at
 Kotton has seen works like any other. A calendar is an app on records, not a primitive; Kotton
 may ship one as one app among any.
 
