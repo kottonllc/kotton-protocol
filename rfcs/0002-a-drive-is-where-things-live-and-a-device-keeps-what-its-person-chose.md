@@ -44,8 +44,14 @@ drives that vault keeps, and a device reads it after every pass with that vault 
 is asked for its drives, so a drive made or moved on one device is known to the others at their
 next pass and nobody has to tell them. Two finished copies that share an id are one drive kept
 twice, as a move leaves it for a moment; two that do not are two drives. The person's first
-drive is named `personal`, and it does not move while each device's own tree syncs with it at
-every vault the person has enrolled: it is kept at each and lives at none alone.
+drive is named `personal`. It is made at the first vault the person enrols, by the device that
+enrols it, and the person runs no verb for it: its name is sealed there like any drive's, it
+lives on that one vault until a move carries it, and each device's local tree is its copy of
+it, wherever it lives. Its id is the one constant id, `first`, kept inside the sealed name as
+every id is and sent to no vault, so that every device of the person's finds from a vault's
+listing alone which drive its local tree is a copy of; in nothing else is it set apart, and it
+moves, is pinned and is claimed whole as any drive is. A vault enrolled after the first is a
+place for drives: it holds nothing of the person's until a drive is made or moved there.
 
 **A device keeps what its person chose.** For each drive and each folder, the person says
 whether this device keeps a local copy or fetches on demand; the pin settings are that choice,
@@ -149,6 +155,11 @@ of it is unfinished. A drive's sealed name is its name and its id.
   listens for strangers" becomes "nothing answers a stranger past the handshake", and the
   threat model says so when the system changes.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
+- A landlord holds only the drives the person put there, so two landlords do not each hold a
+  complete copy whose sizes and timings match. Redundancy across vaults is a thing the person
+  does, by export or by a later verb, not a default: `personal` is kept whole by the first
+  device until told otherwise, the telling says when no device keeps it, and losing the one
+  vault a drive lives on loses it unless a device keeps it whole.
 - A vault learns how many drives a tenant has and the size of each, which it sees already, and
   never their names or their ids; a move shows the two landlords a tree of one size appearing
   at one and leaving the other, so size and timing remain the leak the threat model names.
