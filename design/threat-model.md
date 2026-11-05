@@ -25,7 +25,9 @@ delivery.
 Learns what the two above learn, joined: which handles belong to the same person, when that
 person's devices are awake, and how often they write. This is the cost of renting both from
 one provider. It is shown to each of your contacts as a readout, and the way out is to rent
-the vault elsewhere and move, which needs nothing from the first landlord.
+the vault elsewhere and move, which needs the first landlord to serve while the move runs and
+nothing else; a device of yours that keeps the drive whole cannot feed the move instead today,
+and should.
 
 ## An app
 

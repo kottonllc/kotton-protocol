@@ -34,24 +34,31 @@ inside it, since a device must know a drive is there before it can read anything
 device seals the person's name for a drive under the person's key, with the tree as associated
 data, and the vault keeps the sealed name beside the tree and hands it back when asked which
 drives the tenancy has. What is sealed is the name and the drive's id, minted at random once,
-when the drive is made, and sealed with every copy a move makes; a name sealed under a second
-domain, for an unfinished move, marks a tree a move has begun, which is not a drive. The vault
-holds only its own id for the tree, minted fresh for every vault the drive is kept on, so no
-two landlords hold an identifier in common for one drive. The drive's id names no vault, so it
-says nothing of a first landlord. A device learns the person's drives from the vaults it
-reaches: a vault's listing, its names opened under the person's key, is the authority for which
-drives that vault keeps, and a device reads it after every pass with that vault and whenever it
-is asked for its drives, so a drive made or moved on one device is known to the others at their
-next pass and nobody has to tell them. Two finished copies that share an id are one drive kept
-twice, as a move leaves it for a moment; two that do not are two drives. The person's first
-drive is named `personal`. It is made at the first vault the person enrols, by the device that
-enrols it, and the person runs no verb for it: its name is sealed there like any drive's, it
-lives on that one vault until a move carries it, and each device's local tree is its copy of
-it, wherever it lives. Its id is the one constant id, `first`, kept inside the sealed name as
-every id is and sent to no vault, so that every device of the person's finds from a vault's
-listing alone which drive its local tree is a copy of; in nothing else is it set apart, and it
-moves, is pinned and is claimed whole as any drive is. A vault enrolled after the first is a
-place for drives: it holds nothing of the person's until a drive is made or moved there.
+when the drive is made, but for the first drive's, and sealed with every copy a move makes; a
+name sealed under a second domain, for an unfinished move, marks a tree a move has begun, which
+is not a drive. The vault holds only its own id for the tree, minted fresh for every vault the
+drive is kept on, so no two landlords hold an identifier in common for one drive. The drive's id
+names no vault, so it says nothing of a first landlord. A device learns the person's drives from
+the vaults it reaches: a vault's listing, its names opened under the person's key, is the
+authority for which drives that vault keeps, and a device reads it after every pass with that
+vault and whenever it is asked for its drives, so a drive made or moved on one device is known
+to the others at their next pass and nobody has to tell them. Two finished copies that share an
+id are one drive kept twice, as a move leaves it for a moment; two that do not are two drives.
+The person's first drive is named `personal`. It is made at the first vault the person enrols,
+by the device that enrols it, and the person runs no verb for it: its name is sealed there like
+any drive's, it lives on that one vault until a move carries it, and each device's local tree is
+its view of it, whole or on demand as its pins say, wherever it lives. Its id is the one
+constant id, `first`, kept inside the sealed name as every id is and opened by no vault, so that
+every device of the person's finds from a vault's listing alone which drive its local tree is a
+view of; in nothing else is it set apart, and it moves, is pinned and is claimed whole as any
+drive is. A vault enrolled after the first is a place for drives: it holds nothing of the
+person's until a drive is made or moved there. A device makes `personal` only when no listing it
+reaches carries `first`, so two devices apart from each other may each make one, and then two
+finished trees carry `first` with no move begun between them. They are not one drive kept twice.
+A device that finds both keeps syncing with the one it synced with before, or with neither until
+its person chooses, and tells the person; the person names one `personal`, and the other is
+resealed by that device under a fresh random id and a name the person gives it, as a drive like
+any other. A verb that merges two drives is left open.
 
 **A device keeps what its person chose.** For each drive and each folder, the person says
 whether this device keeps a local copy or fetches on demand; the pin settings are that choice,
@@ -157,9 +164,10 @@ of it is unfinished. A drive's sealed name is its name and its id.
 - The relay learns no more than it does now: a circuit's two ends, as handles.
 - A landlord holds only the drives the person put there, so two landlords do not each hold a
   complete copy whose sizes and timings match. Redundancy across vaults is a thing the person
-  does, by export or by a later verb, not a default: `personal` is kept whole by the first
-  device until told otherwise, the telling says when no device keeps it, and losing the one
-  vault a drive lives on loses it unless a device keeps it whole.
+  does, by export or by a later verb, not a default: the device that makes `personal` keeps it
+  whole until told otherwise, the telling says when no device keeps it, and losing the one
+  vault a drive lives on loses it unless a device keeps it whole. How a device that keeps a
+  drive whole places it on a vault when the drive's vault is gone is a later verb, left open.
 - A vault learns how many drives a tenant has and the size of each, which it sees already, and
   never their names or their ids; a move shows the two landlords a tree of one size appearing
   at one and leaving the other, so size and timing remain the leak the threat model names.
