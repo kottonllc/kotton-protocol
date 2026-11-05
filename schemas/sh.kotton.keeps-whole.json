@@ -1,0 +1,17 @@
+{
+  "nsid": "sh.kotton.keeps-whole",
+  "version": 1,
+  "fields": [
+    {
+      "name": "device",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "name": "drive",
+      "type": "string",
+      "nullable": false
+    }
+  ],
+  "description": "That one of the person's devices keeps one of their drives whole."
+}
