@@ -173,6 +173,12 @@ of it is unfinished. A drive's sealed name is its name and its id.
   at one and leaving the other, so size and timing remain the leak the threat model names.
   Whoever opens the person's key learns each drive's name and id, and from the id nothing of
   where the drive was first kept.
+- A drive is moved or made by one device at a time. The vault that keeps a tree holds a lease
+  on it, in memory only, for the device moving it; the tree refuses writes from the person's
+  other devices while the lease is held, and a retire is refused without it. A device making a
+  drive holds a lease for the person at one vault. A refused write stays on its device and goes
+  at its next pass. The lease names no drive, is shared with no other landlord and outlives no
+  restart, so the vault learns only that some device of the tenant is moving or making a drive.
 - A device's settings never leave it: its folders and its default are on it alone, and a device
   wiped and paired again comes back to on demand. A drive's claims go where the drive goes, so
   a move or an export carries them, and a drive retired by a move, or deleted when a verb for
