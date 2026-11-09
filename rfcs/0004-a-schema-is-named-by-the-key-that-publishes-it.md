@@ -29,18 +29,22 @@ design already has, for a device, a contact or a release. The third is this deci
 **A schema's identity is `<publisher>/<name>`.** The publisher is the key that publishes the
 schema, written as the `did:key` of its public half, the form a device's key and a contact's key
 already take. The name is one or more segments of lowercase letters, digits and hyphens,
-separated by dots, each beginning with a letter, as a segment of today's names is. The publisher
-signs the schema's definition with that key; a definition whose signature does not check against
-its publisher is no schema at all. Nobody can publish under a key they do not hold, so no one
-can wear another publisher's name, whatever string they choose for their own.
+separated by dots, each beginning with a letter, as a segment of today's names is; an
+implementation may bound its length. The publisher signs the schema's definition with that key:
+an Ed25519 signature, under the key the `did:key` names, over the definition's 32-byte digest,
+carried beside the definition as `signature`, base64, never inside the digest or the identity,
+the form an app manifest's publisher block already takes. A definition whose signature does not
+check against its publisher is no schema at all. Nobody can publish under a key they do not
+hold, so no one can wear another publisher's name, whatever string they choose for their own.
 
 **A schema's version is the digest of its definition.** The definition is one JSON document:
 `publisher`, `name`, `revision`, `fields` and `description`. Its digest is BLAKE3 over the
-document in canonical form, keys sorted and no whitespace between tokens, as the store digests a
-chunk. A change to a field is a new revision and a new digest of the same schema; the publisher
-states which revisions a reader of a later one may still read, and nothing infers that from the
-digests. Where a version must be exact, a record log, a migration, a grant that pins one, the
-digest is cited; where a person reads, the revision is shown.
+document serialised by the JSON Canonicalization Scheme (RFC 8785), written as lowercase hex, as
+the store digests and writes a chunk. A change to a field is a new revision and a new digest of
+the same schema; the publisher states which revisions a reader of a later one may still read,
+and nothing infers that from the digests. Where a version must be exact, a record log, a
+migration, a grant that pins one, the digest is cited; where a person reads, the revision is
+shown.
 
 **A schema is never resolved, verified against a registry, or registered.** It is cited by
 identity, declared by whoever ships it, and grants nothing by itself. A grant is the person's
@@ -48,20 +52,26 @@ act on an app and a schema. No name is anyone's by right, and no namespace is re
 `sh.kotton.*` strings cease to exist.
 
 **Kotton's own schemas are published under Kotton's release key**, the key that signs a release
-(`infra/release/allowed_signers` in the reference). Their definitions ship inside the release,
-so the release's signature is theirs; a schema distributed on its own carries its publisher's
-signature over its digest. "Core" means shipped with the implementation and present on every
-device, and nothing more: a core schema has no reach another schema lacks, and refuses nothing
-another schema does not. A schema nobody at Kotton has seen works like any other, as RFC 0003
-says.
+(`infra/release/allowed_signers` in the reference). From the first tag on, the files under
+`schemas/kotton/` carry that key's `signature`, so an implementation other than the reference
+holds Kotton's schemas on the same terms as any publisher's, and inside the reference's release
+the release's signature covers them as well. Before the first tag they carry none: nothing
+depends on a schema by version yet, the release key never leaves the maintainer's machine, and
+the files are what every page here is, a change the maintainer signed off. "Core" means shipped
+with the implementation and present on every device, and nothing more: a core schema has no
+reach another schema lacks, and refuses nothing another schema does not. A schema nobody at
+Kotton has seen works like any other, as RFC 0003 says.
 
 **A prompt shows only names the person, or a source the person chose, gave a key.** It never
-shows a string the publisher chose. "Allow Foo to read your *statement* records from **My
-Bank**" appears only if the person named that key My Bank; otherwise the prompt reads "from a
-publisher you have not named". An app is shown the same way, by the key that signed it, and
-when the app's publisher and the schema's publisher differ the prompt says so. The first meeting
-with a publisher's key is where the person decides what to call it, as they do a contact's;
-after that, every prompt about that publisher is quiet.
+names the publisher by a string the publisher chose. The schema's name is shown as its publisher
+wrote it, since it says what the records are and claims nothing about who stands behind them;
+who stands behind them is said only by the names the person's sources gave the key, or by their
+absence. "Allow Foo to read your *statement* records from **My Bank**" appears only if the
+person named that key My Bank; otherwise the prompt reads "from a publisher you have not named".
+An app is shown the same way, by the key that signed it, and when the app's publisher and the
+schema's publisher differ the prompt says so. The first meeting with a publisher's key is where
+the person decides what to call it, as they do a contact's; after that, every prompt about that
+publisher is quiet.
 
 **A statement about a key is a signed record, from a source the person chose.** Four sources
 are named here; the first is built with this decision, and the other three are seams, each one
@@ -79,11 +89,11 @@ more source of the same kind of record:
   Kotton's release key publishes one, as may anyone.
 
 **A list may inform a grant and never gate it.** A statement a source makes changes what a
-prompt shows and may make the person confirm twice; it never hides a choice or takes a grant
-away. A list is fetched whole and read on the device, so no list learns which publishers a
-person meets. An implementation ships following its publisher's list, shown as one list among
-any and replaceable in one setting; lists that disagree are shown disagreeing. A prompt names
-which sources stand behind a name, so what the person has is what they can see.
+prompt shows; it never hides a choice or takes a grant away. A list is fetched whole and read on
+the device, so no list learns which publishers a person meets. An implementation ships following
+its publisher's list, shown as one list among any and replaceable in one setting; lists that
+disagree are shown disagreeing. A prompt names which sources stand behind a name, so what the
+person has is what they can see.
 
 ## Consequences
 
@@ -105,13 +115,16 @@ which sources stand behind a name, so what the person has is what they can see.
   what keeps it from becoming the registrar this decision declines to have.
 - A confirmation through a publisher's website trusts the web's certificates once, for that
   check. The design does not otherwise trust them, and a confirmation is recorded as what it is.
-- The schemas Kotton ships move under Kotton's release key: `secret`, `keeps-whole` and
-  `access-log`, in `schemas/kotton/`. A record's URL form becomes
-  `kotton://records/<publisher>/<name>/<id>`. Nothing is released, so no install migrates.
+- The schemas this repository holds move under Kotton's release key: `secret`, `keeps-whole`
+  and `access-log`, in `schemas/kotton/`; the rest of the reference's core set follows under the
+  reference's issue. A record's URL form becomes `kotton://records/<publisher>/<name>/<id>`.
+  Nothing is released, so no install migrates.
 - Left open, each a follow-up and not a reason to wait: the record schemas of a petname, an
-  introduction, a confirmation and a list entry; the channels a confirmation accepts first;
-  what a publisher writes to say which revisions a reader may still read; and how a petname and
-  the names a person's sources give are shown together when they disagree.
+  introduction, a confirmation and a list entry; the channels a confirmation accepts first; what
+  a publisher writes to say which revisions a reader may still read; how a petname and the names
+  a person's sources give are shown together when they disagree; and how a list reaches a
+  device, which tells the list's publisher no more than fetching a release does and carries no
+  identifier of the device or the person.
 
 ## Reaches
 

@@ -1,14 +1,16 @@
 # Schemas
 
-The record schemas the first release's decision (RFC 0003) names: the keychain, the
-whole-keeper claim RFC 0002 defines, and the access log. Each file here is the authority for
-its schema, in the form a schema is registered in: its publisher, the key that publishes it;
-its name under that key; its revision; its fields with their types; and a description (RFC
-0004). A schema's identity is `<publisher>/<name>`, and its version is the digest of the file.
-The files under `kotton/` are published under Kotton's release key, the key in the
-reference's `infra/release/allowed_signers`, and are authenticated by the signed release they
-ship in. An implementation holds these in its core set, unchanged; the reference holds them in
-`kotton_schemas`'s core set. A change to a field is a new revision, and a new digest, of the
+The record schemas the first release's decision (RFC 0003) names: the keychain, the whole-keeper
+claim RFC 0002 defines, and the access log. Each file here is the authority for its schema, in
+the form a schema is registered in: its publisher, the key that publishes it; its name under
+that key; its revision; its fields with their types; and a description (RFC 0004). A schema's
+identity is `<publisher>/<name>`, and its version is the digest of its definition in canonical
+form (RFC 0004); the file holds the definition indented for reading, and carries no digest of
+itself. The files under `kotton/` are published under Kotton's release key, the key in the
+reference's `infra/release/allowed_signers`. From the first tag on they carry that key's
+`signature`; before it they carry none, and are what every page here is, a change the maintainer
+signed off. An implementation holds these in its core set, unchanged; the reference holds them
+in `kotton_schemas`'s core set. A change to a field is a new revision, and a new digest, of the
 same schema.
 
 Every record is sealed under its person's key, in a drive or on a device, and a vault or a
