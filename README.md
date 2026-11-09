@@ -15,6 +15,7 @@ implementations exist to prove it, not to be mandatory.
 - [`rfcs/`](rfcs/README.md): the decisions that bind more than one repository, and how one lands.
   [RFC 0001](rfcs/0001-the-product-is-repositories-along-process-boundaries-joined-by-the-protocol.md)
   is the shape of the whole.
+- [`schemas/`](schemas/README.md): the record schemas the first release names, one file each.
 - [`VERSIONING.md`](VERSIONING.md): how this repository is versioned and depended on.
 - [`design/`](design/): the pages that describe the whole as it is — [the principles](design/principles.md),
   [the threat model](design/threat-model.md), [processes and crates](design/processes.md).
@@ -22,7 +23,7 @@ implementations exist to prove it, not to be mandatory.
   and how it is achieved ([the confinement thesis](papers/confinement-thesis.md)).
 
 The protocol and type crates arrive here from the reference repository when their turn comes,
-as RFC 0001's table says. Until then this repository is prose.
+as RFC 0001's table says. Until then this repository is prose and the record schemas.
 
 ## Licence
 
