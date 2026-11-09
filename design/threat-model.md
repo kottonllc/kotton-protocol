@@ -69,10 +69,10 @@ device held, which the identity log records and your contacts follow.
 Holds the identity, not only the data, because the phrase is the identity's authority. With the
 phrase and the vault's line, which is not secret, they can run `id recover` on a device of their
 own: it puts back the data roots from the copy the phrase opens, and rotates the identity onto
-that device's key by an event the phrase's reserve key signs. Each node the device names checks the
-event against the log, admits the device as yours, and syncs your things to it. It then signs as
-you, and a contact who gets a note from it follows the log to its key and from then refuses what
-your other devices sign with the key it replaced.
+that device's key by an event the phrase's reserve key signs. Each node the device names checks
+the event against the log, admits the device as yours, and syncs your things to it. It then
+signs as you, and a contact who gets a note from it follows the log to its key and from then
+refuses what your other devices sign with the key it replaced.
 
 Your other devices are not told. The event goes to the nodes the recovering device names and to
 no device, so each of yours keeps the log as it was and shows nothing; your nodes still admit

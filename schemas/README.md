@@ -43,10 +43,10 @@ only when the person pins the log there.
 - `door`: what the request came through: `terminal`, `app` or `device`. It is never a network
   address.
 - `act`: `read` or `write`.
-- `what`: what was read or written, as the person names it: a drive path
-  (`<drive>:/<path>`) or a record (`kotton://records/<publisher>/<name>/<id>`). It is never a digest of
-  the content. `<drive>` is the drive's name as the person sees it, not its id; a renamed
-  drive's earlier entries keep the old name.
+- `what`: what was read or written, as the person names it: a drive path (`<drive>:/<path>`) or
+  a record (`kotton://records/<publisher>/<name>/<id>`). It is never a digest of the content.
+  `<drive>` is the drive's name as the person sees it, not its id; a renamed drive's earlier
+  entries keep the old name.
 
 No app reaches it: a schema grant on it is refused, as on `secret`, and it is kept out of
 record search, so only the person's own CLI or shell

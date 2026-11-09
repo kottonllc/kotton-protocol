@@ -78,12 +78,12 @@ more source of the same kind of record:
 - *A list*: statements about keys published under a key of their own, which a person follows.
   Kotton's release key publishes one, as may anyone.
 
-**A list may inform a grant and never gate it.** A statement a source makes changes what a prompt
-shows and may make the person confirm twice; it never hides a choice or takes a grant away. A
-list is fetched whole and read on the device, so no list learns which publishers a person meets.
-An implementation ships following its publisher's list, shown as one list among any and
-replaceable in one setting; lists that disagree are shown disagreeing. A prompt names which
-sources stand behind a name, so what the person has is what they can see.
+**A list may inform a grant and never gate it.** A statement a source makes changes what a
+prompt shows and may make the person confirm twice; it never hides a choice or takes a grant
+away. A list is fetched whole and read on the device, so no list learns which publishers a
+person meets. An implementation ships following its publisher's list, shown as one list among
+any and replaceable in one setting; lists that disagree are shown disagreeing. A prompt names
+which sources stand behind a name, so what the person has is what they can see.
 
 ## Consequences
 
