@@ -136,9 +136,11 @@ send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` 
 Records are typed, sealed, in a drive or, as the log is until pinned, on the device that made
 them, and read from every device that holds them: the layer under contacts and every future
 app, and what the keychain, the whole-keeper claims and a pinned `log` are made of.
-A schema is declared by whoever ships it; none is Kotton's by right, and one nobody at
-Kotton has seen works like any other. A calendar is an app on records, not a primitive; Kotton
-may ship one as one app among any.
+A schema is declared by whoever ships it and named by the key that publishes it (RFC 0004);
+none is Kotton's by right, and one nobody at Kotton has seen works like any other. A grant
+prompt shows a schema by the name the person gave its publisher's key, never by a string the
+publisher chose. A calendar is an app on records, not a primitive; Kotton may ship one as one
+app among any.
 
 **The keychain.** `secret set|get|list|rm|generate` (passwords and tokens as sealed records
 with a verb a person reaches for; passkeys wait for a browser or an OS to present them to).

@@ -40,7 +40,10 @@ window and nowhere else; cannot read the clipboard or draw a prompt. Two gaps to
 signed install approval is not yet read by the runtime, so an app's declared default is its
 grant until that lands; and an extension could invent a name on first run and keep it, which
 is a working join key, but nothing in the daemon calls the extension machinery yet, so no user
-is exposed to it.
+is exposed to it. Cannot wear another publisher's name: a schema is named by the key that
+publishes it, and a grant prompt shows the name the person gave that key or says they gave
+none (RFC 0004), so an app can ask for a stranger's schema but cannot make it look like a
+friend's.
 
 ## A contact
 

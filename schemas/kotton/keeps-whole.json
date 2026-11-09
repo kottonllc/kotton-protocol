@@ -1,6 +1,7 @@
 {
-  "nsid": "sh.kotton.keeps-whole",
-  "version": 1,
+  "publisher": "did:key:z6MkiDN8JjmwvSCGfrmH9YdvBuJxVGyyEWBvECCp3cfDgCMB",
+  "name": "keeps-whole",
+  "revision": 1,
   "fields": [
     {
       "name": "device",

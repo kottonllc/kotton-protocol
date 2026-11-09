@@ -1,6 +1,7 @@
 {
-  "nsid": "sh.kotton.access-log",
-  "version": 1,
+  "publisher": "did:key:z6MkiDN8JjmwvSCGfrmH9YdvBuJxVGyyEWBvECCp3cfDgCMB",
+  "name": "access-log",
+  "revision": 1,
   "fields": [
     {
       "name": "device",
