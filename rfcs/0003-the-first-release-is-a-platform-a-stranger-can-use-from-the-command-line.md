@@ -75,13 +75,14 @@ phrase, with the contest window the identity page describes; earlier phrases are
 daemon holds for this identity, and ending one) · `rm` · `whoami`. `id` is the short form.
 
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
-other side) · `list` (with last seen and the drives each keeps whole) · `show` · `rename` ·
-`rm <device>` (revoke it: refused at its next connection to every drive and device; if it may
-be in someone else's hands the person is told to `identity rotate`, which retires the keys it
-held under the identity page's rule) · `bind` (bind this identity to this device's hardware) ·
+other side) · `list` (with last seen and the drives each keeps whole) · `show` · `rename` · `rm
+<device>` (revoke it: refused at its next connection to every drive and device that holds the
+revocation, which each learns from the next device that holds it to reach it; if it may be in
+someone else's hands the person is told to `identity rotate`, which retires the keys it held
+under the identity page's rule) · `bind` (bind this identity to this device's hardware) ·
 `receive off|10m|always` (whether this device has a listener and an announcement on the network
-it is on, so another of the person's devices there can find it and `send` to it; off until
-told, since a relay introduces the person's devices otherwise; `always` is said back at every
+it is on, so another of the person's devices there can find it and `send` to it; off until told,
+since a relay introduces the person's devices otherwise; `always` is said back at every
 `status`, and is refused where the platform has no announcement) · `reset` (start this device
 fresh).
 

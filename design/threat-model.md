@@ -5,17 +5,19 @@ and not by design," it says so.
 
 ## A vault's landlord
 
-Learns: that a tenant exists and under which operator key; how many trees it keeps for them,
-the size of each, and when one appears or leaves; when those bytes change; and which packs are
-read and written and when; and which of the tenant's devices is moving or making a drive, and
-when. For a move it sees that already from which device writes. For a making, the making lease
-is taken at one of the tenant's vaults whichever vault the drive is made at, so that vault
-learns of a making it may otherwise never see: which device of the tenant is making a drive,
-and when, with no name and no place. Cannot learn: a filename, a file's size, how many files
-there are, which chunks belong together, or the shape of a drive's folders. Cannot be
+Learns: that a tenant exists and under which operator key; the tenant's identity, as its key
+log, which the vault holds from enrolment, the keys of the tenant's devices it was told of, and
+the address a device connects from when it dials the vault and not a relay; how many trees it
+keeps for them, the size of each, and when one appears or leaves; when those bytes change; and
+which packs are read and written and when; and which of the tenant's devices is moving or making
+a drive, and when. For a move it sees that already from which device writes. For a making, the
+making lease is taken at one of the tenant's vaults whichever vault the drive is made at, so
+that vault learns of a making it may otherwise never see: which device of the tenant is making a
+drive, and when, with no name and no place. Cannot learn: a filename, a file's size, how many
+files there are, which chunks belong together, or the shape of a drive's folders. Cannot be
 compelled to produce plaintext, because it holds none and has no verb that returns any. A
-warrant yields a byte count. Volume and access pattern are the known leaks; fixed allocation
-and oblivious access are the known answers and are not built.
+warrant yields a byte count. Volume and access pattern are the known leaks; fixed allocation and
+oblivious access are the known answers and are not built.
 
 ## A relay's operator
 

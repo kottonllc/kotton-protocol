@@ -68,21 +68,21 @@ drive and takes the drive's changes for the folders it keeps. A device is not a 
 another device; devices replicate to drives, and read from them. The bare `sync` verb syncs
 this device's drives, not every node.
 
-**Each side proves itself under its key, in the protocol.** Pairing introduces a device's key
-to a person's set, as it does now. After that, every connection a device opens to a drive or to
-another device begins with a handshake under both keys, defined by the protocol and run the
-same way over every transport: each side signs for itself, a device for itself and a drive or
-the other device for itself, so nothing standing between them, a relay included, can answer as
-either. It is the signed form that the browser's door already runs of the exchange pairing runs
-unsigned: an ephemeral exchange keys the channel first, and the keys and the signatures over
-the transcript cross only inside it, so the path sees ephemeral values, authentication tags and
-ciphertext and never a durable key. The transport need add no confidentiality of its own, and a
-relay or a nearby listener learns no more of who is talking than it does now. A drive accepts a
-connection only from a key in the set it admits, and a key removed from the set is refused at
-its next connection. A transport carries bytes and confers no identity: QUIC on a local network
-or across the internet, a circuit through a relay, and a link such as Bluetooth are transports,
-and a drive is reached over any of them the same way. The QUIC path that exists is the first
-transport, and until the handshake exists it keeps its mutual TLS.
+**Each side proves itself under its key, in the protocol.** Pairing introduces a device's key to
+a person's set, as it does now. After that, every connection a device opens to a drive or to
+another device begins with a handshake under both keys, defined by the protocol and run the same
+way over every transport: each side shows that it holds its own key, a device for itself and a
+drive or the other device for itself, so nothing standing between them, a relay included, can
+answer as either. An ephemeral exchange keys the channel first, and a durable key crosses only
+inside it or not at all, so the path sees ephemeral values, authentication tags and ciphertext
+and never a durable key (RFC 0005 is the handshake). The transport need add no confidentiality
+of its own, and a relay or a nearby listener learns no more of who is talking than it does now.
+A drive accepts a connection only from a key in the set it admits, and a key removed from the
+set is refused at its next connection once the drive holds the removal (RFC 0005). A transport
+carries bytes and confers no identity: QUIC on a local network or across the internet, a circuit
+through a relay, and a link such as Bluetooth are transports, and a drive is reached over any of
+them the same way. The QUIC path that exists is the first transport, and until the handshake
+exists it keeps its mutual TLS.
 
 **The relay joins what cannot reach each other directly.** It carries circuits and holds
 nothing past delivery, as RFC 0001's row says; in this model the circuit a device needs most is
