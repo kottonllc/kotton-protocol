@@ -85,9 +85,9 @@ frame's length, and sealed bytes with their tags. No durable key is among them, 
 signature. The initiator's key, the identity and its log cross only inside the channel, after
 the responder has shown it holds the key the initiator expected. So does a recovery claim: the
 authority's public key and a tag go to the drive whose key the device began with and to no one
-between, nothing in it is signed, and the path sees one more sealed frame each way. A relay's
-operator, a host that ends TLS, and a listener on the link see a version, two fresh values,
-lengths and ciphertext.
+between, nothing in it is signed, and the path sees a sealed frame where an initiator's events
+would be and one more for each log that answers. A relay's operator, a host that ends TLS, and a
+listener on the link see a version, two fresh values, lengths and ciphertext.
 
 **A transport carries bytes.** QUIC, a relay's circuit, a WebSocket to a vault that cannot
 accept QUIC, and a link such as Bluetooth each carry the same frames. On the QUIC path the
@@ -113,24 +113,29 @@ the log's order. No clock orders two changes. Who may sign for the identity is t
 and is not changed here; in the reference today that is the device that holds the identity's
 key.
 
-**One chain, and how two are settled.** Two chains part at the first event they do not share. On
-each, one recovery rotation is weighed: the first the chain holds at or after that event. It
-counts only if the last event the two chains share already committed the authority that signed
-it. An authority added after the parting counts for nothing against a rotation that counts, and
-no later rotation is weighed in its place. A chain that holds a rotation that counts stands over
-one that does not. Between two that do not, a chain that holds a recovery rotation at or after
-the parting stands over one that holds none, and where neither holds one the chain whose first
-unshared event has the lower digest, as bytes, stands. Where both hold a rotation that counts,
-or both hold only one that does not, a side keeps the chain it holds. A side that holds the
-chain that does not stand replaces it, from the parting on, when it is shown the one that does.
-A recovery rotation's digest covers the authority that signed it, so no two holders of an event
-differ on which that was. Only a recovery rotation takes an authority out of the log's
+**One chain, and how two are settled.** A chain that extends another replaces it. Two chains of
+which neither extends the other part at the first event they do not share. On each, one recovery
+rotation is weighed: the first the chain holds at or after that event. It counts only if the
+last event the two chains share already committed the authority that signed it. An authority
+added after the parting counts for nothing against a rotation that counts, and no later rotation
+is weighed in its place. A chain that holds a rotation that counts stands over one that does
+not. Between two that do not, a chain that holds a recovery rotation at or after the parting
+stands over one that holds none, and where neither holds one the chain whose first unshared
+event has the lower digest, as bytes, stands. Where both hold a rotation that counts, or both
+hold only one that does not, a side keeps the chain it holds. A side that holds the chain that
+does not stand replaces it, from the parting on, when it is shown the one that does.
+
+What an event committed is read from its commitment, which its digest covers: it committed an
+authority if a path from that authority's key reaches the root. An event that sets a commitment
+carries the keys under it and is not valid unless they make that root, and a recovery rotation's
+digest covers the authority that signed it. So no two holders of an event differ on what it
+committed or on who signed it. Only a recovery rotation takes an authority out of the log's
 commitment, so a rotation that counts at one parting counts at every later one it still follows,
-and standing over never runs in a circle, among any number of chains. So where no two of them
-hold rotations of the same standing, every drive and device that is shown them settles on the
-same one, in whatever order they arrived. A device whose event was replaced writes its change
-again and tells its person, and a responder that replaces part of its chain tells an initiator
-it admits.
+and standing over never runs in a circle, among any number of chains. So a side that has been
+shown each of them, in whatever order, holds one that none of the others stands over, and where
+the rule leaves no two of them to the side that holds them, that is the same chain at every
+drive and device. A device whose event was replaced writes its change again and tells its
+person, and a responder that replaces part of its chain tells an initiator it admits.
 
 **A drive admits a device by the log, and by nothing else.** A drive holds an identity's log
 from enrolment, when the enrolling device gives it, and keeps no event for an identity it holds
@@ -164,26 +169,31 @@ place of them the device sends a claim: the public key of the authority it holds
 tag is the 32 bytes HKDF-SHA256 yields from an exchange between the Montgomery form of that key
 and the drive's ephemeral value of this handshake, with the handshake's hash, the 32 bytes Noise
 calls `h` once the third message is read, as its salt and the ASCII bytes
-`kotton-recovery-claim` as its info. Nothing is signed, and the drive could have made the tag
-itself, so it holds nothing it can show anyone. The hash covers both ephemeral values, the
-drive's key and the device's, so a claim answers one connection and is of no use on another,
-from another device or to another drive.
+`kotton-recovery-claim` followed by the 32 bytes of that public key as its info. Nothing is
+signed, and the drive could have made the tag itself, so it holds nothing it can show anyone.
+The hash covers both ephemeral values, the drive's key and the device's, so a claim answers one
+connection and is of no use on another, from another device or to another drive.
 
 The log already lets a drive check it. An event's recovery commitment is a root over the public
 keys of the identity's authorities, a key a phrase derives or a key a set of guardians share,
 and the event that sets a commitment carries those keys. The drive makes the exchange from its
-side and checks the tag, and then looks in each log it holds for the last event that commits the
-key and is followed by no recovery rotation, or by a first one whose authority that event did
-not commit, by the commitment itself and not by the list carried beside it. A claim that passes
-both is answered in one frame, for each such log: the identity, that event by sequence number
-and digest, the path that shows the key under that event's commitment, and the sealed copy. Then
-the drive closes. A claim that fails either is closed on as any initiator the drive does not
-admit is closed on, having been sent what each of them is sent and no more; and since the tag is
-checked first, one who does not hold the authority learns nothing from how long the drive took.
-With the answer the device writes its rotation, which names its own key, and connects again as a
-device that holds an event the drive lacks. Once the drive holds the rotation the log admits the
-device, the drive sends it the rest of the log, and the device checks from the inception what it
-could not check before.
+side, closes as on any refusal if it yields all zeros, and checks the tag. Then it looks in each
+log it holds for the event to answer from: the last event that commits the key, by a path to the
+commitment itself and not by the list carried beside it, and after which the log holds no
+recovery rotation, or holds a first one whose authority that event did not commit. That is the
+last event over which a rotation under the key extends the log the drive holds or stands over
+it. An event that commits the key and is followed by a first rotation under an authority it also
+commits is passed over, since a rotation written there would be left to the side that holds the
+log. A claim that passes both is answered with one frame for each such log: the identity, that
+event by sequence number and digest, the path that shows the key under that event's commitment,
+and the sealed copy. Then the drive closes. A claim that fails either is closed on as any
+initiator the drive does not admit is closed on, having been sent what each of them is sent and
+no more; and since the tag is checked first, one who does not hold the key it claims learns
+nothing from how long the drive took. With the answer the device writes its rotation, which
+names its own key, and connects again as a device that holds an event the drive lacks; where
+more than one log answered, its own is the one whose sealed copy its phrase opens. Once the
+drive holds the rotation the log admits the device, the drive sends it the rest of the log, and
+the device checks from the inception what it could not check before.
 
 A guardian's authority is one key under the commitment, so its claim is the same tag, and the
 exchange behind it is made by as many guardians as that key takes, while the connection is open;
@@ -214,23 +224,29 @@ made there by a device that holds the withdrawal.
   renewed, and the renewals are a rhythm a host can read and a way for a person who was away to
   be locked out. A drive is as good as the log it holds.
 - A withdrawn device that can still sign for the identity can write an event of its own. Where
-  its chain parts from the person's the lower digest decides, so it may stand, until the person
-  writes a recovery rotation: a chain that holds a rotation that counts stands over one that
-  does not, and beneath that a chain that holds a recovery rotation stands over one that holds
-  none. A rotation that is not a recovery rotation retires no key against its holder, who can
-  part the chain beneath it. And where the person's rotation is under an authority the log
-  committed before the parting, that holder gains nothing by adding a recovery authority of its
-  own and rotating under it, beside the person's rotation or beneath it, since the last event
-  the two chains share did not commit it. RFC 0003's `identity rotate` is what a person has
-  against a device in someone else's hands, and where their phrase was committed before that
-  device could part the chain it is not a race.
-- What the rule costs is the identity whose only recovery authorities were all added by the key
-  that was taken: the shared history commits none of them, and the rule does not help it. The
-  holder parts the chain before the first was added, no rotation counts on either side of that
-  parting, and each side keeps the chain it was shown first, as before this rule. In the
-  reference today an identity is made with no authority and gains its phrase by an event its own
-  key signs, so this is every identity whose first device is taken. An authority the inception
-  commits lies beneath every parting.
+  its chain parts from the person's the lower digest decides, so it may stand; and it can add a
+  recovery authority of its own and rotate under it, which stands over a chain that holds no
+  recovery rotation and shuts the person's devices out, until the person writes a recovery
+  rotation. A rotation that is not a recovery rotation retires no key against its holder, who
+  can part the chain beneath it. Where the person's rotation is under an authority the log
+  committed before that holder added one, and is written over an event from before that
+  addition, it counts and the holder's does not, beside it or beneath it, whoever moved first.
+  Written over an event that already commits the holder's authority it shares that event with
+  them, both count, and each side keeps the chain it held. RFC 0003's `identity rotate` is what
+  a person has against a device in someone else's hands, and it is not a race where their phrase
+  was committed before that holder's authority and their rotation is written beneath it.
+- What the rule costs is the identity whose recovery authorities were all added by the key that
+  was taken: none lies beneath where that key's holder can part the chain, and the rule does not
+  help it. The holder parts the chain before the first was added, no rotation counts on either
+  side of that parting, and each side keeps the chain it was shown first. Where the holder's own
+  authority lies beneath the person's in a history both share, because it was added first or
+  because its event had the lower digest and the person's devices wrote theirs again above it,
+  the rule is against the person: the holder's rotation counts and theirs does not, at every
+  drive, whoever was shown first. What is left to them is to part the chain beneath that
+  addition with the identity's key, where first shown is first kept, and a person who holds only
+  a phrase cannot do that. In the reference today an identity is made with no authority and
+  gains its phrase by an event its own key signs, so this is every identity whose first device
+  is taken. An authority the inception commits lies beneath every parting.
 - The rule ranks authorities by when the log committed them. A recovery rotation in the
   reference commits one key and drops every other phrase and guardian, but only from the events
   after it: one committed earlier is not retired against its holder by a rotation under one
@@ -239,33 +255,41 @@ made there by a device that holds the withdrawal.
   authority shares that event with them, so both count; the rotation that ends that holder is
   written over the last event before their authority was added. RFC 0003's line for `identity
   rotate` is corrected to say so.
-- Two rotations that both count are not settled by the rule: each drive and device keeps the
-  chain it held, and they may differ. That is two holders of one authority, and a phrase two
-  people hold has two owners, as the threat model says of it; it is also two authorities the
-  last shared event both commits. With such a pair among three chains, the order they arrive in
-  can decide which a side ends on, since a side that kept one of the pair has let the other go.
-  The contest window an event carries could decide between two that count, and is not made to
+- Two rotations of the same standing are not settled by the rule: each drive and device keeps
+  the chain it held, and they may differ. Two that both count are two holders of one authority,
+  and a phrase two people hold has two owners, as the threat model says of it; or two
+  authorities the last shared event both commits; or one person's two rotations, the first over
+  an event that commits another holder's authority and the second beneath it to end that holder,
+  where the second stands over the holder's chain and not over the person's first. Two that do
+  not count are two authorities each added after the parting. A side never ends on a chain that
+  another it was shown stands over, so where two sides differ it is between chains the rule
+  leaves to their holders, and the order of arrival decides no more than that. The contest
+  window an event carries could decide between two of the same standing, and is not made to
   here.
 - Whoever holds a recovery authority can shut every device out of every drive at once, by a
   recovery rotation that names only their own. The reference acts on a recovery rotation as soon
   as it sees one, and the contest window an event carries is still not enforced. This is a power
   that holder did not have at a drive before: the threat model says a recovery unpairs no device
   at a node, and that paragraph changes when this is built. It is also what taking an identity
-  back from a thief requires, and where the person's authority counts it takes it back whoever
-  moved first.
+  back from a thief requires, and where the person's rotation counts and the thief's does not it
+  takes it back whoever moved first.
 - One whose recovery claim passes learns, before any rotation, that the drive keeps the
-  identity, its identifier, the length of its log and roughly how many authorities it commits,
-  and no device's key. The landlord learns that a holder of the authority asked and when, the
-  key of the device that asked, and, until #48, the address it asked from, and holds nothing
-  that shows any of it to anyone else. A listener on the path can tell a claim's connection from
-  another by the lengths of its frames, and learns nothing of whose it is. The claim's exchange
-  asks one new thing of a responder: it keeps its ephemeral value until it has read the frame
-  that answers its first, and no longer.
+  identity, its identifier, one event's sequence number and digest, which bound the length of
+  its log, roughly how many authorities it commits, with hashes over the others' keys by which a
+  key already known can be recognised, and no device's key. Asked again it learns whether the
+  log has moved, and no drive counts the asking. The landlord learns that a holder of the
+  authority asked and when, the key of the device that asked, and, until #48, the address it
+  asked from, and holds nothing that shows any of it to anyone else. A listener on the path can
+  tell a claim's connection from another by the lengths of its frames, and learns nothing of
+  whose it is. The claim's exchange asks one new thing of a responder: it keeps its ephemeral
+  value until it has read the frame that answers its first, and no longer.
 - What the claim does not settle. The device extends an event it cannot check until the drive
-  sends the rest of the log: a drive that names an earlier event has the rotation part the chain
-  there, where it stands over the ordinary events written since. A guardian's claim is answered
-  with a sealed copy no guardian opens, since the copy is sealed under a phrase. And a device
-  the log admits can replace the sealed copy a drive keeps.
+  sends the rest of the log. A drive names an earlier event than its latest where the rule gives
+  one, and the rotation parts the chain there and stands over the ordinary events written since;
+  the device cannot tell that from a drive that names the wrong event, an earlier one to drop
+  what was written since or a later one where its rotation is left to the side that holds the
+  log. A guardian's claim is answered with a sealed copy no guardian opens, since the copy is
+  sealed under a phrase. And a device the log admits can replace the sealed copy a drive keeps.
 - A landlord learns the whole history of the person's devices, each key and the order in which
   it was admitted and withdrawn, from the first. Before, it learned the devices introduced to
   it. Two landlords of one person hold the same log and the same device keys, and can tell they
@@ -290,9 +314,11 @@ made there by a device that holds the withdrawal.
 - On the QUIC path two key exchanges run, QUIC's beneath the protocol's, the cost RFC 0002
   accepted.
 - Left open, each a follow-up and not a reason to wait: the path to a vault, which is #48;
-  whether the contest window an event carries should decide between two rotations that both
-  count; which event a recovery rotation is written over, when the chain holds an authority
-  added since the one it is under; how guardians make a claim together, and what it opens for
+  whether the contest window an event carries should decide between two rotations of the same
+  standing; whether a drive should name, and `identity rotate` write over, the last event before
+  any authority was added after the one the rotation is under, at the cost of the events since,
+  so that a device that holds only a phrase is not handed an event where another holder's
+  rotation counts beside its own; how guardians make a claim together, and what it opens for
   them; what keeps a device the log admits from replacing the sealed copy; the bytes of the
   payload, of a claim and its answer, of the frames that follow and of the log's events, which
   the golden encodings fix; what a drive keeps of what a device wrote while an event that
@@ -321,13 +347,14 @@ made there by a device that holds the withdrawal.
 - `kotton`: the handshake over QUIC and over a circuit, in place of mutual TLS as the bearer of
   identity; a device key for each person on a device; the log's device event, the inception and
   the recovery rotations naming keys, and the rule for two chains, with a recovery rotation's
-  digest covering its authority; the recovery claim as an exchange and a tag, in place of the
-  signature a certificate carried, checked against the last event that commits its key and
-  answered with that event's name, a path and the sealed copy in place of the whole log;
-  admission by the log at a vault and at a device, with the row for a tenant's device and the
-  message that introduced one removed. Nothing is released, so no identity or log is carried
-  over: the inception's digest changes with what it names. The reference's issue is opened when
-  this lands, and #64 closes under it.
+  digest covering its authority and an event that sets a commitment refused unless the keys it
+  carries make it; the recovery claim as an exchange and a tag, in place of the signature a
+  certificate carried, checked against the last event that commits its key and answered with
+  that event's name, a path and the sealed copy in place of the whole log; admission by the log
+  at a vault and at a device, with the row for a tenant's device and the message that introduced
+  one removed. Nothing is released, so no identity or log is carried over: the inception's
+  digest changes with what it names. The reference's issue is opened when this lands, and #64
+  closes under it.
 - `kotton-vault`: it admits by the log and accepts the handshake over whatever it can listen on.
 - `kotton-cli`: `device rm` says what the wait is and when to rotate, `identity rotate` says
   when its rotation will not stand, and `status` shows a drive whose log is behind.
