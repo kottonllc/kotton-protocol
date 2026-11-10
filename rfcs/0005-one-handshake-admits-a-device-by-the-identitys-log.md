@@ -184,12 +184,12 @@ sends it, a device, an operator or a device with a claim to make, so the handsha
 the path one from another. A gateway and a co-signer are paired by a person and hold none of
 that person's data keys. The log names only devices that hold them, so a gateway and a co-signer
 are admitted by the pairing of the person who paired them, at that person's devices and nowhere
-else, and reach no drive. A contact's door runs this handshake under the keys the pair derives
-for the hour, the initiator's and the responder's both, with no identity in its payload. A
-responder knows the door by the key the first message opened under, and admits there the key the
-pair derives for the initiator and no other. Neither end shows the other a device's key, and a
-vault that keeps the door for its person answers there under the hour's key that person's device
-gave it, as a device would.
+else, by the key and with no identity in their payload, and reach no drive. A contact's door
+runs this handshake under the keys the pair derives for the hour, the initiator's and the
+responder's both, with no identity in its payload. A responder knows the door by the key the
+first message opened under, and admits there the key the pair derives for the initiator and no
+other. Neither end shows the other a device's key, and a vault that keeps the door for its
+person answers there under the hour's key that person's device gave it, as a device would.
 
 **Recovery keeps its door, and the door opens less.** A device that holds only a recovery
 authority, the phrase or a guardian's, is not among the identity's devices, and cannot write the
@@ -266,7 +266,10 @@ made there by a device that holds the withdrawal.
   Written over an event that already commits the holder's authority it shares that event with
   them, both count, and each side keeps the chain it held. RFC 0003's `identity rotate` is what
   a person has against a device in someone else's hands, and it is not a race where their phrase
-  was committed before that holder's authority and their rotation is written beneath it.
+  was committed before that holder's authority and their rotation is written beneath it. Where
+  that holder has added an authority and not rotated under it, the event a drive names to a
+  device that holds only a phrase already commits that authority, and whether it should name the
+  one before the addition is left open (#55).
 - What the rule costs is the identity whose recovery authorities were all added by the key that
   was taken: none lies beneath where that key's holder can part the chain, and the rule does not
   help it. The holder parts the chain before the first was added, no rotation counts on either
@@ -283,10 +286,10 @@ made there by a device that holds the withdrawal.
   reference commits one key and drops every other phrase and guardian, but only from the events
   after it: one committed earlier is not retired against its holder by a rotation under one
   added later, since its holder parts the chain beneath the addition, where the later one counts
-  for nothing. And a rotation written over an event that already commits another holder's
-  authority shares that event with them, so both count; the rotation that ends that holder is
-  written over the last event before their authority was added. RFC 0003's line for `identity
-  rotate` is corrected to say so.
+  for nothing; RFC 0003's line for `identity rotate` is corrected to say so. And a rotation
+  written over an event that already commits another holder's authority shares that event with
+  them, so both count; the rotation that ends that holder is written over the last event before
+  their authority was added.
 - Two rotations of the same standing are not settled by the rule: each drive and device keeps
   the chain it held, and they may differ. Two that both count are two holders of one authority,
   and a phrase two people hold has two owners, as the threat model says of it; or two
@@ -350,10 +353,10 @@ made there by a device that holds the withdrawal.
   standing; whether a drive should name, and `identity rotate` write over, the last event before
   any authority was added after the one the rotation is under, at the cost of the events since,
   so that a device that holds only a phrase is not handed an event where another holder's
-  rotation counts beside its own; how guardians make a claim together, and what it opens for
-  them; what keeps a device the log admits from replacing the sealed copy; the bytes of the
-  payload, of a claim and its answer, of the frames that follow and of the log's events, which
-  the golden encodings fix; what a drive keeps of what a device wrote while an event that
+  rotation counts beside its own, which is #55; how guardians make a claim together, and what it
+  opens for them; what keeps a device the log admits from replacing the sealed copy; the bytes
+  of the payload, of a claim and its answer, of the frames that follow and of the log's events,
+  which the golden encodings fix; what a drive keeps of what a device wrote while an event that
   admitted it stood and was then replaced; how a contest window bears on a recovery rotation's
   reset of the devices; a device whose admission lies more than 64 events past a drive's log and
   has no other device to go first; how a drive's own key is replaced; rekeying a channel that
@@ -385,11 +388,11 @@ made there by a device that holds the withdrawal.
   device event, the inception and the recovery rotations naming keys, and the rule for two
   chains, with a recovery rotation's digest covering its authority and an event that sets a
   commitment refused unless the keys it carries make it; the recovery claim as an exchange and a
-  tag, in place of the signature a certificate carried, checked against the last event that
-  commits its key and answered with that event's name, a path and the sealed copy in place of
-  the whole log; admission by the log at a vault and at a device, with the row for a tenant's
-  device and the message that introduced one removed. Nothing is released, so no identity or log
-  is carried over: the inception's digest changes with what it names. The reference's issue is
+  tag, in place of the signature a certificate carried, checked against the event the door
+  answers from and answered with that event's name, a path and the sealed copy in place of the
+  whole log; admission by the log at a vault and at a device, with the row for a tenant's device
+  and the message that introduced one removed. Nothing is released, so no identity or log is
+  carried over: the inception's digest changes with what it names. The reference's issue is
   opened when this lands, and #64 closes under it.
 - `kotton-vault`: it admits a device by the log and its operator by its own set, and accepts the
   handshake over whatever it can listen on.
