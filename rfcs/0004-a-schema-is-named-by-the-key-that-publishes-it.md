@@ -58,9 +58,13 @@ holds Kotton's schemas on the same terms as any publisher's, and inside the refe
 the release's signature covers them as well. Before the first tag they carry none: nothing
 depends on a schema by version yet, the release key never leaves the maintainer's machine, and
 the files are what every page here is, a change the maintainer signed off. "Core" means shipped
-with the implementation and present on every device, and nothing more: a core schema has no
-reach another schema lacks, and refuses nothing another schema does not. A schema nobody at
-Kotton has seen works like any other, as RFC 0003 says.
+with the implementation and present on every device, and nothing more: being core gives a
+schema no reach another schema lacks and no refusal of its own. Two of Kotton's schemas are
+kept from apps, `secret` and `access-log`, and not because they are core: the first release
+keeps the keychain and the access log for the person's own terminal (`schemas/README.md`), and
+an implementation holds that refusal for those two identities, by name. A publisher saying the
+same of its own schema, in the definition it signs, is a seam this RFC leaves open. A schema
+nobody at Kotton has seen works like any other, as RFC 0003 says.
 
 **A prompt shows only names the person, or a source the person chose, gave a key.** It never
 names the publisher by a string the publisher chose. The schema's name is shown as its publisher
