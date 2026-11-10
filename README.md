@@ -15,7 +15,7 @@ implementations exist to prove it, not to be mandatory.
 - [`rfcs/`](rfcs/README.md): the decisions that bind more than one repository, and how one lands.
   [RFC 0001](rfcs/0001-the-product-is-repositories-along-process-boundaries-joined-by-the-protocol.md)
   is the shape of the whole.
-- [`schemas/`](schemas/README.md): the record schemas the first release names, one file each.
+- [`schemas/`](schemas/README.md): the record schemas of Kotton's core set, one file each.
 - [`VERSIONING.md`](VERSIONING.md): how this repository is versioned and depended on.
 - [`design/`](design/): the pages that describe the whole as it is — [the principles](design/principles.md),
   [the threat model](design/threat-model.md), [processes and crates](design/processes.md).
