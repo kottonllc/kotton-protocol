@@ -70,9 +70,11 @@ the shell's own do the same over `kotton cat` and `kotton cp -`.
 · `unlock` · `set-passphrase` · `recovery` (add a recovery phrase and print it with the vault
 line; a phrase is stored nowhere and is never shown again; an earlier phrase stays able to
 recover until a rotation retires it) · `rotate` (new keys under the same identity, from a
-phrase, with the contest window the identity page describes; earlier phrases are retired by it)
-· `recover` (take an identity back on a new machine) · `session list|end` (the sessions the
-daemon holds for this identity, and ending one) · `rm` · `whoami`. `id` is the short form.
+phrase, with the contest window the identity page describes; the other phrases are retired by
+it, but for one committed before the phrase it is from, which still stands against it in its
+holder's hands, RFC 0005) · `recover` (take an identity back on a new machine) · `session
+list|end` (the sessions the daemon holds for this identity, and ending one) · `rm` · `whoami`.
+`id` is the short form.
 
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
 other side) · `list` (with last seen and the drives each keeps whole) · `show` · `rename` · `rm

@@ -77,12 +77,12 @@ answer as either. An ephemeral exchange keys the channel first, and a durable ke
 inside it or not at all, so the path sees ephemeral values, authentication tags and ciphertext
 and never a durable key (RFC 0005 is the handshake). The transport need add no confidentiality
 of its own, and a relay or a nearby listener learns no more of who is talking than it does now.
-A drive accepts a connection only from a key in the set it admits, and a key removed from the
-set is refused at its next connection once the drive holds the removal (RFC 0005). A transport
-carries bytes and confers no identity: QUIC on a local network or across the internet, a circuit
-through a relay, and a link such as Bluetooth are transports, and a drive is reached over any of
-them the same way. The QUIC path that exists is the first transport, and until the handshake
-exists it keeps its mutual TLS.
+A drive serves a connection only from a key in the set it admits, but for the one answer it
+gives a recovery claim, and a key removed from the set is refused at its next connection once
+the drive holds the removal (RFC 0005). A transport carries bytes and confers no identity: QUIC
+on a local network or across the internet, a circuit through a relay, and a link such as
+Bluetooth are transports, and a drive is reached over any of them the same way. The QUIC path
+that exists is the first transport, and until the handshake exists it keeps its mutual TLS.
 
 **The relay joins what cannot reach each other directly.** It carries circuits and holds
 nothing past delivery, as RFC 0001's row says; in this model the circuit a device needs most is
