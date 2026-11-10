@@ -102,38 +102,39 @@ admitted, or a key withdrawn. The inception names the key of the device it is ma
 recovery rotation names every device that stands after it, and a key it does not name is
 withdrawn by it. The digest of each of these covers the keys it names, so the identity's
 identifier, which is its inception's digest, covers its first device's key. No other event
-changes the devices, and a device event that admits a key whose Montgomery form an admitted key
-already has is not valid. So the person's devices, as of any event, are the keys named by the
-last recovery rotation up to it, or by the inception if there is none, with each device event
-since applied in the log's order. No clock orders two changes. Who may sign for the identity is
-the log's rule and is not changed here; in the reference today that is the device that holds the
-identity's key.
+changes the devices, and an event that would leave two admitted keys with one Montgomery form is
+not valid. So the person's devices, as of any event, are the keys named by the last recovery
+rotation up to it, or by the inception if there is none, with each device event since applied in
+the log's order. No clock orders two changes. Who may sign for the identity is the log's rule
+and is not changed here; in the reference today that is the device that holds the identity's
+key.
 
 **One chain, and how two are settled.** Two chains part at the first event they do not share. A
 chain that holds a recovery rotation at or after that event stands over one that holds none.
-Where neither holds one, the chain whose first event after the parting has the lower digest, as
-bytes, stands. Where both hold one, a side keeps the chain it holds. A side that holds the chain
-that does not stand replaces it, from the parting on, when it is shown the one that does. So,
-except between two recovery rotations, every drive and device that is shown both chains settles
-on one, in whatever order they arrived. A device whose event was replaced writes its change
-again and tells its person, and a responder that replaces part of its chain tells an initiator
-it admits.
+Where neither holds one, the chain whose first unshared event has the lower digest, as bytes,
+stands. Where both hold one, a side keeps the chain it holds. A side that holds the chain that
+does not stand replaces it, from the parting on, when it is shown the one that does. So, except
+between two recovery rotations, every drive and device that is shown both chains settles on one,
+in whatever order they arrived. A device whose event was replaced writes its change again and
+tells its person, and a responder that replaces part of its chain tells an initiator it admits.
 
 **A drive admits a device by the log, and by nothing else.** A drive holds an identity's log
 from enrolment, when the enrolling device gives it, and keeps no event for an identity it holds
 no log for. In its payload the initiator names the identity it acts for and the latest event of
 that identity's log it holds, by sequence number and digest. The responder checks the
 initiator's key against the log it holds for that identity. If the log admits the key, the
-responder's first frame says so, and each side then sends the other the events of its chain the
-other lacks, from where the two part; a responder whose log then withdraws the initiator closes.
-If the log does not admit the key, or the responder holds no such log, its first frame asks, in
-one form whatever the reason, for the events the initiator holds, and the initiator sends the
-latest of them, at most 64, in one frame. The responder keeps those that extend or stand over
-what it holds, checks again, and if the key is still not admitted closes. It closes in one way,
-and to an initiator it has not admitted it sends no event and does not say whether it holds the
-identity or where its log stands. A device whose admission lies further past a drive's log than
-64 events is admitted there once a device the drive admits has connected. A drive keeps no row
-for a device, and is never told of one by another.
+responder's first frame says so and names the latest event it holds, and each side then sends
+the other the events of its chain the other lacks, from where the two part; a responder whose
+log then withdraws the initiator closes. If the log does not admit the key, or the responder
+holds no such log, its first frame asks, in one form whatever the reason, for the events the
+initiator holds, and the initiator sends the latest of them in one frame, as many as the frame
+holds and at most 64, or an empty frame if it holds none. The responder keeps those that extend
+or stand over what it holds and checks again. If the key is now admitted it says so, as above;
+if not, it closes. It closes in one way, and to an initiator it has not admitted it sends no
+event and does not say whether it holds the identity or where its log stands, except to a
+recovery claim, below. A device whose admission lies further past a drive's log than 64 events
+is admitted there once a device the drive admits has connected. A drive keeps no row for a
+device, and is never told of one by another.
 
 A responder is checked by what the initiator already holds for it. A drive is the key the device
 enrolled it under. Another device is a key among the devices of an identity whose log the
@@ -142,8 +143,9 @@ initiator holds, its own person's or a contact's.
 **Recovery keeps the door it has.** A device that holds only a recovery authority, the phrase or
 a guardian's, is not among the identity's devices, and cannot write the rotation that makes it
 one without the log's latest event and the sealed copy a drive keeps. A drive answers its claim
-as it does today, with those and nothing else, inside the channel. What the claim proves, and
-how little it can open before a rotation is written, is not decided here (#49).
+inside the channel. The reference answers it today with the whole log and the sealed copy; what
+the claim proves, and how little it can open before a rotation is written, is not decided here
+(#49). Until it is, whoever can make the claim learns that the drive keeps the identity.
 
 **Publication is the connection.** There is no message by which one device introduces another to
 a drive, no queue of drives still to be told, and nothing to retry. A device that writes an
@@ -155,7 +157,7 @@ made there by a device that holds the withdrawal.
 ## Consequences
 
 - The row and the queue are gone, with the three defects that lived in them. A drive enrolled
-  late learns each device as it connects. A withdrawal a drive missed reaches it with the next
+  late holds every device from enrolment. A withdrawal a drive missed reaches it with the next
   connection from a device that holds it (the reference's #64, which closes as unnecessary). A
   device that joined is admitted by a drive, which no longer asks for the identity's own key
   (#60). And two changes are ordered by the log, not by the clock of whoever sent them (#69).
@@ -168,8 +170,11 @@ made there by a device that holds the withdrawal.
   its chain parts from the person's the lower digest decides, so it may stand, until the person
   writes a recovery rotation: a chain that holds one stands over a chain that holds none. A
   rotation that is not a recovery rotation retires no key against its holder, who can part the
-  chain beneath it. That is what RFC 0003's `identity rotate` is for, and the page for `device
-  rm` says when to use it.
+  chain beneath it. Nor does a recovery rotation end it where that holder moved first: one who
+  can sign for the identity can add a recovery authority of its own and rotate under it, and
+  then both chains hold one and each holder keeps the chain it was shown first. RFC 0003's
+  `identity rotate` is what a person has against a device in someone else's hands, and it is a
+  race, which this page does not win for them (#50).
 - Two holders of a recovery authority who each write a rotation are not settled by the rule:
   each drive and device keeps the chain it was shown first, and they may differ. A phrase two
   people hold has two owners, as the threat model says of it.
@@ -178,7 +183,7 @@ made there by a device that holds the withdrawal.
   as it sees one, and the contest window an event carries is still not enforced. This is a power
   that holder did not have at a drive before: the threat model says a recovery unpairs no device
   at a node, and that paragraph changes when this is built. It is also what taking an identity
-  back from a thief requires.
+  back from a thief requires, where the thief has not moved first.
 - A landlord learns the whole history of the person's devices, each key and the order in which
   it was admitted and withdrawn, from the first. Before, it learned the devices introduced to
   it. Two landlords of one person hold the same log and the same device keys, and can tell they
@@ -202,16 +207,17 @@ made there by a device that holds the withdrawal.
 - On the QUIC path two key exchanges run, QUIC's beneath the protocol's, the cost RFC 0002
   accepted.
 - Left open, each a follow-up and not a reason to wait: the path to a vault, which is #48;
-  recovery's claim, which is #49; the bytes of the payload, of the frames that follow it and of
-  the log's events, which the golden encodings fix; what a drive keeps of what a device wrote
-  while an event that admitted it stood and was then replaced; how a contest window bears on a
-  recovery rotation's reset of the devices; a device whose admission lies more than 64 events
-  past a drive's log and has no other device to go first; how a drive's own key is replaced;
-  rekeying a channel that stays up; padding and timing, which the threat model names as not
-  covered; whether a responder should remember first messages so a recording tells nothing; a
-  witness or a standing that expires, should the wait above prove too long; who besides the
-  first device may sign for the identity; a version for the pairing payload, which #12 asked of
-  this page and which is pairing's to state; and a log for each holder.
+  recovery's claim, which is #49; whether a recovery rotation stands when its authority was
+  added after the parting, which is #50; the bytes of the payload, of the frames that follow it
+  and of the log's events, which the golden encodings fix; what a drive keeps of what a device
+  wrote while an event that admitted it stood and was then replaced; how a contest window bears
+  on a recovery rotation's reset of the devices; a device whose admission lies more than 64
+  events past a drive's log and has no other device to go first; how a drive's own key is
+  replaced; rekeying a channel that stays up; padding and timing, which the threat model names
+  as not covered; whether a responder should remember first messages so a recording tells
+  nothing; a witness or a standing that expires, should the wait above prove too long; who
+  besides the first device may sign for the identity; a version for the pairing payload, which
+  #12 asked of this page and which is pairing's to state; and a log for each holder.
 
 ## Reaches
 
@@ -221,9 +227,9 @@ made there by a device that holds the withdrawal.
   corrected as above; the threat model's row for a vault's landlord is corrected for what is
   already true, that it holds the identity's log, the keys of the devices it was told of, and
   the address a device dials it from; and `rfcs/README.md` asks of an RFC what #12 asked of this
-  one. The threat model's rows for a landlord and for a person holding the phrase, and the
-  processes page's transports, change when the system does. It ships in the minor version that
-  names this RFC.
+  one. The threat model's rows for a landlord, for a person holding the phrase and for someone
+  with your device, and the processes page's transports, change when the system does. It ships
+  in the minor version that names this RFC.
 - `kotton`: the handshake over QUIC and over a circuit, in place of mutual TLS as the bearer of
   identity; a device key for each person on a device; the log's device event, the inception and
   the recovery rotations naming keys, and the rule for two chains; admission by the log at a

@@ -19,9 +19,9 @@ repository, beside the code.
    decide what it says, does it keep every principle, does it leave a seam toward the north star
    where it concedes something. Of an RFC whose Decision names a handshake, a key exchange or an
    admission they also ask which values cross in the clear, that no durable key or signature
-   over one is among them, and which observer under `design/` the claim keeps out, a relay's
-   operator, a landlord or a listener on the link; the assessor quotes the clause that answers,
-   or refuses the RFC.
+   over one is among them, and which observer row under `design/` the claim keeps, a relay's
+   operator's, a landlord's or the link's; the assessor quotes the clause that answers, or
+   refuses the RFC. When a prose gate here can read RFCs, it holds the same.
 4. **Once the first tag exists, a merged RFC is not edited.** A later RFC supersedes it and
    says so. Before the first tag, nothing depends on an RFC by version, and one may be
    rewritten through a pull request like any page.
