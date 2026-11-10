@@ -16,8 +16,12 @@ repository, beside the code.
 2. **It names what it reaches**: the repositories whose code changes, and the version of the
    protocol the change ships in, when it changes the protocol.
 3. **An assessor and a reviewer read it** before it merges, as for any pull request: does it
-   decide what it says, does it keep every principle, does it leave a seam toward the north
-   star where it concedes something.
+   decide what it says, does it keep every principle, does it leave a seam toward the north star
+   where it concedes something. Of an RFC whose Decision names a handshake, a key exchange or an
+   admission they also ask which values cross in the clear, that no durable key or signature
+   over one is among them, and which observer row under `design/` the claim keeps, a relay's
+   operator's, a landlord's or the link's; the assessor quotes the clause that answers, or
+   refuses the RFC. When a prose gate here can read RFCs, it holds the same.
 4. **Once the first tag exists, a merged RFC is not edited.** A later RFC supersedes it and
    says so. Before the first tag, nothing depends on an RFC by version, and one may be
    rewritten through a pull request like any page.
