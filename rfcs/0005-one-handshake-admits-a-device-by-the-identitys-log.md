@@ -9,7 +9,7 @@ It left the handshake to be written, and said that until it exists the QUIC path
 mutual TLS. This is that page.
 
 The reference reaches a drive over QUIC with TLS 1.3. Each side presents a certificate whose key
-is its own, and the other checks that key against a list. Four things about that are not what
+is its own, and the other checks that key against a list. Three things about that are not what
 RFC 0002 decided, or not what the principles ask.
 
 - **Identity rides the transport.** A drive reached over a relay's circuit, a link that is not
@@ -17,80 +17,109 @@ RFC 0002 decided, or not what the principles ask.
   And TLS 1.3 shows a server's certificate to whoever connects, so a stranger who finds a
   vault's address learns its durable key.
 - **A drive admits a device by a row.** At enrolment a vault keeps one row, for the device that
-  enrolled it. Every other device is introduced afterwards by a signed message from a device
-  already admitted, sent once to each drive that exists at that moment and ordered by the
-  sender's clock. A drive enrolled later is never told of the devices that already exist. A
-  drive that was unreachable when a device was withdrawn is never told again, and the withdrawn
-  device keeps its door there (the reference's #64). The identity's key log, which the vault
-  already holds, could not have told it: the log orders the identity's keys and names no
-  device's.
+  enrolled it. Every other device is introduced afterwards by a signed message from the device
+  that holds the identity's key, sent once to each drive that exists at that moment and ordered
+  by the sender's clock. A drive enrolled later is never told of the devices that already exist.
+  A drive that was unreachable when a device was withdrawn is never told again, and the
+  withdrawn device keeps its door there (the reference's #64). The identity's key log, which the
+  vault already holds, could not have told it: its events carry the identity's keys and its
+  recovery, and name no device.
 - **The key a device presents is the machine's.** There is one per machine, for every person who
   uses it, and it is shown to every vault. A vault that serves two people who share a machine
   can join them by it.
-- **A vault sees where a device is.** The relay's circuit is the last of four ways a device
-  tries to reach a drive. The first three connect directly, and a vault sees, and keeps, the
-  address a device connects from, at every connection: a record of where the person was.
+
+The path a connection takes is a fourth matter and is not decided here. A device dials a vault's
+address before it tries a relay's circuit, so a vault sees the address a device connects from.
+Whether the circuit should be the path to a vault is the next RFC's (#48).
 
 ## Decision
 
 **One handshake, the same over every transport.** It is the Noise Protocol Framework's XK
-pattern (revision 34), `Noise_XK_25519_ChaChaPoly_SHA256`, with the ASCII bytes
-`kotton-handshake-v1` as its prologue. The side that opens the connection is the initiator. A
-side's static key is the Montgomery form of its Ed25519 key, the form a pair handle is already
-derived from. The initiator holds the responder's key before it begins, from enrolment for a
-drive and from pairing or the identity's log for a device, and the pattern never sends it.
+pattern (revision 34), `Noise_XK_25519_ChaChaPoly_SHA256`. The side that opens the connection is
+the initiator. A side's static key is the Montgomery form of its Ed25519 key, the form a pair
+handle is already derived from. The initiator holds the responder's key before it begins, from
+enrolment for a drive and from pairing or the identity's log for a device, and the pattern never
+sends it.
 
 ```text
 initiator                                   responder
+0. -> the version, one byte
 1. -> e, es
-2.                                          <- e, ee      payload: the responder's signature
-3. -> s, se      payload: the initiator's key, its signature, the identity it acts for,
-                 and the latest event of that identity's log it holds
+2.                                          <- e, ee
+3. -> s, se      payload: the identity the initiator acts for, the latest event of
+                 that identity's log it holds, and the versions it speaks
 ```
 
-Each side signs for itself, as RFC 0002 says. A signature is Ed25519, under the signer's own
-key, over the ASCII bytes `kotton-handshake-v1`, one zero byte, one byte that is 1 for the
-initiator and 2 for the responder, and the 32-byte handshake hash as it stands when the payload
-is written. The initiator's payload carries its Ed25519 public key, and the responder checks
-that the key's Montgomery form is the static key the pattern delivered. A signature made here is
-bound to this exchange and to the side that made it, and is good for nothing else.
+A connection begins with one byte, the handshake's version, which is 1, and the prologue is the
+ASCII bytes `kotton-handshake-` followed by that byte, so the version is bound into every key. A
+responder that does not speak the version closes and says nothing. Each handshake message is one
+frame, its length first as two bytes, most significant first. A responder that holds several
+keys tries each on the first message, and one that opens it under none closes and says nothing.
+Either side closes if an exchange yields all zeros. After the third message the channel is
+Noise's transport: frames of at most 65535 bytes, each sealed, read in the order sent. The
+responder's first frame states the versions it speaks, and a side that finds both speak a later
+version than the one in use closes. Nothing is resumed, so every connection meets the admitted
+set as it stands.
 
-A first message that does not open under the responder's key is not answered, so one who does
-not hold a drive's key learns nothing from it, its key included. After the third message the
-channel is Noise's transport: frames of at most 65535 bytes, each sealed, read in the order
-sent. Nothing is resumed, so every connection meets the admitted set as it stands. A connection
-begins with one byte, the handshake's version, which is 1; a responder that does not speak it
-answers with the versions it speaks and closes, before any key material crosses.
+Neither side signs anything. The pattern itself shows each side that the other holds the static
+key it claims: the responder's by the first exchange, the initiator's by the last. The responder
+takes the initiator's Ed25519 key to be the one, among the devices the log admits, whose
+Montgomery form is the static key the pattern delivered. A signature over the exchange would add
+only a proof a third party could check that the two had met, which is a record this design does
+not want made.
 
-**What crosses in the clear** is the version byte, each side's ephemeral public value, and
-sealed bytes with their tags. No durable key is among them, and no signature over one. The
-initiator's key, both signatures, the identity and its log cross only inside the channel, after
-the responder has shown it holds the key the initiator expected. A relay, a host that ends TLS,
-and a listener on the link see a version, two fresh values and ciphertext.
+**What the handshake gives, and to whom.** One who does not hold the responder's key, and has
+not recorded a first message sent to it, learns nothing from it, its key included, and cannot
+tell that anything at the address speaks this protocol. One who holds the responder's key, or
+has such a recording, can tell that the responder answers there, and no more. The initiator's
+key is shown only to the responder it named, never to one standing between, active or passive. A
+key stolen later opens no recorded connection. And one who steals a side's key can answer as
+that side, and not as the other to it.
 
-**A transport carries bytes.** QUIC between a person's own devices, a relay's circuit, a
-WebSocket to a vault that cannot accept QUIC, and a link such as Bluetooth each carry the same
-frames. On the QUIC path TLS still runs beneath, as QUIC requires, with a certificate made for
-the connection and checked by nobody: it carries no identity and proves nothing.
+**What crosses in the clear** is the version byte, each side's ephemeral public value, each
+frame's length, and sealed bytes with their tags. No durable key is among them, and no
+signature. The initiator's key, the identity and its log cross only inside the channel, after
+the responder has shown it holds the key the initiator expected. A relay's operator, a host that
+ends TLS, and a listener on the link see a version, two fresh values, lengths and ciphertext.
+
+**A transport carries bytes.** QUIC, a relay's circuit, a WebSocket to a vault that cannot
+accept QUIC, and a link such as Bluetooth each carry the same frames. On the QUIC path the
+frames are one stream, and TLS still runs beneath, as QUIC requires, with a certificate made for
+the connection and checked by nobody, no protocol name and no ticket: it carries no identity and
+proves nothing.
 
 **A device's key is one person's, on one device.** The key a device presents in the handshake is
 made for one identity on that device and held as that person's other keys there are held. The
 machine's key is not presented to a drive or to another device. Two people who share a machine
 share no key a vault sees.
 
-**The identity's log names its devices.** An event of the log that admits a device names the key
-that device presents, and an event that withdraws one names the key withdrawn. They are the
-events the log already uses to add and remove a device, authorised as the log already requires.
-The person's devices, as of any event, are the keys admitted up to it and not withdrawn. The
-order of two changes is the log's order, and no clock decides it.
+**The identity's log names its devices.** The log gains one kind of event, a device event. It
+acts under the identity's current keys and does not change them, and its digest covers one
+change: a key admitted, or a key withdrawn. The inception names the key of the device it is made
+on. A recovery rotation names every device that stands after it, and a key it does not name is
+withdrawn by it. No other event changes the devices. So the person's devices, as of any event,
+are the keys named by the last recovery rotation up to it, or by the inception if there is none,
+with each device event since applied in the log's order. No clock orders two changes. Who may
+sign for the identity is the log's rule and is not changed here; in the reference today that is
+the device that holds the identity's key.
+
+**One chain, and how two are settled.** Two events may extend one event. Of two such events a
+recovery rotation stands over one that is not; of two that are both recovery rotations, or
+neither, the one whose digest is lower as bytes stands. A side that holds the event that does
+not stand replaces it, and whatever it held after it, when it is shown the one that does. So
+every drive and device that is shown both settles on one chain, in whatever order they arrived.
+A device whose event was replaced writes its change again and tells its person, and a responder
+that replaces an event tells an initiator it admits.
 
 **A drive admits a device by the log, and by nothing else.** In its payload the initiator names
 the identity it acts for and the latest event of that identity's log it holds, by sequence
-number and digest. Once the channel is up, and before anything else is said, the two sides bring
-each other to the later log: the side that is behind is sent the events it lacks and checks them
-by the log's own rules, and an event that does not extend the chain it holds is refused. The
-responder then admits the initiator if its key is among the identity's devices as of the latest
-event the responder holds, and otherwise refuses and closes. A drive keeps no row for a device,
+number and digest. The responder checks the initiator's key against the log it holds. If that
+log does not admit the key, the responder reads at most 64 events from the initiator, keeps
+those that extend or stand over what it holds for the identity named, checks again, and if the
+key is still not admitted closes. It closes in one way, whatever the reason, and to an initiator
+it has not admitted it sends no event and does not say whether it holds the identity or where
+its log stands. Once it admits the initiator, each side sends the other the events it lacks, and
+a responder whose log then withdraws the initiator closes. A drive keeps no row for a device,
 and is never told of one by another.
 
 A responder is checked by what the initiator already holds for it. A drive is the key the device
@@ -101,71 +130,73 @@ initiator holds, its own person's or a contact's.
 a drive, no queue of drives still to be told, and nothing to retry. A device that writes an
 event connects to the drives it can reach, and any device's next connection to a drive carries
 the log there. A drive enrolled after a device joined learns of that device the first time the
-device connects. A withdrawn device is refused by a drive from the first connection any of the
-person's devices makes to that drive after the withdrawal.
-
-**A drive on a host is reached through a relay's circuit.** A device does not dial a vault's
-address, punch through to it, or ask to be introduced to it directly: the circuit is the path,
-not the last resort. So a vault sees the relay's address and never the device's, and the relay,
-which sees the device's address, sees a handle and ciphertext and not whose drive it is. Neither
-holds both unless one landlord runs both, which the threat model already says. Between devices
-the paths stay as they are, and a device that keeps a drive whole is reached as a device.
+device connects. A withdrawn device is refused by a drive from the first connection made there
+by a device that holds the withdrawal.
 
 ## Consequences
 
 - The row and the queue are gone, with the three defects that lived in them. A drive enrolled
   late learns each device as it connects. A withdrawal a drive missed reaches it with the next
-  connection from any device (the reference's #64, which closes as unnecessary). A device that
-  joined can enrol a drive, since a drive no longer asks for the identity's own key (#60). And
-  two changes are ordered by the log, not by the clock of whoever sent them (#69).
-- A withdrawn device keeps its door at a drive until one of the person's devices next connects
-  there, and no longer. This RFC does not shorten that with a clock: a standing that expires has
-  to be renewed, and the renewals are a rhythm a host can read and a way for a person who was
-  away to be locked out. A drive is as good as the log it holds. Where a withdrawn device could
-  still sign for the identity, withdrawing it is not enough, and the person rotates, as RFC
-  0003's `device rm` says.
-- A landlord learns the keys of the person's devices and the order in which they were admitted
-  and withdrawn, as it already does by introduction, and nothing of where they are. Two
-  landlords of one person hold the same log and the same device keys, and can tell they serve
-  one person. That is true today, since a vault holds the identity's log from enrolment, and
-  this RFC does not change it. The seam is a log for each host, derived from the identity's, and
-  it is the recovery copy's question as much as the handshake's.
-- Every byte to and from a vault crosses a relay. The relay carries more, a relay that is down
-  takes the path to every vault with it, and a relay's operator can tell that the far end of
-  many busy circuits is a vault, though not whose. Devices keep what they were told to keep, as
-  RFC 0002 says. Whether a person may let their devices dial a vault they run themselves is left
-  open.
-- One who already holds a drive's key can tell that the drive answers at an address. No one else
-  can tell that anything there speaks this protocol past the version byte.
-- A key signs and takes part in an exchange. The two uses are of one Ed25519 key in its two
-  standard forms, the signature is over a message that says what it is and which side made it,
-  and nothing either use produces is accepted by the other.
+  connection from a device that holds it (the reference's #64, which closes as unnecessary). A
+  device that joined is admitted by a drive, which no longer asks for the identity's own key
+  (#60). And two changes are ordered by the log, not by the clock of whoever sent them (#69).
+- A withdrawn device keeps its door at a drive until a device that holds the withdrawal connects
+  there, and no longer. RFC 0002 and RFC 0003 said "at its next connection"; they are corrected
+  to say so. This RFC does not shorten the wait with a clock: a standing that expires has to be
+  renewed, and the renewals are a rhythm a host can read and a way for a person who was away to
+  be locked out. A drive is as good as the log it holds.
+- A withdrawn device that can still sign for the identity can write an event of its own, and it
+  stands or falls by the digest like any other. What ends that is a recovery rotation, which
+  stands over whatever was written beside it or after the event it extends; that is what RFC
+  0003's `identity rotate` is for, and the page for `device rm` says when to use it.
+- Whoever holds the phrase can shut every device out of every drive at once, by a recovery
+  rotation that names only their own. The reference acts on a recovery rotation as soon as it
+  sees one, and the contest window an event carries is still not enforced. This is a power the
+  phrase's holder did not have at a drive before, and the threat model's paragraph on the phrase
+  gains it when this is built. It is also what taking an identity back from a thief requires.
+- A landlord learns the whole history of the person's devices, each key and the order in which
+  it was admitted and withdrawn, from the first. Before, it learned the devices introduced to
+  it. Two landlords of one person hold the same log and the same device keys, and can tell they
+  serve one person. That is true today, since a vault holds the identity's log from enrolment.
+  The seam is a log for each host, derived from the identity's, and it is the recovery copy's
+  question as much as the handshake's.
+- A key takes part in an exchange in its Montgomery form and signs in its Ed25519 form
+  elsewhere, and a pair handle already uses the first form between two static keys. The known
+  analyses of one key in both uses hold while an exchange's output goes only into the key
+  derivation and is never released, which is true of every use here.
+- RFC 0002 called the handshake the signed form of the ceremony the browser's door runs. It is
+  not that. The ceremony shows the initiator's key to whoever completes the ephemeral exchange,
+  since neither side knows the other yet; here the initiator already holds the responder's key,
+  so the first message is bound to it and neither key is shown to anyone else. RFC 0002's
+  sentences are corrected. The browser's door keeps its ceremony, which admits a key a node has
+  not met by a person's comparison, and pairing keeps its own version in its own first frame,
+  which this RFC does not change.
 - On the QUIC path two key exchanges run, QUIC's beneath the protocol's, the cost RFC 0002
-  accepted. The browser's door keeps its own ceremony, which admits a key a node has not met yet
-  by a person's comparison; this handshake is for keys already known.
-- Recovery by the phrase is another door, and this RFC leaves it as the threat model describes
-  it. One line of that description changes when this is built: a drive refuses a device a
-  rotation left out.
-- Left open, each a follow-up and not a reason to wait: the bytes of the payloads and of the
-  log's device events, which the golden encodings fix; how a drive's own key is replaced;
-  rekeying a channel that stays up; padding and timing, which the threat model names as not
-  covered; a witness or a standing that expires, should the window above prove too long; and a
-  log for each host.
+  accepted.
+- Left open, each a follow-up and not a reason to wait: the path to a vault, which is #48; the
+  bytes of the payload and of the log's events, which the golden encodings fix; how a drive's
+  own key is replaced; rekeying a channel that stays up; padding and timing, which the threat
+  model names as not covered; whether a responder should remember first messages so a recording
+  tells nothing; a witness or a standing that expires, should the wait above prove too long; who
+  besides the first device may sign for the identity; and a log for each host.
 
 ## Reaches
 
-- `kotton-protocol`: the type crates gain the handshake's messages and the log's device events;
-  the tenant-device types of #20 are not moved in, since the message they carry ends. The threat
-  model's rows for a landlord, a relay's operator and a person holding the phrase change when
-  the system does, and the processes page's transports with them. In this pull request the
-  landlord's row is corrected for what is already true: it holds the identity's log and the keys
-  of the tenant's devices. It ships in the minor version that names this RFC.
+- `kotton-protocol`: the type crates gain the handshake's messages and the log's device event;
+  the tenant-device types of #20 are not moved in, since the message they carry ends. In this
+  pull request: RFC 0002's paragraph on the handshake and RFC 0003's line for `device rm` are
+  corrected as above; the threat model's row for a vault's landlord is corrected for what is
+  already true, that it holds the identity's log, the keys of the devices it was told of, and
+  the address a device dials it from; and `rfcs/README.md` asks of an RFC what #12 asked of this
+  one. The threat model's rows for a landlord and for a person holding the phrase, and the
+  processes page's transports, change when the system does. It ships in the minor version that
+  names this RFC.
 - `kotton`: the handshake over QUIC and over a circuit, in place of mutual TLS as the bearer of
-  identity; a device key for each person on a device; the log's events naming device keys;
-  admission by the log at a vault and at a device, with the row for a tenant's device and the
-  message that introduced one removed; and the circuit as the path to a vault. The reference's
-  issue is opened when this lands, and #64 closes under it.
-- `kotton-relay`: it does what it does now, and carries more.
-- `kotton-vault`: it admits by the log, accepts the handshake over whatever it can listen on,
-  and is reached through a relay.
-- `kotton-gateway`, `kotton-portal`, `kotton-cli`, `kotton-dist`: nothing.
+  identity; a device key for each person on a device; the log's device event, the inception and
+  the recovery rotations naming keys, and the rule for two chains; admission by the log at a
+  vault and at a device, with the row for a tenant's device and the message that introduced one
+  removed. The reference's issue is opened when this lands, and #64 closes under it.
+- `kotton-vault`: it admits by the log and accepts the handshake over whatever it can listen on.
+- `kotton-cli`: `device rm` says what the wait is and when to rotate, and `status` shows a drive
+  whose log is behind.
+- `kotton-relay`, `kotton-gateway`, `kotton-portal`, `kotton-dist`: nothing.
