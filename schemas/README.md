@@ -58,9 +58,17 @@ reads it.
 
 ## `calendar`
 
-A timed event: `title`, what the person calls it; `start_at` and `end_at`, when it starts and
-ends; `participants`, a list of who takes part, empty when no one is named; and `location`,
-where, or nothing.
+An event, at revision 2: `title`, what the person calls it; `start_at` and `end_at`, when it
+starts and ends; `participants`, a list of who takes part, empty when no one is named; and
+`location`, where, or nothing. Revision 2 adds what an event brought in from another calendar
+carries, each of them or nothing: `all_day`, whether the event is a whole day, in which case
+`end_at` is the day after its last, as an `.ics` writes it; `time_zone`, the zone its times
+were written in; `description`; `recurrence`, the rule by which it repeats, and
+`recurrence_id`, which occurrence of a series this record moves; and `uid`, the identifier the
+event's origin gave it. `uid` is the one field here that joins this record to a copy someone
+else holds: it is what makes a second import of one file change nothing, and it is sealed
+with the record like every other field. Where a file came from and when it was read are not
+kept.
 
 ## `channel.key-grant`
 

@@ -1,7 +1,7 @@
 {
   "publisher": "did:key:z6MkiDN8JjmwvSCGfrmH9YdvBuJxVGyyEWBvECCp3cfDgCMB",
   "name": "calendar",
-  "revision": 1,
+  "revision": 2,
   "fields": [
     {
       "name": "title",
@@ -29,7 +29,37 @@
       "name": "location",
       "type": "string",
       "nullable": true
+    },
+    {
+      "name": "all_day",
+      "type": "bool",
+      "nullable": true
+    },
+    {
+      "name": "time_zone",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "recurrence",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "recurrence_id",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "uid",
+      "type": "string",
+      "nullable": true
     }
   ],
-  "description": "Timed calendar events with optional location and participants."
+  "description": "Calendar events: a title, when it starts and ends, who takes part and where; and what an event brought in from another calendar carries, whether it is all day, its time zone, a description, how it repeats, and the identifier its origin gave it."
 }
