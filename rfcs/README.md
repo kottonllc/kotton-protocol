@@ -17,10 +17,11 @@ repository, beside the code.
    protocol the change ships in, when it changes the protocol.
 3. **An assessor and a reviewer read it** before it merges, as for any pull request: does it
    decide what it says, does it keep every principle, does it leave a seam toward the north star
-   where it concedes something. Of an RFC that changes what crosses between two sides they also
-   ask which values cross in the clear, whether a durable key or a signature over one is among
-   them, and which observer the claim is made against: a relay's operator, a landlord, or a
-   listener on the link.
+   where it concedes something. Of an RFC whose Decision names a handshake, a key exchange or an
+   admission they also ask which values cross in the clear, that no durable key or signature
+   over one is among them, and which observer under `design/` the claim keeps out, a relay's
+   operator, a landlord or a listener on the link; the assessor quotes the clause that answers,
+   or refuses the RFC.
 4. **Once the first tag exists, a merged RFC is not edited.** A later RFC supersedes it and
    says so. Before the first tag, nothing depends on an RFC by version, and one may be
    rewritten through a pull request like any page.

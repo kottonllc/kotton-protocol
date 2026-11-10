@@ -77,7 +77,7 @@ daemon holds for this identity, and ending one) · `rm` · `whoami`. `id` is the
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
 other side) · `list` (with last seen and the drives each keeps whole) · `show` · `rename` · `rm
 <device>` (revoke it: refused at its next connection to every drive and device that holds the
-revocation, which each learns from the next of the person's devices to reach it; if it may be in
+revocation, which each learns from the next device that holds it to reach it; if it may be in
 someone else's hands the person is told to `identity rotate`, which retires the keys it held
 under the identity page's rule) · `bind` (bind this identity to this device's hardware) ·
 `receive off|10m|always` (whether this device has a listener and an announcement on the network
