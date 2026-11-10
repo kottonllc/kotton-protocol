@@ -6,19 +6,18 @@ RFC 0004 names; and the rest of the reference's core set, today's definitions re
 under the release key so that the core set is one directory (RFC 0004). Each file here is the
 authority for its schema, in the form a schema is registered in: its publisher, the key that
 publishes it; its name under that key; its revision; its fields with their types; and a
-description (RFC 0004). A schema's
-identity is `<publisher>/<name>`, and its version is the digest of its definition in canonical
-form (RFC 0004); the file holds the definition indented for reading, and carries no digest of
-itself. The files under `kotton/` are published under Kotton's release key, the key in the
-reference's `infra/release/allowed_signers`. From the first tag on they carry that key's
-`signature`; before it they carry none, and are what every page here is, a change the maintainer
-signed off. An implementation holds these in its core set, unchanged; the reference holds them
-in `kotton_schemas`'s core set. A change to a field is a new revision, and a new digest, of the
-same schema.
+description (RFC 0004). A schema's identity is `<publisher>/<name>`, and its version is the
+digest of its definition in canonical form (RFC 0004); the file holds the definition indented
+for reading, and carries no digest of itself. The files under `kotton/` are published under
+Kotton's release key, the key in the reference's `infra/release/allowed_signers`. From the
+first tag on they carry that key's `signature`; before it they carry none, and are what every
+page here is, a change the maintainer signed off. An implementation holds these in its core
+set, unchanged; the reference holds them in `kotton_schemas`'s core set. A change to a field is
+a new revision, and a new digest, of the same schema.
 
 Every record is sealed under its person's key, in a drive or on a device, and a vault or a
-relay reads none of it. No field of `keeps-whole`, `secret` or `access-log` is an identifier
-minted for the record, and a record's own id is the implementation's.
+relay reads none of it. No field of `keeps-whole`, `secret`, `access-log` or `petname` is an
+identifier minted for the record, and a record's own id is the implementation's.
 
 ## `keeps-whole`
 
@@ -59,16 +58,19 @@ reads it.
 
 ## `petname`
 
-The person's own name for a key, as RFC 0004 says: `key`, the `did:key` the name is for, and
-`name`, what the person calls it. There is one record for each key, in the person's own drive,
-so a name given on one device is there on the others. A name holds no `/` and no control
-character and does not begin with `did:`, so that `<petname>/<name>` reads one way. Two keys
-may be given one name, and a prompt then shows both. `kotton` names Kotton's release key on
-every device with no record, until the person writes one for that key.
+The person's own name for a key they meet, a publisher's, a contact's or a device's, as RFC
+0004 says: `key`, the `did:key` the name is for, and `name`, what the person calls it. There is
+one record for each key, in `personal`, so a name given on one device is there on the others. A
+name holds no `/` and no control character and does not begin with `did:`, so that
+`<petname>/<name>` reads one way. Two keys may be given one name; a prompt then shows both, and
+the short form `<petname>/<name>` is refused, naming both keys. `kotton` names Kotton's release
+key on every device with no record, until the person writes one for that key; a petname
+`kotton` for any other key is refused.
 
 No app reaches it: a schema grant on it is refused, as on `secret`, and it is kept out of
 record search. A prompt names a publisher by what a petname says, so nothing but the person's
-own CLI or shell writes one.
+own CLI or shell writes one; and the names together are the person's map of whom they deal
+with, which is theirs to read and no app's.
 
 ## `calendar`
 

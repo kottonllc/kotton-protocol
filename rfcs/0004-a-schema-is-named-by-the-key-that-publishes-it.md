@@ -83,9 +83,9 @@ schema's publisher differ the prompt says so. The first meeting with a publisher
 the person decides what to call it, as they do a contact's; after that, every prompt about that
 publisher is quiet.
 
-**A statement about a key is a signed record, from a source the person chose.** Four sources
-are named here; the first is built with this decision, and the other three are seams, each one
-more source of the same kind of record:
+**A statement about a key is a record from a source the person chose, signed by that source
+unless the source is the person.** Four sources are named here; the first is built with this
+decision, and the other three are seams, each one more source of the same kind of record:
 
 - *A petname*: the person's own name for a key, kept on their devices as a record.
 - *An introduction*: a contact's petname for a key, shared by that contact's choice, so a prompt
