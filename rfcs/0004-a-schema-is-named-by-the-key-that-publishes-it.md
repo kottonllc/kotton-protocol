@@ -35,8 +35,9 @@ an Ed25519 signature, under the key the `did:key` names, carried beside the defi
 `signature`, base64, never inside the digest or the identity, the form an app manifest's
 publisher block already takes. What is signed says what it is: the 16 ASCII bytes
 `kotton-schema-v1`, one zero byte, and the definition's 32-byte digest, 49 bytes in that order.
-A `did:key` signs more than schemas, and a signature it made over anything else, a bare digest
-included, is never a schema's. The `v1` is the form of the signed message, not a revision of
+A `did:key` signs more than schemas, and a signature it made over anything else is never a
+schema's: an implementation checks the signature over those 49 bytes and nothing else, and
+refuses one over a bare digest. The `v1` is the form of the signed message, not a revision of
 any schema. A definition whose signature does not check against its publisher is no schema at
 all. Nobody can publish under a key they do not hold, so no one can wear another publisher's
 name, whatever string they choose for their own.
