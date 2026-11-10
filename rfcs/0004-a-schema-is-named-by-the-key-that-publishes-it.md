@@ -64,10 +64,11 @@ the release's signature covers them as well. Before the first tag they carry non
 depends on a schema by version yet, the release key never leaves the maintainer's machine, and
 the files are what every page here is, a change the maintainer signed off. "Core" means shipped
 with the implementation and present on every device, and nothing more: being core gives a
-schema no reach another schema lacks and no refusal of its own. Two of Kotton's schemas are
-kept from apps, `secret` and `access-log`, and not because they are core: the first release
-keeps the keychain and the access log from every app (`schemas/README.md`), and an
-implementation holds that refusal for those two identities, by name. A publisher saying the
+schema no reach another schema lacks and no refusal of its own. Three of Kotton's schemas are
+kept from apps, `secret`, `access-log` and `petname`, and not because they are core: the first
+release keeps the keychain and the access log from every app (`schemas/README.md`), and a
+petname is what a prompt trusts, so nothing but the person's own terminal may write one. An
+implementation holds that refusal for those three identities, by name. A publisher saying the
 same of its own schema, in the definition it signs, is a seam this RFC leaves open. A schema
 nobody at Kotton has seen works like any other, as RFC 0003 says.
 
@@ -82,9 +83,9 @@ schema's publisher differ the prompt says so. The first meeting with a publisher
 the person decides what to call it, as they do a contact's; after that, every prompt about that
 publisher is quiet.
 
-**A statement about a key is a signed record, from a source the person chose.** Four sources
-are named here; the first is built with this decision, and the other three are seams, each one
-more source of the same kind of record:
+**A statement about a key is a record from a source the person chose, signed by that source
+unless the source is the person.** Four sources are named here; the first is built with this
+decision, and the other three are seams, each one more source of the same kind of record:
 
 - *A petname*: the person's own name for a key, kept on their devices as a record.
 - *An introduction*: a contact's petname for a key, shared by that contact's choice, so a prompt
@@ -128,12 +129,12 @@ person has is what they can see.
   and `access-log`, in `schemas/kotton/`; the rest of the reference's core set follows under the
   reference's issue. A record's URL form becomes `kotton://records/<publisher>/<name>/<id>`.
   Nothing is released, so no install migrates.
-- Left open, each a follow-up and not a reason to wait: the record schemas of a petname, an
-  introduction, a confirmation and a list entry; the channels a confirmation accepts first; what
-  a publisher writes to say which revisions a reader may still read; how a petname and the names
-  a person's sources give are shown together when they disagree; and how a list reaches a
-  device, which tells the list's publisher no more than fetching a release does and carries no
-  identifier of the device or the person.
+- Left open, each a follow-up and not a reason to wait: the record schemas of an introduction,
+  a confirmation and a list entry (a petname's is `schemas/kotton/petname.json`); the channels a
+  confirmation accepts first; what a publisher writes to say which revisions a reader may still
+  read; how a petname and the names a person's sources give are shown together when they
+  disagree; and how a list reaches a device, which tells the list's publisher no more than
+  fetching a release does and carries no identifier of the device or the person.
 
 ## Reaches
 
