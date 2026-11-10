@@ -7,7 +7,7 @@ crate answers the question "on whose authority does this act?"
 
 | Process | What it is | Talks to | Over |
 | --- | --- | --- | --- |
-| `kdeviced` | the device daemon; when it runs, starts one `kuserd` per registered user, and reads one entry of the platform keychain, the device operational key, for a supervised child that asks; it can reach no user's data | spawns `kuserd`; the operator CLI `kctl` | a device socket with challenge-response |
+| `kdeviced` | the device daemon; runs as the same OS user as each `kuserd` it starts and each client that reaches it; when it runs, starts one `kuserd` per registered user, and reads one entry of the platform keychain, the device operational key, for a supervised child that asks; it can reach no user's data | spawns `kuserd`; the operator CLI `kctl` | a device socket with challenge-response |
 | `kuserd` | the user daemon; opens the platform keychain and reads from it the device operational key and the roots of every user it serves; holds the keys, store, apps, windows and sync engine of those users, and the one peer listener: each user on the machine when `kotton-start` runs it, one user when `kdeviced` starts it | the CLI and REPL, the shell, the sidecars, peers | the user socket; QUIC with mutual TLS to peers |
 | `kuid` | the compositor: owns the draw surface, composites app windows, routes input, draws prompts | `kuserd` only | a socket pair handed to it at spawn, so there is no path to impersonate it on |
 | `kinferd` | the inference runtime: no key, no store, no network | `kuserd` only | a pair of pipes at spawn; kernel sandboxing on Linux |
@@ -28,12 +28,17 @@ other, refuses to create another, and listens on a socket named for that user, w
 reaches only when `KUSERD_IPC_NAME` names it and `kctl` dials by name. Either way, every
 `kuserd` on a machine opens the two machine databases, reads the one peer port, and opens the
 platform keychain scoped to the install's base directory. `kdeviced` answers a supervised child
-authorized at its spawn with the device operational key, and it registers none: the `kuserd`
-it starts are not supervised children, so they read their roots from the keychain themselves.
-Outside the daemons, `kctl` keeps its operator key in the keychain, `kotton device reset`
-deletes the install's entries, and `kvaultd` keeps its own key in the store of its state
-directory. One process per user on the path an install runs, and one process reading the
-keychain for every user on the machine, are on the [not-built list](not-yet.md).
+authorized at its spawn with the device operational key, and it registers none: the `kuserd` it
+starts are not supervised children, so they read their roots from the keychain themselves.
+`kdeviced`, each `kuserd` it starts and their clients run as one OS user, and the users a device
+serves are told apart by their keys, never by OS accounts. On Unix each end holds that:
+`kdeviced` answers only its own OS user at its socket, and `kctl` and `kuserd` say nothing to a
+device socket another OS user serves. A device daemon above several OS accounts is not this
+design and would take an RFC of its own. Outside the daemons, `kctl` keeps its operator key in
+the keychain, `kotton device reset` deletes the install's entries, and `kvaultd` keeps its own
+key in the store of its state directory. One process per user on the path an install runs, and
+one process reading the keychain for every user on the machine, are on the [not-built
+list](not-yet.md).
 
 Every request on every socket has a trust tier, assigned in one exhaustive match: a new
 request is a compile error until someone assigns it one. A remote caller reaches a gateway
