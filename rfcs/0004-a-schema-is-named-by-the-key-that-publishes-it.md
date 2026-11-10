@@ -61,8 +61,8 @@ the files are what every page here is, a change the maintainer signed off. "Core
 with the implementation and present on every device, and nothing more: being core gives a
 schema no reach another schema lacks and no refusal of its own. Two of Kotton's schemas are
 kept from apps, `secret` and `access-log`, and not because they are core: the first release
-keeps the keychain and the access log for the person's own terminal (`schemas/README.md`), and
-an implementation holds that refusal for those two identities, by name. A publisher saying the
+keeps the keychain and the access log from every app (`schemas/README.md`), and an
+implementation holds that refusal for those two identities, by name. A publisher saying the
 same of its own schema, in the definition it signs, is a seam this RFC leaves open. A schema
 nobody at Kotton has seen works like any other, as RFC 0003 says.
 
