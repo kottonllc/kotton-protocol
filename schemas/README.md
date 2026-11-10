@@ -1,11 +1,12 @@
 # Schemas
 
 The record schemas of Kotton's core set: the three the first release's decision (RFC 0003)
-names, the keychain, the whole-keeper claim RFC 0002 defines, and the access log; and the rest
-of the reference's core set, today's definitions republished under the release key so that the
-core set is one directory (RFC 0004). Each file here is the authority for its schema, in the
-form a schema is registered in: its publisher, the key that publishes it; its name under that
-key; its revision; its fields with their types; and a description (RFC 0004). A schema's
+names, the keychain, the whole-keeper claim RFC 0002 defines, and the access log; the petname
+RFC 0004 names; and the rest of the reference's core set, today's definitions republished
+under the release key so that the core set is one directory (RFC 0004). Each file here is the
+authority for its schema, in the form a schema is registered in: its publisher, the key that
+publishes it; its name under that key; its revision; its fields with their types; and a
+description (RFC 0004). A schema's
 identity is `<publisher>/<name>`, and its version is the digest of its definition in canonical
 form (RFC 0004); the file holds the definition indented for reading, and carries no digest of
 itself. The files under `kotton/` are published under Kotton's release key, the key in the
@@ -55,6 +56,19 @@ only when the person pins the log there.
 No app reaches it: a schema grant on it is refused, as on `secret`, and it is kept out of
 record search, so only the person's own CLI or shell
 reads it.
+
+## `petname`
+
+The person's own name for a key, as RFC 0004 says: `key`, the `did:key` the name is for, and
+`name`, what the person calls it. There is one record for each key, in the person's own drive,
+so a name given on one device is there on the others. A name holds no `/` and no control
+character and does not begin with `did:`, so that `<petname>/<name>` reads one way. Two keys
+may be given one name, and a prompt then shows both. `kotton` names Kotton's release key on
+every device with no record, until the person writes one for that key.
+
+No app reaches it: a schema grant on it is refused, as on `secret`, and it is kept out of
+record search. A prompt names a publisher by what a petname says, so nothing but the person's
+own CLI or shell writes one.
 
 ## `calendar`
 
