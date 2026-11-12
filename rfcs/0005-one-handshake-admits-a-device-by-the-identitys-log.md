@@ -62,13 +62,13 @@ does not speak the version, or holds no key the first message opens under, reads
 and closes, and says nothing either way; one that holds several keys tries each. A responder
 waits 10 seconds, counted from when it accepts the connection, for the version byte and the
 whole of the first frame, and closes on a connection that has not sent them by then, having
-written nothing. The wait is one value at every responder, and it is written beside the golden
-encodings. Either side closes if an exchange yields all zeros, which is what refuses a key of
-low order. After the third message the channel is Noise's transport: frames of at most 65535
-bytes, each sealed, read in the order sent. The responder's first frame, to any initiator that
-completed the handshake, states the versions it speaks, and a side that finds both speak a later
-version than the one in use closes. Nothing is resumed, so every connection meets the admitted
-set as it stands.
+written nothing. The wait is for the first frame alone, and this page sets none on any later
+frame. It is one value at every responder, and it is written beside the golden encodings. Either
+side closes if an exchange yields all zeros, which is what refuses a key of low order. After the
+third message the channel is Noise's transport: frames of at most 65535 bytes, each sealed, read
+in the order sent. The responder's first frame, to any initiator that completed the handshake,
+states the versions it speaks, and a side that finds both speak a later version than the one in
+use closes. Nothing is resumed, so every connection meets the admitted set as it stands.
 
 Neither side signs anything. The pattern itself shows each side that the other holds the static
 key it claims: the responder's by the first exchange, the initiator's by the last. The responder
@@ -121,13 +121,15 @@ acts under the identity's current keys and does not change them, and it names on
 admitted, or a key withdrawn. The inception names the key of the device it is made on. A
 recovery rotation names every device that stands after it, and a key it does not name is
 withdrawn by it. No other event changes the devices. So the person's devices, as of any event,
-are the keys named by the last recovery rotation up to it, or by the inception if there is none,
-with each device event since applied in the log's order. An event does not admit a key whose
-Montgomery form is that of a key already admitted, or of another key the same event names, and
-an event that admits a key already admitted, or withdraws one that is not, changes nothing; in
-each case the event keeps its place in the log. No clock orders two changes. Who may sign for
-the identity is the log's rule and is not changed here; in the reference today that is the
-device that holds the identity's key.
+are the keys admitted by the last recovery rotation up to it, or by the inception if there is
+none, with each device event since applied in the log's order. An inception and a recovery
+rotation start from no keys, and each key such an event names is admitted by it, but for one
+rule: where two keys it names have one Montgomery form, neither of the two is admitted. A device
+event that admits a key admits it unless that key is already admitted or a key already admitted
+has its Montgomery form, and a device event that withdraws a key withdraws it if that key is
+admitted; otherwise a device event changes nothing. In each case the event keeps its place in
+the log. No clock orders two changes. Who may sign for the identity is the log's rule and is not
+changed here; in the reference today that is the device that holds the identity's key.
 
 **An event's digest covers the keys it names through a root.** An event that names device keys,
 which is an inception, a recovery rotation or a device event, carries a device root of 32 bytes
@@ -143,24 +145,31 @@ admitted and 2 for a key withdrawn, and the 32 bytes of the key. Its leaf is the
 ASCII bytes `kotton-device-leaf`, the same byte, the key and the blind. The key an inception
 names, and each key a recovery rotation names, is a key admitted. A device event names one key,
 and its root is that key's leaf. Where an event names more, the leaves, no two of them alike,
-are put in ascending order as bytes and joined in pairs, the first with the second and the third
-with the fourth, a last one that has no pair carried up as it is. A pair gives the SHA-256 of
-the ASCII bytes `kotton-device-node` and its two values, the lower first. The values that result
-are joined the same way until one is left, and that one is the root.
+are sorted once, ascending as bytes, and that is the first row. Each row gives the next. Its
+values are taken in pairs in the row's order, the first with the second and the third with the
+fourth, and each pair gives one value, the SHA-256 of the ASCII bytes `kotton-device-node` and
+the pair's two values, the lower of the two first; a last value that has no pair is carried up
+as it is. The next row is those values in the order they were made, the carried one last, and it
+is not sorted again: only the two values within a pair are ordered. The row that holds one value
+holds the root.
 
-A copy of such an event is whole when it carries the salt and what the event names. A drive, and
-a device of the person, keep such an event only as a whole copy that names at least one key and
-none twice, and whose salt and keys make the root, and they read the devices from it. A
-contact's copy carries the root alone, with no salt and no key. It holds the same events under
-the same digests and the same signatures, checks each as a drive does but for the keys against
-the root, and settles two chains by the same rule, below. Whether an event is valid, and which
-chain stands, are read from what its digest covers, from its signature and from the authorities'
-keys it carries, and from no device key and no salt. So a holder of the roots alone and a holder
-of whole copies, shown the same events, hold the same chain; an event whose keys have not
-reached a drive is to that drive an event it has not been shown. Without the salt no key can be
-tried against a root, and the salt goes only where the keys go. A key can be shown under a root
-by its blind and the values beside its path, which recognise no other key; no page here shows
-one.
+A copy of such an event is whole when it carries the salt and what the event names, at least one
+key and none twice, and they make the root. A drive, and a device of the person, read the
+devices from whole copies. A contact's copy is to carry the root alone, with no salt and no key.
+It holds the same events under the same digests and the same signatures, checks each as a drive
+does but for the keys against the root, and settles two chains by the same rule, below. Whether
+an event is valid, and which chain stands, are read from what its digest covers, from its
+signature and from the authorities' keys it carries, and from no device key and no salt. So an
+event whose digest and signature check keeps its place in the chain by its root at every holder,
+whether or not that holder can make it whole, and holders shown the same events hold the same
+chain. A drive or a device that holds such an event and no whole copy of it reads no device from
+it until a whole copy arrives: a device event's change is not applied there until then, and from
+an inception or a recovery rotation on, no device is admitted by that log there until then. It
+counts the event among those it lacks, so a connection from a device that holds the event whole
+makes it whole, and a device of the person that holds one tells its person. Without the salt no
+key can be tried against a root, and the salt goes only where the keys go. A key can be shown
+under a root by its blind and the values beside its path, which recognise no other key; no page
+here shows one.
 
 **One chain, and how two are settled.** A chain that extends another replaces it. Two chains of
 which neither extends the other part at the first event they do not share. On each, one recovery
@@ -368,22 +377,26 @@ made there by a device that holds the withdrawal.
   it was admitted and withdrawn, from the first. Before, it learned the devices introduced to
   it. Two landlords of one person hold the same log and the same device keys, and can tell they
   serve one person. That is true today, since a vault holds the identity's log from enrolment.
-- A contact who holds the person's log, to follow their key by it, holds the roots alone: no
-  device's key, and no salt, without which no key can be tried against a root, not one a reach
-  note has shown it either. A root is 32 bytes whether it is one leaf or the top of many, so it
-  shows no count, and no two roots are alike, since each has its own salt. What the copy does
-  show of the devices is which events name them: that the inception and each recovery rotation
-  name some, and how many device events lie between and where, each of them one change and not
-  which way. The digests are the same at every holder of the log, as the identifier is. A key
-  shown under a root by a path would show, by the path's length, roughly how many keys lie under
-  that root. What a device gives a contact of the log, and when, is not decided here: the seam
-  is a log for each holder, derived from the identity's, and it is the recovery copy's question
-  as much as the handshake's.
+- A contact who holds the person's log, to follow their key by it, is to hold the roots alone:
+  no device's key, and no salt, without which no key can be tried against a root, not one a
+  reach note has shown it either. A root is 32 bytes whether it is one leaf or the top of many,
+  so it shows no count, and no two roots are alike, since each has its own salt. What the copy
+  does show of the devices is which events name them: that the inception and each recovery
+  rotation name some, and how many device events lie between and where, each of them one change
+  and not which way. The digests are the same at every holder of the log, as the identifier is.
+  A key shown under a root by a path would show, by the path's length, roughly how many keys lie
+  under that root. What a device gives a contact of the log, and when, is not decided here: the
+  seam is a log for each holder, derived from the identity's, and it is the recovery copy's
+  question as much as the handshake's.
 - An event that names devices costs a salt and the hashes of its root, and a drive or a device
   keeps the salt for as long as it keeps the event: a whole copy that has lost its salt can no
-  longer be checked, or given whole to another. No holder refuses an event for the device keys
-  it names, since a holder of the roots alone could not: a key in a Montgomery form already
-  admitted is not admitted, and the event stands.
+  longer be checked, or given whole to another. An event keeps its place by its digest and its
+  signature, at a holder of whole copies as at a holder of the roots alone, and no holder
+  refuses one for the device keys it names: a key in a Montgomery form already admitted is not
+  admitted, and the event stands. What a drive or a device cannot make whole it reads no device
+  from. Shown a recovery rotation and not its keys, a drive admits no device by that log until a
+  whole copy arrives; shown a device event and not its key, it admits as it did before that
+  event until one does; and the person's device that holds either tells its person.
 - A device that has not been shown a withdrawal still answers the withdrawn device, and still
   dials it. The wait above is every holder's, not only a drive's.
 - A key takes part in an exchange in its Montgomery form and signs in its Ed25519 form
@@ -408,18 +421,19 @@ made there by a device that holds the withdrawal.
   rotation counts beside its own, which is #55; how guardians make a claim together, and what it
   opens for them; what keeps a device the log admits from replacing the sealed copy; the bytes
   of the payload, of a claim and its answer, of the frames that follow and of the log's events,
-  which the golden encodings fix; what a drive keeps of what a device wrote while an event that
-  admitted it stood and was then replaced; how a contest window bears on a recovery rotation's
-  reset of the devices; a device whose admission lies more than 64 events past a drive's log and
-  has no other device to go first; how a drive's own key is replaced; rekeying a channel that
-  stays up; padding and timing, which the threat model names as not covered; whether a responder
-  should remember first messages so a recording tells nothing; a witness or a standing that
-  expires, should the wait above prove too long; who besides the first device may sign for the
-  identity; how the pairing of a gateway or a co-signer, and its end, reach the person's other
-  devices; a version for the pairing payload, which #12 asked of this page and which is
-  pairing's to state; and a log for each holder, with what a device gives a contact of the log,
-  whether a key is ever shown to a holder under a root, and whether a root should hide the count
-  from one who is shown a path.
+  which the golden encodings fix, with how a side names the events it holds and cannot make
+  whole; what a drive keeps of what a device wrote while an event that admitted it stood and was
+  then replaced; how a contest window bears on a recovery rotation's reset of the devices; a
+  device whose admission lies more than 64 events past a drive's log and has no other device to
+  go first; how a drive's own key is replaced; rekeying a channel that stays up; padding and
+  timing, which the threat model names as not covered; whether a responder should remember first
+  messages so a recording tells nothing; a witness or a standing that expires, should the wait
+  above prove too long; who besides the first device may sign for the identity, each by a key a
+  holder can check from what an event's digest covers; how the pairing of a gateway or a
+  co-signer, and its end, reach the person's other devices; a version for the pairing payload,
+  which #12 asked of this page and which is pairing's to state; and a log for each holder, with
+  what a device gives a contact of the log, whether a key is ever shown to a holder under a
+  root, and whether a root should hide the count from one who is shown a path.
 
 ## Reaches
 
