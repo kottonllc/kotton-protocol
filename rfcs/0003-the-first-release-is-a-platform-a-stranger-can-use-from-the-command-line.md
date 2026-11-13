@@ -45,7 +45,7 @@ the shell's own do the same over `kotton cat` and `kotton cp -`.
 
 - Files use the words a person already knows, at the top level: `ls`, `cat`, `cp`, `mv`, `rm`,
   `mkdir`, `rmdir`, `touch`, `find`, `grep`, `head`, `tail`, `wc`, `sort`, and beside them
-  `edit`, `open`, `diff`, `trash`, and after the first release `search`, `versions`, `restore`.
+  `edit`, `open`, `trash`, and after the first release `diff`, `search`, `versions`, `restore`.
   A path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
   own filesystem, as it is for `scp`; in the REPL, where there is a current drive, a bare path
   is that drive's and `host:` names the machine. `cp` copies between the machine and a drive in
@@ -58,7 +58,8 @@ the shell's own do the same over `kotton cat` and `kotton cp -`.
   something (0 done, 1 refused with the reason on stderr, 2 usage); `cat` and `cp` read and
   write standard input and output, and `grep`, `head`, `tail`, `wc` and `sort` read it, so the
   shell and the REPL's pipe do the rest.
-- Text is detected by content, as git detects it, never by extension: text gets line diffs and
+- Text is detected by content, as git detects it, never by extension. How a difference and a
+  conflict are shown follows the first release, with `diff`: text gets line diffs and
   conflicts a person can read side by side; everything else is bytes and gets two named
   versions to choose between. The CLI renders no document and ships one editor, a plain text
   editor in the terminal that runs in the process and holds the file in memory, so that the
@@ -110,8 +111,9 @@ pinned or not · `find [path] [-name <glob>]` (names under a path) · `grep <pat
 `sort` · `edit <path>` (the editor in the process; the file is read from the sealed tree into
 memory and written back sealed, and Kotton writes nothing to a disk in between; what the
 machine pages out of memory is the machine's, as for every process, and the buffer can be
-locked in memory as key material already is) · `open <path>` · `diff <path>` (text: between
-versions or conflict copies) · `search <query>` (follows the first release: names and text, on
+locked in memory as key material already is) · `open <path>` · `diff <path>` (follows the
+first release, with `versions` and `restore`: text, between versions or conflict copies) ·
+`search <query>` (follows the first release: names and text, on
 this device, over what it pins and the index it fetches, which is a sealed object in the drive
 like any other) · `versions <path>` · `restore <path> --version <n>`, both of which follow the
 first release · `trash list|restore|empty`. Versions live in the drive and every device sees
@@ -133,11 +135,89 @@ shared and what was shared with me). A copy cannot be taken back, so there is no
 revoke`; a folder two people hold as one is a grant the protocol has not shaped, and is not
 here.
 
-**Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
-send <contact> <text>` · `message inbox` · `message attach <contact> <path>` (the same sealed
-copy a share is, carried in the conversation with that contact) · `message channel
+**Contacts and messages.** `contact pair` · `join <code>` · `list` (every card this person
+holds, a removed contact's shown as ended) · `show` · `rm <contact>` (remove them: this
+person's devices take nothing more from them as a contact and send them nothing more, and
+nothing this person holds is erased) · `erase <contact>` (erase what this person's devices and
+drives hold from or about a contact already removed; refused for one who has not been) ·
+`message send <contact> <text>` · `message inbox` · `message attach <contact> <path>` (the
+same sealed copy a share is, carried in the conversation with that contact) · `message channel
 new|send|read|admit|remove|leave` · `message channel attach <channel> <path>` (the same sealed
 copy, to each member of the channel).
+
+Removing a contact and erasing what is held from one are two acts. `contact rm` ends a contact
+from this person's side and asks for no erasure. The card stays, marked ended: the contact's
+identifier, their key, their key log and the name this person gave them. The reach note they
+signed is dropped from it: where they stand, their devices' keys, and the invited key to a
+relay they operate. The conversation, the shared copies and the entries of `share list` stay
+as they were. The ended card is what a device recognises a removed contact by; it is kept
+until `contact erase` and is ended by nothing else. From then a removed contact is, for what
+they may say to this person, a person never paired with. While the two share no channel, no
+device of this person's derives the pair's door or answers at it, and the door is absent from
+the window a device next hands its vault. A device hands its vault its doors for the hours
+ahead whole, and the vault keeps what it was last handed; so no other request is made for a
+removal, to a vault or to a relay, and none names a contact. A window is handed in an order
+that carries nothing: by hour and, within an hour, by the door's own label. While the two
+share a channel, the pair's door stands, at this person's devices and at their vault, for that
+channel's copies and for nothing else: those arrive and are signed for as any member's are,
+and this person's copies in that channel go to them as to any member. The door is absent from
+the next window once the last channel the two share is left. What a removed contact sends as a
+contact (a direct message, a direct share, a reach note) is neither filed nor shown, by
+`status` or by `message inbox`, and is not signed for, whenever it was sent, by any device
+that has followed the removal. Where a shared channel keeps the door, an awake device gives it
+the refusal a member never paired with is given; what waits at a vault, from before the
+removal or since, is taken at the next pickup, recognised by the ended card, and taken off the
+vault. The acknowledgement that takes it off is the pickup's to the vault: it names the
+delivery by the key made for that one delivery, names nobody, and is not a receipt, which is a
+signature under a device key the recipient's reach note lists, returned to the sender. A
+delivery a device cannot hold to the card's key, or to a key the card's log proves, is not
+acknowledged, and lapses at the vault's own bound. What this person sent the removed contact
+directly and no device of theirs signed for stops being sent: it leaves what each device keeps
+to send again as that device follows the removal, and a vault carrying it is told by the
+ordinary pass that tells it what to carry, which names each message by its own key and names
+nobody. This person's own copy stays in the conversation, as never signed for. `message send`,
+`message attach` and `share create` to a removed contact are refused. The removed contact is
+sent nothing: no notice, no further reach note, no receipt. They keep what they were sent,
+this person's key and the last reach note this person signed them; past its expiry they no
+longer believe the note and still know what it said. Where no channel is shared they can find
+that the door no longer stands, and about when: it is what they would find if this person had
+left that relay, and it is not what a person whose devices sleep looks like, since a vault
+keeps that person's doors. `contact rm` says which channels the two still share, which
+`message channel remove` and `message channel leave` end and removing does not; and, where
+this person operates a relay, that the removed contact still holds its invited key until the
+relay's key is changed, which removing does not do. The removal is a change to the card,
+followed by this person's other devices as any change in their own store is, and a device that
+has not yet followed it acts on the card as it was. Pairing with a removed contact again is
+the ceremony again: it makes the ended card a contact's card once more, under the same
+identifier, with a fresh reach note and everything held before.
+
+`contact erase` is the person's own erasure of what they hold, and ends nothing that `contact
+rm` did not. It is refused for a contact who has not been removed, on any device that has not
+followed the removal, with the reason, because the card and key are among what it erases, and
+a device that had erased the key of a contact it still accepts would have nothing to hold
+their next message to. It erases the direct conversation with that contact, in both
+directions; the folder of copies from them under "shared with you"; the entries of `share
+list` that name them; and the ended card, with their key, their key log and the name. It
+reaches every device of this person's, each as it follows, and the sealed copies a vault keeps
+of the files. The files go as every deleted file goes: to the drive's trash for thirty days,
+under the folder's name and restorable until then, erased at once by `trash empty`, and purged
+by the ask the Files line names. So for a file `contact erase` is `rm`, and the asks for
+erasure stay two. The conversation and the card are not files on a drive path: they are
+removed as any record or object of the person's store is, and have no trash. It does not reach
+what the contact holds, which is theirs: every message sent them, every copy shared with them,
+this person's key and the last reach note; `contact erase` says so. It does not reach a
+channel's history, which is the channel's and each member's, nor the originals of what this
+person shared, nor what a host has already observed. A landlord sees of it what it sees of any
+deletion in a drive it keeps, and is handed no name; a relay, the contact and the contact's
+hosts are sent nothing. A deletion that other devices follow is a marker for as long as the
+following needs it; the card's marker carries the contact's identifier, is kept no longer than
+the store keeps any deletion for other devices to follow, and is erased with it. After that no
+device of this person's holds the contact's identifier or key outside a channel the two were
+in. What still arrives from them cannot be held to a key, is neither filed nor acknowledged,
+and lapses at the vault's bound; where a channel is still shared they are a member never
+paired with, known by the roster's key; and pairing again makes a new card with no history.
+Erasing a conversation with someone who is still a contact is a different act and is not
+offered. Both verbs are requests at the person's own daemon and at no other door.
 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way, after the first release) ·
@@ -194,12 +274,14 @@ of the three operating systems is built and tested in the gate on every pull req
 included, so that what a person runs is what the release was held to. Hosts: a Linux machine
 the person controls, at home or rented from any provider that sells one (a DigitalOcean droplet
 is this, and its S3-shaped object store is a shelf the vault already speaks), stood up by the
-lines `host mint` prints; and one managed host that sells no machine, Cloudflare, as the first
+lines `host mint` prints. One managed host that sells no machine, Cloudflare, follows the first
+release, with the RFC that RFC 0001 reserves for what a vault needs to know: it is the first
 adapter under the rule that a vault is its verbs over a transport and a store, with no provider
-named outside the adapter. The portability claim is tested between those two: a drive moved
-from a vault on a rented machine to the adapter and back, under the same key, every device
-following. No second managed host, no hosted offering run by Kotton LLC, and no phone, at
-`v0.1.0`.
+named outside the adapter. The portability claim is tested between those two, and that test
+follows the first release with the adapter: a drive moved from a vault on a rented machine to
+the adapter and back, under the same key, every device following. No managed host, no hosted
+offering run by Kotton LLC, and no phone, at `v0.1.0`; and no managed host but that one is
+named here.
 
 ### What leaves the sealed tree, and when
 
@@ -225,9 +307,11 @@ Kotton; live co-editing; passkeys. Each has its repository or its own RFC, and n
 what the platform is from the command line.
 
 What follows the first release is decided here and is not required for its tag: `identity
-session list|end`; `send` and `device receive`; `search`; `versions` and `restore`; an `.ics`
-calendar through `record import`; and `doctor` with `doctor logs`. Each keeps the name and the
-meaning this RFC gives it, and each line of the Decision that names one says so where it stands.
+session list|end`; `send` and `device receive`; `search`; `diff`, `versions` and `restore`,
+and with them how a difference and a conflict are shown; an `.ics` calendar through `record
+import`; `doctor` with `doctor logs`; and the Cloudflare adapter, with a drive's move to it and
+back and the portability test. Each keeps the name and the meaning this RFC gives it, and each
+line of the Decision that names one says so where it stands.
 
 ## Consequences
 
@@ -284,7 +368,8 @@ meaning this RFC gives it, and each line of the Decision that names one says so 
   release, which the first release need not carry; the REPL's tree is held equal to the CLI's.
 - `v0.1.0` is tagged when three things are true, and not before. A stranger can test what the
   first release holds: identity and recovery; devices; drives, `pin` and `sync`; the file
-  verbs; `share`; contacts, messages, channels and both `attach` verbs; records and schemas;
+  verbs; `share`; contacts, with `contact rm` and `contact erase`; messages, channels and both
+  `attach` verbs; records and schemas;
   the keychain; `log`, `host` and `status`; each on the three operating systems the gate builds
   and tests; and with them every other line above that does not say it follows the first
   release. The test of the release has passed from the release's own archives. And RFC 0005's
@@ -294,6 +379,15 @@ meaning this RFC gives it, and each line of the Decision that names one says so 
 - Contacts, messages, channels and sharing are the user daemon's. They seal and sign with the
   identity's key, which no other process holds, so they have no repository of their own, and
   they ship in the system archive and in no other: a vault and a relay link none of them.
+- Removing a contact sends no host anything that names them, and erases nothing; erasing what
+  is held from a contact is the person's own erasure of what they hold. A person who has ended
+  a contact holds a record that they once paired with them, sealed in their own store and on
+  no host, until they erase it; no one else holds it to be asked for.
+- A vault that keeps doors for its tenant keeps them in a number that follows the tenant's
+  contacts, so the number moves when a contact is made or removed, at the window that carries
+  the change. That is conceded for the first release, which does not pad the number, and it is
+  on the landlord's row of the threat model. The way back is doors held in a number that does
+  not follow the contacts; it is named here and not built here.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
   asked, which is the thesis made visible without making the asking visible to anyone else.
 
@@ -303,12 +397,13 @@ meaning this RFC gives it, and each line of the Decision that names one says so 
 - `kotton-cli`: the command tree, the REPL, the generated reference and the check that holds it
   to this list.
 - `kotton-protocol`: the request types the new verbs cross with (the trash, the access log's
-  query, the shared copy and the attachment, the notification), in `v0.1.0` or a patch after
-  it; the keychain and the access log as record schemas.
+  query, the shared copy and the attachment, the notification, removing a contact and erasing
+  what is held from one), in `v0.1.0` or a patch after it; the keychain and the access log as
+  record schemas.
 - `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
   `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written; the
-  adapter waits on the RFC that RFC 0001 reserves for what a vault needs to know, since "a
-  vault is its verbs over a transport and a store" is that RFC's to settle, and stated here
-  as the rule the adapter is held to.
+  adapter follows the first release and waits on the RFC that RFC 0001 reserves for what a
+  vault needs to know, since "a vault is its verbs over a transport and a store" is that
+  RFC's to settle, and stated here as the rule the adapter is held to.
 - RFC 0002, edited in place (no tag exists): the per-device choice is set with `pin`.
