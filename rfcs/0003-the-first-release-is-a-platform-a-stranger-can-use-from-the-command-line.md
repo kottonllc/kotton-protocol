@@ -23,11 +23,12 @@ leaves the sealed tree and when, and what is deliberately not in it?
 ## Decision
 
 **`v0.1.0` is the distribution at which a stranger, from the command line alone, can do
-everything in the list below on a fresh machine, and nothing in the list requires a window.**
-Each line is a thing a person can do and test. The exact flags and output of a verb are the
-CLI's own reference, generated from the binary and held to this list by a check; this RFC fixes
-the nouns, the verbs and what each does, and a verb's name or meaning changes only by editing
-this RFC.
+everything in the list below on a fresh machine, but for what a line says follows the first
+release, and nothing in the list requires a window.** Each line is a thing a person can do and
+test. A line that follows the first release keeps the name and the meaning given here and is
+not required for the tag. The exact flags and output of a verb are the CLI's own reference,
+generated from the binary and held to this list by a check; this RFC fixes the nouns, the verbs
+and what each does, and a verb's name or meaning changes only by editing this RFC.
 
 ### One command tree, two ways in
 
@@ -44,8 +45,8 @@ the shell's own do the same over `kotton cat` and `kotton cp -`.
 
 - Files use the words a person already knows, at the top level: `ls`, `cat`, `cp`, `mv`, `rm`,
   `mkdir`, `rmdir`, `touch`, `find`, `grep`, `head`, `tail`, `wc`, `sort`, and beside them
-  `edit`, `open`, `diff`, `search`, `versions`, `restore`, `trash`. A
-  path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
+  `edit`, `open`, `diff`, `trash`, and after the first release `search`, `versions`, `restore`.
+  A path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
   own filesystem, as it is for `scp`; in the REPL, where there is a current drive, a bare path
   is that drive's and `host:` names the machine. `cp` copies between the machine and a drive in
   either direction, copies only what is new or changed when run again, and is the one way a
@@ -73,8 +74,8 @@ recover until a rotation retires it) · `rotate` (new keys under the same identi
 phrase, with the contest window the identity page describes; the other phrases are retired by
 it, but for one committed before the phrase it is from, which still stands against it in its
 holder's hands, RFC 0005) · `recover` (take an identity back on a new machine) · `session
-list|end` (the sessions the daemon holds for this identity, and ending one) · `rm` · `whoami`.
-`id` is the short form.
+list|end` (the sessions the daemon holds for this identity, and ending one; follows the first
+release) · `rm` · `whoami`. `id` is the short form.
 
 **Devices.** `device add` (pair another device by the six digits) · `join <name> <code>` (the
 other side) · `list` (with last seen and the drives each keeps whole) · `show` · `rename` · `rm
@@ -82,11 +83,11 @@ other side) · `list` (with last seen and the drives each keeps whole) · `show`
 revocation, which each learns from the next device that holds it to reach it; if it may be in
 someone else's hands the person is told to `identity rotate`, which retires the keys it held
 under the identity page's rule) · `bind` (bind this identity to this device's hardware) ·
-`receive off|10m|always` (whether this device has a listener and an announcement on the network
-it is on, so another of the person's devices there can find it and `send` to it; off until told,
-since a relay introduces the person's devices otherwise; `always` is said back at every
-`status`, and is refused where the platform has no announcement) · `reset` (start this device
-fresh).
+`receive off|10m|always` (follows the first release, with `send`: whether this device has a
+listener and an announcement on the network it is on, so another of the person's devices there
+can find it and `send` to it; off until told, since a relay introduces the person's devices
+otherwise; `always` is said back at every `status`, and is refused where the platform has no
+announcement) · `reset` (start this device fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -110,35 +111,40 @@ pinned or not · `find [path] [-name <glob>]` (names under a path) · `grep <pat
 memory and written back sealed, and Kotton writes nothing to a disk in between; what the
 machine pages out of memory is the machine's, as for every process, and the buffer can be
 locked in memory as key material already is) · `open <path>` · `diff <path>` (text: between
-versions or conflict copies) · `search <query>` (names and text, on this device, over what it
-pins and the index it fetches, which is a sealed object in the drive like any other) ·
-`versions <path>` · `restore <path> --version <n>` · `trash list|restore|empty`. Versions live
-in the drive and every device sees them, under the store's one switch per file. A deleted thing
-stays in the drive's trash for thirty days, then one of the person's own devices asks the drive
-to purge it. That is the request from the person's machine the store requires: `rm` is the
-person asking for erasure in thirty days, `trash empty` is asking for it now, and nothing but
-those two asks. Thirty days is the earliest, since the purge waits for one of the person's
-devices to be awake, and compaction waits for it.
+versions or conflict copies) · `search <query>` (follows the first release: names and text, on
+this device, over what it pins and the index it fetches, which is a sealed object in the drive
+like any other) · `versions <path>` · `restore <path> --version <n>`, both of which follow the
+first release · `trash list|restore|empty`. Versions live in the drive and every device sees
+them, under the store's one switch per file. A deleted thing stays in the drive's trash for
+thirty days, then one of the person's own devices asks the drive to purge it. That is the
+request from the person's machine the store requires: `rm` is the person asking for erasure in
+thirty days, `trash empty` is asking for it now, and nothing but those two asks. Thirty days is
+the earliest, since the purge waits for one of the person's devices to be awake, and compaction
+waits for it.
 
 
-**Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
-on one network, no relay; the other device's person is asked and says where in their drives it
-lands; nothing afterwards) · `share create <path> <contact>` (a sealed copy that becomes
-theirs, delivered like a message and landing under "shared with you" in their tree, as the
-conversations page has it; the original is never re-keyed, a folder is a copy of each file in
-it, and my landlord learns nothing of who holds one) · `share list` (what I have shared and
-what was shared with me). A copy cannot be taken back, so there is no `share revoke`; a folder
-two people hold as one is a grant the protocol has not shaped, and is not here.
+**Sharing.** `send <path> <device>` (follows the first release: hand a file or folder to one of
+my own devices directly, on one network, no relay; the other device's person is asked and says
+where in their drives it lands; nothing afterwards) · `share create <path> <contact>` (a sealed
+copy that becomes theirs, delivered like a message and landing under "shared with you" in their
+tree, as the conversations page has it; the original is never re-keyed, a folder is a copy of
+each file in it, and my landlord learns nothing of who holds one) · `share list` (what I have
+shared and what was shared with me). A copy cannot be taken back, so there is no `share
+revoke`; a folder two people hold as one is a grant the protocol has not shaped, and is not
+here.
 
 **Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
-send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` · `message attach
-<path>` (the same sealed copy a share is, carried in a message).
+send <contact> <text>` · `message inbox` · `message attach <contact> <path>` (the same sealed
+copy a share is, carried in the conversation with that contact) · `message channel
+new|send|read|admit|remove|leave` · `message channel attach <channel> <path>` (the same sealed
+copy, to each member of the channel).
 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
---schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
-Records are typed, sealed, in a drive or, as the log is until pinned, on the device that made
-them, and read from every device that holds them: the layer under contacts and every future
-app, and what the keychain, the whole-keeper claims and a pinned `log` are made of.
+--schema <name> <path>` (an `.ics` calendar comes in this way, after the first release) ·
+`schema list|show|register`. Records are typed, sealed, in a drive or, as the log is until
+pinned, on the device that made them, and read from every device that holds them: the layer
+under contacts and every future app, and what the keychain, the whole-keeper claims and a
+pinned `log` are made of.
 A schema is declared by whoever ships it and named by the key that publishes it (RFC 0004); none
 is Kotton's by right, and one nobody at Kotton has seen works like any other. A grant prompt
 shows a schema by its name under the name the person gave its publisher's key, and never names
@@ -156,14 +162,28 @@ set|clear|status` (which relay this device stands at) · `host relay rule|invite
 your own, for the people you admit).
 
 **Seeing it.** `status` (daemon, drives, devices, host, what is syncing, and what arrived: a
-message, a share, a transfer offer, delivered to the daemon without polling, held sealed by the
-drive while a device is asleep as messages are, and shown here and by `inbox`) · `log` (what
-this device's daemon was asked: which device or app read or wrote what, when, from where; kept
-as sealed records on this device, shown per device, and replicated to a drive only if the
-person pins it there, so no host learns a person's rhythm from it; it does not see reads of
-ciphertext at a host nor what happens to a copy handed out) · `doctor` (the machine's fitness,
-and `doctor logs` for the daemon's own event log, which is about the daemon and not about the
-person) · `repl`.
+message, a share and, after the first release, a transfer offer, delivered to the daemon
+without polling and shown here and by `message inbox`; while every device of the person's is
+asleep a message or a share waits sealed at their vault until a device of theirs takes it) ·
+`log` (what this device's daemon was asked: which device or app read or wrote what, when, from
+where; kept as sealed records on this device, shown per device, and replicated to a drive only
+if the person pins it there, so no host learns a person's rhythm from it; it does not see reads
+of ciphertext at a host nor what happens to a copy handed out) · `doctor` (follows the first
+release: the machine's fitness, and `doctor logs` for the daemon's own event log, which is about
+the daemon and not about the person) · `repl`.
+
+### The test of the release
+
+Two people, each at a machine of their own and each with a host of their own, a relay and a
+vault they stood up from the lines `host mint` prints. They make first contact at one relay:
+one person invites the other to the relay they operate (`host relay invite`), and the other
+stands a device at it (`host relay set`). They pair as contacts on a code one reads aloud to
+the other. One sends the other a message while every device of the other's is off; it waits
+sealed at the recipient's vault and is read when a device of theirs wakes. One shares a file,
+and the other opens it from their own tree. The test needs no machine and no party beyond the
+two people's own devices and hosts. First contact between two people who stand at different
+relays is not settled by this text. The run is made from the release's own archives on fresh
+machines, and `v0.1.0` is not tagged before it passes.
 
 ### Where it runs
 
@@ -189,11 +209,11 @@ machine path writes plaintext there because the person named the path; `open` ha
 copy to the machine's own program and says where it put it, and that copy is the person's to
 remove; `edit` puts nothing anywhere, because the editor is in the process. What a program
 outside Kotton does with a copy is governed by the machine: Kotton's guarantee covers what
-Kotton confines. `send` lands in the receiving device's sealed tree and puts nothing in the
-clear. A confined editor, an app in the sandbox that reads and writes the sealed tree through
-the app surface, is the desktop's and the SDK's, and replaces most uses of `open`; it is named
-here as the way back and not built here. The session token on disk is a defect the first
-release fixes.
+Kotton confines. `send`, which follows the first release, lands in the receiving device's
+sealed tree and puts nothing in the clear. A confined editor, an app in the sandbox that reads
+and writes the sealed tree through the app surface, is the desktop's and the SDK's, and
+replaces most uses of `open`; it is named here as the way back and not built here. The session
+token on disk is a defect the first release fixes.
 
 ### Not in `v0.1.0`, on purpose
 
@@ -203,6 +223,11 @@ gateway, and admitting a phone's browser; a drive mounted as a filesystem so on-
 open with anything (the desktop's turn, per operating system); a link for someone without
 Kotton; live co-editing; passkeys. Each has its repository or its own RFC, and none changes
 what the platform is from the command line.
+
+What follows the first release is decided here and is not required for its tag: `identity
+session list|end`; `send` and `device receive`; `search`; `versions` and `restore`; an `.ics`
+calendar through `record import`; and `doctor` with `doctor logs`. Each keeps the name and the
+meaning this RFC gives it, and each line of the Decision that names one says so where it stands.
 
 ## Consequences
 
@@ -226,13 +251,13 @@ what the platform is from the command line.
 | `enrol <relay line\|vault line\|host line>` | `host enrol <line>`, the operator completing their own key |
 | `cp`, `cat`, `whoami`, `repl` | unchanged; `ls`, `mv`, `rm`, `mkdir`, `rmdir`, `touch` join them at the top, with the six below |
 | `ted` | `edit`: the editor in the process, kept because it puts nothing in the clear |
-| `door status\|closed\|10m\|always` | `device receive off\|10m\|always` |
-| `session list\|end` | `identity session list\|end` |
-| `logs` | `doctor logs`; `log` is the access log, a different thing under a near name, said here on purpose |
+| `door status\|closed\|10m\|always` | `device receive off\|10m\|always`, which follows the first release |
+| `session list\|end` | `identity session list\|end`, which follows the first release |
+| `logs` | `doctor logs`, which follows the first release; `log` is the access log, a different thing under a near name, said here on purpose |
 | `secrets` | `secret` |
-| `find`, `grep`, `head`, `tail`, `wc`, `sort` | unchanged, at the top; `search` is the index and a different thing |
+| `find`, `grep`, `head`, `tail`, `wc`, `sort` | unchanged, at the top; `search` is the index and a different thing, and follows the first release |
 | `date`, `echo`, `env`, `export`, `unset` | leave; they are the shell's, not a file's |
-| `daemon` | `status` and `doctor` |
+| `daemon` | `status`; and `doctor`, which follows the first release |
 | `cd`, `pwd`, `clear`, `help`, `exit`, `quit`; `\|`, `;`, `&&`, `\|\|` | the REPL's own, unchanged; `>` and `>>` join them |
 | `sync add/list/remove` | `pin` and `drive`: targets by location are drives, and a device is not one (RFC 0002) |
 | `sync` (all paired devices) | `sync`, this device's drives: a device is not a target (RFC 0002) |
@@ -244,20 +269,31 @@ what the platform is from the command line.
 | `relay rule/invite/forget`, `vault …` | `host relay …`, `host vault …` |
 | `peer` | replaced: devices are `device`, nodes are `host`, as RFC 0002 has it |
 | `config status`, `net` | `status` |
-| `config paths` | `doctor` |
+| `config paths` | `doctor`, which follows the first release |
 | `config relay` | `host relay` |
 | `grant revoke` (an app's capability envelope) | leaves with the sandbox and the desktop, beside `app` |
 | `grant import`, `issuer`, `records init/invite`, `org` | leave with organisations |
-| `records import/export`, `import` (`.ics`), `record open` | `record import/export`, `record get` |
+| `records import/export`, `import` (`.ics`), `record open` | `record import/export`, `record get`; an `.ics` calendar comes in through `record import` after the first release |
 | `contact`, `message`, `schema` | unchanged |
 | `app`, `extension`, `handler` | leave with the sandbox and the desktop |
 | `model`, `config inference` | leave with inference |
 
 - A check holds both trees to this list: every clap subcommand and every verb the REPL's
   registry registers is either in the Decision or in a "Today" cell of the table, and nothing
-  in the Decision is absent from the binary; the REPL's tree is held equal to the CLI's.
-- `v0.1.0` is tagged when every line above is testable by a stranger, and not before. When
-  the work lands is the distribution's tracking issue's to say, not this RFC's.
+  in the Decision is absent from the binary, but for a verb the Decision says follows the first
+  release, which the first release need not carry; the REPL's tree is held equal to the CLI's.
+- `v0.1.0` is tagged when three things are true, and not before. A stranger can test what the
+  first release holds: identity and recovery; devices; drives, `pin` and `sync`; the file
+  verbs; `share`; contacts, messages, channels and both `attach` verbs; records and schemas;
+  the keychain; `log`, `host` and `status`; each on the three operating systems the gate builds
+  and tests; and with them every other line above that does not say it follows the first
+  release. The test of the release has passed from the release's own archives. And RFC 0005's
+  handshake is the way in at every connection to a drive, between a person's devices and at a
+  contact's door. When the work lands is the distribution's tracking issue's to say, not this
+  RFC's.
+- Contacts, messages, channels and sharing are the user daemon's. They seal and sign with the
+  identity's key, which no other process holds, so they have no repository of their own, and
+  they ship in the system archive and in no other: a vault and a relay link none of them.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
   asked, which is the thesis made visible without making the asking visible to anyone else.
 
