@@ -124,15 +124,43 @@ devices to be awake, and compaction waits for it.
 **Sharing.** `send <path> <device>` (hand a file or folder to one of my own devices directly,
 on one network, no relay; the other device's person is asked and says where in their drives it
 lands; nothing afterwards) · `share create <path> <contact>` (a sealed copy that becomes
-theirs, delivered like a message and landing under "shared with you" in their tree, as the
-conversations page has it; the original is never re-keyed, a folder is a copy of each file in
-it, and my landlord learns nothing of who holds one) · `share list` (what I have shared and
-what was shared with me). A copy cannot be taken back, so there is no `share revoke`; a folder
-two people hold as one is a grant the protocol has not shaped, and is not here.
+theirs, delivered like a message, waiting sealed at their vault while their devices sleep, and
+landing under "shared with you" in their tree, as the conversations page has it; the path is
+read as `cp` reads its source; the original is never re-keyed, a folder is a copy of each file
+in it, and my landlord learns nothing of who holds one) · `share list` (what I have shared,
+with whom and when, and what was shared with me, read from my own records and asked of no
+host). A copy cannot be taken back, so there is no `share revoke`; a folder two people hold as
+one is a grant the protocol has not shaped, and is not here.
 
-**Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
-send <contact> <text>` · `inbox` · `channel new|send|read|admit|remove|leave` · `message attach
-<path>` (the same sealed copy a share is, carried in a message).
+**Contacts and messages.** `contact pair` (print a code to read aloud to the other person, and
+wait for them at the relay this device stands at) · `contact join <code> [--at <relay>]` (the
+other side, under a key made for that dial; `--at` names the relay the code waits at when the
+two people stand at different ones; both compare six digits before anything crosses) · `contact
+list` · `show` · `rm <contact>` (end a contact, as below) · `message send <contact> <text>` ·
+`message inbox` · `message attach <contact> <path>` (the same sealed copy a share is, carried
+in the conversation with that contact) · `message channel new|send|read|admit|remove|leave` ·
+`message channel attach <channel> <path>` (a copy to each member, sealed under the channel's
+key). A verb that names a contact takes them as `contact list` shows them or by identifier, and
+prints the identifier the name stood for. A message is sealed to its recipient before it leaves
+the sender's daemon; while every device of the recipient's is asleep it waits, sealed, at the
+recipient's vault and nowhere else, until one of their devices takes it.
+
+`contact rm` ends a contact from the person's side, and it is an act of their own devices
+alone. From it, no device of theirs holds the door the two shared: none derives it for the
+hours ahead, none answers at it, and it is absent from the next window of doors a device hands
+the vault, which is the ordinary replacement and names nothing. The person signs the contact no
+further reach note, and the one the contact holds stops being believed at the expiry signed
+into it. The contact's card, their key and the reach note the person held for them, is dropped,
+and their rotations are no longer followed. What the contact sent that still waits at the
+person's vault is taken at a device's next ordinary pickup, neither filed nor shown, and
+acknowledged as everything taken is, so the vault drops it. No request names the contact to a
+relay or a vault, no host is asked to refuse anyone, and no host holds a list of whom the
+person refuses. The contact is told nothing: what they send afterwards is never signed for, as
+it is not while a person's devices are off. What each already holds stays theirs: the
+conversation, and the copies shared either way. A channel both are in is not left by it;
+`message channel remove` or `leave` is that act, and `contact rm` says which channels the two
+still share. Each of the person's devices follows the removal as it follows their other
+records, and pairing again is the ceremony again.
 
 **Records and schemas.** `record list|get|put|rm --schema <name>` · `record import|export
 --schema <name> <path>` (an `.ics` calendar comes in this way) · `schema list|show|register`.
@@ -165,6 +193,16 @@ ciphertext at a host nor what happens to a copy handed out) · `doctor` (the mac
 and `doctor logs` for the daemon's own event log, which is about the daemon and not about the
 person) · `repl`.
 
+### The test of the release
+
+Two people, each at a machine of their own and each with a host of their own, a relay and a
+vault they stood up from the lines `host mint` prints. They pair as contacts on a code one
+reads aloud to the other. One sends the other a message while every device of the other's is
+off; it waits sealed at the recipient's vault and is read when a device of theirs wakes. One
+shares a file, and the other opens it from their own tree. No third machine is needed, and
+neither host is told whom its person talks to. The run is made from the release's own archives
+on fresh machines, and `v0.1.0` is not tagged before it passes.
+
 ### Where it runs
 
 Devices: Linux, macOS and Windows on x86_64, and Linux and macOS on arm64; Windows on arm64 has
@@ -190,19 +228,28 @@ copy to the machine's own program and says where it put it, and that copy is the
 remove; `edit` puts nothing anywhere, because the editor is in the process. What a program
 outside Kotton does with a copy is governed by the machine: Kotton's guarantee covers what
 Kotton confines. `send` lands in the receiving device's sealed tree and puts nothing in the
-clear. A confined editor, an app in the sandbox that reads and writes the sealed tree through
-the app surface, is the desktop's and the SDK's, and replaces most uses of `open`; it is named
-here as the way back and not built here. The session token on disk is a defect the first
+clear. `share create` and the `attach` verbs seal the copy inside the sender's daemon and it
+lands in the recipient's sealed tree: a shared copy is in the clear on neither person's disk
+unless its source was a machine path the sender named, or its holder takes it out by one of the
+ways above. A confined editor, an app in the sandbox that reads and writes the sealed tree
+through the app surface, is the desktop's and the SDK's, and replaces most uses of `open`; it is
+named here as the way back and not built here. The session token on disk is a defect the first
 release fixes.
 
 ### Not in `v0.1.0`, on purpose
 
-The window, the compositor, the desktop and apps a person clicks; inference and models;
-organisations, their grants, their issuers and project records; the browser portal and the
-gateway, and admitting a phone's browser; a drive mounted as a filesystem so on-demand files
-open with anything (the desktop's turn, per operating system); a link for someone without
-Kotton; live co-editing; passkeys. Each has its repository or its own RFC, and none changes
-what the platform is from the command line.
+The window, the compositor and the desktop; apps of any kind and the sandbox that runs them;
+inference and models; calls; payment; organisations, their grants, their issuers and project
+records; the browser portal and the gateway, and admitting a phone's browser; a drive mounted
+as a filesystem so on-demand files open with anything (the desktop's turn, per operating
+system); a link for someone without Kotton; live co-editing; passkeys. Each has its repository
+or waits for its own RFC, and none changes what the platform is from the command line.
+
+A phone's browser is the release after this one's, and it ships as a written concession or not
+at all. Before it does, the concessions page says what is conceded and the way back: the
+gateway holds no person's key and carries sealed frames, and it serves the page, so the browser
+and whoever serves its page are trusted as far as the threat model's remote caller is. The
+daemon, not the page, holds a browser to the verbs the concession names.
 
 ## Consequences
 
@@ -249,26 +296,43 @@ what the platform is from the command line.
 | `grant revoke` (an app's capability envelope) | leaves with the sandbox and the desktop, beside `app` |
 | `grant import`, `issuer`, `records init/invite`, `org` | leave with organisations |
 | `records import/export`, `import` (`.ics`), `record open` | `record import/export`, `record get` |
-| `contact`, `message`, `schema` | unchanged |
+| `contact`, `message`, `schema` | unchanged; `contact rm`, `message attach` and `message channel attach` join them, and `share` is new |
 | `app`, `extension`, `handler` | leave with the sandbox and the desktop |
 | `model`, `config inference` | leave with inference |
 
 - A check holds both trees to this list: every clap subcommand and every verb the REPL's
   registry registers is either in the Decision or in a "Today" cell of the table, and nothing
   in the Decision is absent from the binary; the REPL's tree is held equal to the CLI's.
-- `v0.1.0` is tagged when every line above is testable by a stranger, and not before. When
-  the work lands is the distribution's tracking issue's to say, not this RFC's.
+- `v0.1.0` is tagged when every line above is testable by a stranger, the test of the release
+  has passed from its archives, and RFC 0005's handshake is the way in at every door the system
+  has, a contact's among them; and not before. No identity made before that is carried over, so
+  no person is asked to hold one. When the work lands is the distribution's tracking issue's to
+  say, not this RFC's.
+- Contacts, messages, channels and sharing are the user daemon's. They seal and sign with the
+  identity's key, which no other process holds, so they are the system's and have no repository
+  of their own. They ship in the system archive and in no other: a vault and a relay link none
+  of them.
+- Removing a contact is shown to no host, and it is not hidden from arithmetic: a vault can
+  count the doors it holds for a person, and the count falls. The way back is doors held in a
+  number that does not follow the contacts, which is named here and not built here.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
   asked, which is the thesis made visible without making the asking visible to anyone else.
 
 ## Reaches
 
-- `kotton`: the daemon's side of every verb above, and a gate that builds and tests Windows.
+- `kotton`: the daemon's side of every verb above, with a share, an attachment and the removal
+  of a contact reached at the person's own door, since no app is there to carry them; and a
+  gate that builds and tests Windows and macOS.
 - `kotton-cli`: the command tree, the REPL, the generated reference and the check that holds it
   to this list.
-- `kotton-protocol`: the request types the new verbs cross with (the trash, the access log's
-  query, the shared copy and the attachment, the notification), in `v0.1.0` or a patch after
-  it; the keychain and the access log as record schemas.
+- `kotton-protocol`: the request types the new verbs cross with. In `v0.1.0`: the shared copy
+  to a contact and to a channel, one type that `share create` and both `attach` verbs cross
+  with at the person's own door; the query `share list` reads; and the removal of a contact,
+  answered at the person's own door and at no other. Between people nothing new crosses: a
+  shared copy is a message whose kind is a share, with its ranges, over the door a message
+  takes. In `v0.1.0` or a patch after it: the trash, the access log's query, the notification.
+  The keychain and the access log as record schemas. In this pull request: the threat model's
+  row for a contact gains what a removed contact keeps, as below.
 - `kotton-dist`: the nine lines and the guide, rewritten to the tree; the PowerShell installer;
   `v0.1.0` itself.
 - `kotton-vault` and `kotton-relay` when cut, and the Cloudflare adapter when written; the
