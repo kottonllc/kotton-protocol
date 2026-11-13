@@ -54,10 +54,6 @@ Holds the key to what you shared with them and nothing else, and keeps what they
 sent. Can prove delivery only under a device key your own reach note lists, so neither a vault
 nor a relay can forge a receipt. A member removed from a channel cannot open the next epoch.
 
-A contact you removed keeps what they were sent, your key, and the last reach note you signed
-them until it expires. They are told nothing, and neither is any host: what they send
-afterwards is not signed for.
-
 ## A remote caller
 
 Reaches a gateway that holds no user key and no persistent state, and from there only the
