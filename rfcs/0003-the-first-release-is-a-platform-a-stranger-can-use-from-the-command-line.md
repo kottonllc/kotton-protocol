@@ -45,7 +45,7 @@ the shell's own do the same over `kotton cat` and `kotton cp -`.
 
 - Files use the words a person already knows, at the top level: `ls`, `cat`, `cp`, `mv`, `rm`,
   `mkdir`, `rmdir`, `touch`, `find`, `grep`, `head`, `tail`, `wc`, `sort`, and beside them
-  `edit`, `open`, `diff`, and after the first release `search`, `versions`, `restore`, `trash`.
+  `edit`, `open`, `diff`, `trash`, and after the first release `search`, `versions`, `restore`.
   A path on a drive is `<drive>:/<path>`. From the shell, a path with no drive is the machine's
   own filesystem, as it is for `scp`; in the REPL, where there is a current drive, a bare path
   is that drive's and `host:` names the machine. `cp` copies between the machine and a drive in
@@ -113,15 +113,14 @@ machine pages out of memory is the machine's, as for every process, and the buff
 locked in memory as key material already is) · `open <path>` · `diff <path>` (text: between
 versions or conflict copies) · `search <query>` (follows the first release: names and text, on
 this device, over what it pins and the index it fetches, which is a sealed object in the drive
-like any other) · `versions <path>` · `restore <path> --version <n>` · `trash
-list|restore|empty`, all three of which follow the first release. Versions live in the drive
-and every device sees them, under the store's one switch per file. A deleted thing stays in the
-drive's trash for thirty days, then one of the person's own devices asks the drive to purge it.
-That is the request from the person's machine the store requires: `rm` is the person asking for
-erasure in thirty days, `trash empty` is asking for it now, and nothing but those two asks.
-Thirty days is the earliest, since the purge waits for one of the person's devices to be awake,
-and compaction waits for it. What `rm` on a drive path does in a release that has no trash is
-the reference's decision on `rm` before the drive's trash exists.
+like any other) · `versions <path>` · `restore <path> --version <n>`, both of which follow the
+first release · `trash list|restore|empty`. Versions live in the drive and every device sees
+them, under the store's one switch per file. A deleted thing stays in the drive's trash for
+thirty days, then one of the person's own devices asks the drive to purge it. That is the
+request from the person's machine the store requires: `rm` is the person asking for erasure in
+thirty days, `trash empty` is asking for it now, and nothing but those two asks. Thirty days is
+the earliest, since the purge waits for one of the person's devices to be awake, and compaction
+waits for it.
 
 
 **Sharing.** `send <path> <device>` (follows the first release: hand a file or folder to one of
@@ -165,14 +164,13 @@ your own, for the people you admit).
 **Seeing it.** `status` (daemon, drives, devices, host, what is syncing, and what arrived: a
 message, a share and, after the first release, a transfer offer, delivered to the daemon
 without polling and shown here and by `message inbox`; while every device of the person's is
-asleep a message or a share waits sealed at their vault, held at the contact's door and in no
-drive, until a device of theirs takes it) · `log` (what this device's daemon was asked: which
-device or app read or wrote what, when, from where; kept as sealed records on this device,
-shown per device, and replicated to a drive only if the person pins it there, so no host learns
-a person's rhythm from it; it does not see reads of ciphertext at a host nor what happens to a
-copy handed out) · `doctor` (follows the first release: the machine's fitness, and `doctor
-logs` for the daemon's own event log, which is about the daemon and not about the person) ·
-`repl`.
+asleep a message or a share waits sealed at their vault until a device of theirs takes it) ·
+`log` (what this device's daemon was asked: which device or app read or wrote what, when, from
+where; kept as sealed records on this device, shown per device, and replicated to a drive only
+if the person pins it there, so no host learns a person's rhythm from it; it does not see reads
+of ciphertext at a host nor what happens to a copy handed out) · `doctor` (follows the first
+release: the machine's fitness, and `doctor logs` for the daemon's own event log, which is about
+the daemon and not about the person) · `repl`.
 
 ### The test of the release
 
@@ -227,10 +225,9 @@ Kotton; live co-editing; passkeys. Each has its repository or its own RFC, and n
 what the platform is from the command line.
 
 What follows the first release is decided here and is not required for its tag: `identity
-session list|end`; `send` and `device receive`; `search`; `versions` and `restore`; the trash,
-with its thirty days and its purge; an `.ics` calendar through `record import`; and `doctor`
-with `doctor logs`. Each keeps the name and the meaning this RFC gives it, and each line of the
-Decision that names one says so where it stands.
+session list|end`; `send` and `device receive`; `search`; `versions` and `restore`; an `.ics`
+calendar through `record import`; and `doctor` with `doctor logs`. Each keeps the name and the
+meaning this RFC gives it, and each line of the Decision that names one says so where it stands.
 
 ## Consequences
 
@@ -294,8 +291,7 @@ Decision that names one says so where it stands.
   handshake is the way in at every connection to a drive, between a person's devices and at a
   contact's door. When the work lands is the distribution's tracking issue's to say, not this
   RFC's.
-- Contacts, messages, channels and sharing are the user daemon's, as the reference's decision
-  that messaging is the system's at the first release has it. They seal and sign with the
+- Contacts, messages, channels and sharing are the user daemon's. They seal and sign with the
   identity's key, which no other process holds, so they have no repository of their own, and
   they ship in the system archive and in no other: a vault and a relay link none of them.
 - "Enablement, never grievance" has a verb: `log` shows a person what their own daemon was
