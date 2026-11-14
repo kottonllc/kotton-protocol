@@ -19,6 +19,26 @@ compelled to produce plaintext, because it holds none and has no verb that retur
 warrant yields a byte count. Volume and access pattern are the known leaks; fixed allocation and
 oblivious access are the known answers and are not built.
 
+For a tenant whose devices sleep it holds doors: one for each contact, and for each person the
+tenant shares only a channel with, for each hour of the week ahead. It learns how many it holds
+and when that number rises or falls, and which of a week's doors came or went together; so that
+a contact was made or removed, or a member came to or left a channel the tenant is in, and when,
+and not who. It learns each sealed delivery that arrives at a door, its size and its hour, and
+whether it was taken; and the sealed messages it carries for the tenant, their sizes, and when
+each is handed to it and withdrawn; and whether an answer came back for each, and when. It is
+told no contact. To carry a message for the tenant it is handed the sealed message and, for the
+hours in which it may try it, the doors of the pair the message is between, and is handed them
+again for later hours while the message waits; and it keeps the sealed answer that comes back
+for a carried message until a device of the tenant's takes it. It can tell which of the doors,
+deliveries and carried messages it holds are one pair's, within a week and from one week to the
+next, and never whose. A landlord that saw the number of doors fall and then a tree change can
+read the two together. By design (RFC 0003) the order in which a device hands its doors carries
+nothing. Today a device hands them a pair at a time, until the reference's issue under that RFC
+lands. Both the number and what is one pair's are conceded for the first release. The way back
+is doors held in a number that does not follow the contacts, and doors and carried messages
+handed so that a vault cannot tie one hour's to another's or a message to a door, which are
+named here and not built.
+
 ## A relay's operator
 
 Learns: handles, bytes, timing and source addresses, and which handles are awake. Cannot
@@ -53,6 +73,22 @@ reference's issue under that RFC lands.
 Holds the key to what you shared with them and nothing else, and keeps what they were once
 sent. Can prove delivery only under a device key your own reach note lists, so neither a vault
 nor a relay can forge a receipt. A member removed from a channel cannot open the next epoch.
+
+By design (RFC 0003), a contact you removed keeps what they were sent, your key, and the last
+reach note you signed them: the relays you stood at, with the invited key to one you operate,
+and your devices' keys. Where you share no channel, past its expiry they no longer believe the
+note and still know what it said. As a contact they are sent nothing more, by you or by any
+host, and nothing they send you as a contact is filed or signed for: what your vault held from
+them is taken off it by an acknowledgement that is your device's to the vault and is no receipt.
+Where you share no channel, the door the two of you derived no longer stands, which they can
+see: it looks as it does when a person has left a relay, and not as it does while a person's
+devices sleep, since a vault keeps a sleeping person's doors. Where you share a channel, they
+are to you what any member you never paired with is, and that channel's copies pass between you
+as before. Such a member is told, when the channel's members change, where each other member
+stands and their devices' keys, so that the channel's copies reach them; so for as long as you
+share a channel a contact you removed goes on learning that of you. Erasing what you hold from
+them erases your copies and none of theirs. Today no contact can be removed and nothing held
+from one erased, until the reference's issues under that RFC land.
 
 ## A remote caller
 
