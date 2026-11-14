@@ -123,11 +123,13 @@ recovery rotation names every device that stands after it, and a key it does not
 withdrawn by it. No other event changes the devices. So the person's devices, as of any event,
 are the keys admitted by the last recovery rotation up to it, or by the inception if there is
 none, with each device event since applied in the log's order. An inception and a recovery
-rotation start from no keys, and each key such an event names is admitted by it, but for one
-rule: where two keys it names have one Montgomery form, neither of the two is admitted. A device
-event that admits a key admits it unless that key is already admitted or a key already admitted
-has its Montgomery form, and a device event that withdraws a key withdraws it if that key is
-admitted; otherwise a device event changes nothing. In each case the event keeps its place in
+rotation start from no keys, and each key such an event names is admitted by it, but for two
+rules: a value it names that is no key by RFC 0006 is not admitted and is not read by the next
+rule; and where two keys it names have one Montgomery form, neither of the two is admitted. A
+device event that admits a key admits it unless what it names is no key by RFC 0006, or that key
+is already admitted, or a key already admitted has its Montgomery form, and a device event that
+withdraws a key withdraws it if that key is admitted; otherwise a device event changes nothing.
+In each case the event keeps its place in
 the log. No clock orders two changes. Who may sign for the identity is the log's rule and is not
 changed here; in the reference today that is the device that holds the identity's key.
 
@@ -154,7 +156,8 @@ is not sorted again: only the two values within a pair are ordered. The row that
 holds the root.
 
 A copy of such an event is whole when it carries the salt and what the event names, at least one
-key and none twice, and they make the root. A drive, and a device of the person, read the
+value and none twice, read as bytes whether or not each is a key by RFC 0006, and they make the
+root. A drive, and a device of the person, read the
 devices from whole copies. A contact's copy is to carry the root alone, with no salt and no key.
 It holds the same events under the same digests and the same signatures, checks each as a drive
 does but for the keys against the root, and settles two chains by the same rule, below. Whether
@@ -393,7 +396,8 @@ made there by a device that holds the withdrawal.
   longer be checked, or given whole to another. An event keeps its place by its digest and its
   signature, at a holder of whole copies as at a holder of the roots alone, and no holder
   refuses one for the device keys it names: a key in a Montgomery form already admitted is not
-  admitted, and the event stands. What a drive or a device cannot make whole it reads no device
+  admitted, nor is a value that is no key by RFC 0006, and the event stands. What a drive or a
+  device cannot make whole it reads no device
   from. Shown a recovery rotation and not its keys, a drive admits no device by that log until a
   whole copy arrives; shown a device event and not its key, it admits as it did before that
   event until one does; and the person's device that holds either tells its person.
