@@ -34,15 +34,16 @@ which holds many doors at the end of many busy circuits is likely a vault, and, 
 vault's line, which door is that vault's and so the vault's key. Cannot learn: whose a vault is,
 who operates one, a tenant's name, which of the people who stand at it asked for a circuit
 beyond the address they asked from, or any durable identity of a person on any route, because
-every handle is per contact and per epoch. Holds nothing past delivery, of what it carries
-outward as of what it carries in: it writes down no far relay, no handle and no address. That is
-the project's relay as built; a tenant cannot check it of a relay someone else runs, and no line
-here rests on it. What a relay is handed of a person who runs it is that person's own record. Of
-a tenant it is routing, at a relay the tenant chose and leaves asking no one. A relay reached by
-a device whose person set it to dial directly learns that device's address. Today no relay
-carries outward and a device connects itself to each contact's relay, so that relay learns the
-device's address and the device's own relay learns nothing of which relays it reaches, until the
-reference's issue under that RFC lands.
+every handle is per contact and per epoch. The reference's relay is built to hold nothing past
+delivery, of what it carries outward as of what it carries in, and to write down no far relay,
+no handle and no address; the run that would hold that of what it carries outward is not built,
+a tenant cannot check it of a relay someone else runs, and no line here rests on it. Where a
+person stands at several relays, each is handed the same. What a relay is handed of a person who
+runs it is that person's own record. Of a tenant it is routing, at a relay the tenant chose and
+leaves asking no one. A relay reached by a device whose person set it to dial directly learns
+that device's address. Today no relay carries outward and a device connects itself to each
+contact's relay, so that relay learns the device's address and the device's own relay learns
+nothing of which relays it reaches, until the reference's issue under that RFC lands.
 
 ## The network a device is on
 

@@ -164,25 +164,26 @@ with a verb a person reaches for; passkeys wait for a browser or an OS to presen
 **Host.** `host mint` (the lines that stand up a relay and a vault) · `host enrol <line>` (the
 operator completes the key `mint` made, from a relay's line, a vault's, or a host's one line for
 both; no digits, since it is their own) · `host list` · `host health` · `host relay
-add|remove|list|status` (the relays this person added, any number and one being enough, in their
-order; a device stands at each, RFC 0007; `status` shows each relay's address, which is what a
-person says beside a contact's code) · `host relay rule|invite|forget` and `host vault
-people|invite|digits|space|drop|stand|move|forget` (operating a relay or a vault of your own,
-for the people you admit; `host relay invite` hands a person the key that lets their devices
-stand at the relay, and with it the key their own contacts open doors there with, RFC 0007).
+add|remove|status` (the relays this person added, any number and one being enough; a device
+stands at each, RFC 0007; `status` lists them, each with its address, which is what a person
+says beside a contact's code, and what is held there) · `host relay rule|invite|forget` and
+`host vault people|invite|digits|space|drop|stand|move|forget` (operating a relay or a vault of
+your own, for the people you admit; `host relay invite` hands a person the key that lets their
+devices stand at the relay, and with it the key their own contacts open doors there with, RFC
+0007).
 
 **Seeing it.** `status` (daemon, drives, devices, host, each relay this person has, what is held
-there and which relay a connection went through, whether this device dials directly, what is
-waiting to be sent and which relay it waits on, what is syncing, and what arrived: a message, a
-share and, after the first release, a transfer offer, delivered to the daemon without polling
-and shown here and by `message inbox`; while every device of the person's is asleep a message or
-a share waits sealed at their vault until a device of theirs takes it) · `log` (what this
-device's daemon was asked: which device or app read or wrote what, when, from where; kept as
-sealed records on this device, shown per device, and replicated to a drive only if the person
-pins it there, so no host learns a person's rhythm from it; it does not see reads of ciphertext
-at a host nor what happens to a copy handed out) · `doctor` (follows the first release: the
-machine's fitness, and `doctor logs` for the daemon's own event log, which is about the daemon
-and not about the person) · `repl`.
+there, and of what is waiting which relay said what and since when, whether this device dials
+directly, what is waiting to be sent and which relay it waits on, what is syncing, and what
+arrived: a message, a share and, after the first release, a transfer offer, delivered to the
+daemon without polling and shown here and by `message inbox`; while every device of the person's
+is asleep a message or a share waits sealed at their vault until a device of theirs takes it) ·
+`log` (what this device's daemon was asked: which device or app read or wrote what, when, from
+where; kept as sealed records on this device, shown per device, and replicated to a drive only
+if the person pins it there, so no host learns a person's rhythm from it; it does not see reads
+of ciphertext at a host nor what happens to a copy handed out) · `doctor` (follows the first
+release: the machine's fitness, and `doctor logs` for the daemon's own event log, which is about
+the daemon and not about the person) · `repl`.
 
 ### The test of the release
 
@@ -278,7 +279,7 @@ meaning this RFC gives it, and each line of the Decision that names one says so 
 | `sync [--push\|--pull] <remote>` | `sync`, this device's drives |
 | `host:` | kept in the REPL only; from the shell a bare path is the machine's |
 | `mint` | `host mint` |
-| `relay set/clear/status` | `host relay add/remove/list/status`: a person's relays are a set (RFC 0007) |
+| `relay set/clear/status` | `host relay add/remove/status`: a person's relays are a set (RFC 0007) |
 | `relay rule/invite/forget`, `vault …` | `host relay …`, `host vault …` |
 | `peer` | replaced: devices are `device`, nodes are `host`, as RFC 0002 has it |
 | `config status`, `net` | `status` |
