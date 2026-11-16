@@ -15,5 +15,6 @@ structural ownership of their data is not.
 | A host sees how much you keep and when you touch it | volume and access pattern, and no plaintext | fixed allocation and oblivious access, the known answers, not yet built |
 | Those admitted to a relay share a key (RFC 0007) | a key says one of those who hold it and never which, so a relay keeps no row for a person; one person is removed by rotating the key for all who held it | not designed: a token of admission that proves its holder is one of those admitted and cannot be linked to another |
 | A vault's door for the hour is a label whoever holds the vault's line can make (RFC 0007) | a relay admits to that door any such holder its rule lets stand; what answers a knock is proved by the vault's key and nothing else | not designed: a label only the vault can stand under, a key blinded for each hour |
+| The network a device is on sees how many doors it holds (RFC 0007) | a count, and when it changes; no label, key or address | not built: a reservation that carries many labels on one connection |
 
 A concession that is not on this page is not a concession. It is a bug.

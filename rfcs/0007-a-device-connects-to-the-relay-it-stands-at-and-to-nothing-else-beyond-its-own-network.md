@@ -475,7 +475,7 @@ relay, a device sends, and is reached only on a local network.
 | The relay a vault stands at | every byte to and from the vault, by label and hour; the address of each relay that carries to it | those relays' addresses; the vault's endpoint | a vault-shaped node to the relays that reach it; the vault's key, where it holds the vault's line; not to a person, unless one landlord runs the vault too |
 | One who holds a vault's line and stands at the relay that vault stands at | when a first knock is made at that vault | the vault's key | that vault; no person and no address |
 | One landlord running the relay a person stands at and their vault | all of the first and fourth rows, joined | the identity, and the relays it reaches | who the person is to which relays they reach and are reached from, and when |
-| The network a device is on | one remote address, the relay's, always the same; when and how much | that address | nothing of whom the person reaches |
+| The network a device is on | one remote address, the relay's, always the same; when and how much, and how many connections the device holds there, one for each door it stands at, a number that follows its contacts | that address | nothing of whom the person reaches |
 | A listener between two relays | the two relays' addresses, when and how much | both addresses | where each relay carries one person, that those two people's relays speak |
 
 Each party holds something durable only as an address or a relay's key. The join key the design
