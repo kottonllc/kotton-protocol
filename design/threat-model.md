@@ -46,10 +46,10 @@ the reference's issue under that RFC lands.
 By design (RFC 0007) sees one remote address beyond itself, the relay the device stands at,
 always the same, with when and how much, and how many connections the device holds there, one
 for each door it stands at, a number that follows its contacts; and on that connection a
-version byte, fresh values, lengths and sealed bytes. Cannot learn which relays the person reaches, or whom. A device whose
-person set it to dial directly shows this network each relay, or the vault, it connects to.
-Today a device connects to each contact's relay and to its vault itself, and this network sees
-each of them, until the reference's issue under that RFC lands.
+version byte, fresh values, lengths and sealed bytes. Cannot learn which relays the person
+reaches, or whom. A device whose person set it to dial directly shows this network each relay,
+or the vault, it connects to. Today a device connects to each contact's relay and to its vault
+itself, and this network sees each of them, until the reference's issue under that RFC lands.
 
 ## A listener between two relays
 
