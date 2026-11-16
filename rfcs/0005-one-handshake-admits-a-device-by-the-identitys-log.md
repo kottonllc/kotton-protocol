@@ -30,7 +30,7 @@ RFC 0002 decided, or not what the principles ask.
 
 The path a connection takes is a fourth matter and is not decided here. A device dials a vault's
 address before it tries a relay's circuit, so a vault sees the address a device connects from.
-Whether the circuit should be the path to a vault is the next RFC's (#48).
+The path is RFC 0007's.
 
 ## Decision
 
@@ -100,7 +100,8 @@ beneath shows what it shows to whoever reaches it, before any frame: on the QUIC
 listener completes TLS with anyone, so one who connects learns that something there accepts
 QUIC, and on a relay's circuit an open tells the one who opens it that a reservation stands.
 
-**A transport carries bytes.** QUIC, a relay's circuit, a WebSocket to a vault that cannot
+**A transport carries bytes.** QUIC, a relay's circuit, whether one relay carries it or two
+(RFC 0007), a WebSocket to a vault that cannot
 accept QUIC, and a link such as Bluetooth each carry the same frames. On the QUIC path the
 frames are one stream, and TLS still runs beneath, as QUIC requires, with a certificate made for
 the connection and checked by nobody, no protocol name and no ticket: it carries no identity and
@@ -363,11 +364,12 @@ made there by a device that holds the withdrawal.
   its log, roughly how many authorities it commits, with hashes over the others' keys by which a
   key already known can be recognised, and no device's key. Asked again it learns whether the
   log has moved, and no drive counts the asking. The landlord learns that a holder of the
-  authority asked and when, the key of the device that asked, and, until #48, the address it
-  asked from, and holds nothing that shows any of it to anyone else. A listener on the path can
-  tell a claim's connection from another by the lengths of its frames, and learns nothing of
-  whose it is. The claim's exchange asks one new thing of a responder: it keeps its ephemeral
-  value until it has read the frame that answers its first, and no longer.
+  authority asked and when, the key of the device that asked, and no address it asked from but
+  for a device set to dial that vault (RFC 0007), and holds nothing that shows any of it to
+  anyone else. A listener on the path can tell a claim's connection from another by the lengths
+  of its frames, and learns nothing of whose it is. The claim's exchange asks one new thing of a
+  responder: it keeps its ephemeral value until it has read the frame that answers its first,
+  and no longer.
 - What the claim does not settle. The device extends an event it cannot check until the drive
   sends the rest of the log. A drive names an earlier event than its latest where the rule gives
   one, and the rotation parts the chain there and stands over the ordinary events written since;
@@ -416,7 +418,7 @@ made there by a device that holds the withdrawal.
   own first frame, which this RFC does not change, but for the certificate its socket presents.
 - On the QUIC path two key exchanges run, QUIC's beneath the protocol's, the cost RFC 0002
   accepted.
-- Left open, each a follow-up and not a reason to wait: the path to a vault, which is #48;
+- Left open, each a follow-up and not a reason to wait:
   whether the contest window an event carries should decide between two rotations of the same
   standing; whether a drive should name, and `identity rotate` write over, the last event before
   any authority was added after the one the rotation is under, at the cost of the events since,

@@ -87,7 +87,11 @@ under the identity page's rule) · `bind` (bind this identity to this device's h
 listener and an announcement on the network it is on, so another of the person's devices there
 can find it and `send` to it; off until told, since a relay introduces the person's devices
 otherwise; `always` is said back at every `status`, and is refused where the platform has no
-announcement) · `reset` (start this device fresh).
+announcement) · `direct off|on [<vault>]` (whether this device connects itself to a relay it
+does not stand at, or to the one vault named; off until told, since a device reaches other
+people's relays and its own vault through the relay it stands at, RFC 0007; the person is told
+before it is set that each machine it then reaches sees this device's address, and it is said
+back at every `status`) · `reset` (start this device fresh).
 
 **Drives.** `drive create <name> [--on <vault>]` · `list` (where each lives, its size, which
 devices pin it whole) · `show` · `move <drive> --to <vault>` (under the same key; every device
@@ -133,7 +137,10 @@ shared and what was shared with me). A copy cannot be taken back, so there is no
 revoke`; a folder two people hold as one is a grant the protocol has not shaped, and is not
 here.
 
-**Contacts and messages.** `contact pair` · `join <code>` · `list` · `show` · `rm` · `message
+**Contacts and messages.** `contact pair` (make a code, wait at the relay this device stands
+at, and show the code and that relay's address to say aloud) · `join <code> [--relay
+<address>]` (reach the relay named through this device's own relay, RFC 0007; with none named,
+the relay this device stands at) · `list` · `show` · `rm` · `message
 send <contact> <text>` · `message inbox` · `message attach <contact> <path>` (the same sealed
 copy a share is, carried in the conversation with that contact) · `message channel
 new|send|read|admit|remove|leave` · `message channel attach <channel> <path>` (the same sealed
@@ -157,11 +164,14 @@ with a verb a person reaches for; passkeys wait for a browser or an OS to presen
 **Host.** `host mint` (the lines that stand up a relay and a vault) · `host enrol <line>` (the
 operator completes the key `mint` made, from a relay's line, a vault's, or a host's one line
 for both; no digits, since it is their own) · `host list` · `host health` · `host relay
-set|clear|status` (which relay this device stands at) · `host relay rule|invite|forget` and
-`host vault people|invite|digits|space|drop|stand|move|forget` (operating a relay or a vault of
-your own, for the people you admit).
+set|clear|status` (which relay this device stands at; `status` shows its address, which is
+what a person says beside a contact's code) · `host relay rule|invite|forget` and `host vault
+people|invite|digits|space|drop|stand|move|forget` (operating a relay or a vault of your own,
+for the people you admit; `host relay invite` hands a person the key that lets their devices
+stand at the relay, and with it the key their own contacts open doors there with, RFC 0007).
 
-**Seeing it.** `status` (daemon, drives, devices, host, what is syncing, and what arrived: a
+**Seeing it.** `status` (daemon, drives, devices, host, whether this device dials directly,
+what is waiting to be sent and which relay it waits on, what is syncing, and what arrived: a
 message, a share and, after the first release, a transfer offer, delivered to the daemon
 without polling and shown here and by `message inbox`; while every device of the person's is
 asleep a message or a share waits sealed at their vault until a device of theirs takes it) ·
@@ -175,15 +185,16 @@ the daemon and not about the person) · `repl`.
 ### The test of the release
 
 Two people, each at a machine of their own and each with a host of their own, a relay and a
-vault they stood up from the lines `host mint` prints. They make first contact at one relay:
-one person invites the other to the relay they operate (`host relay invite`), and the other
-stands a device at it (`host relay set`). They pair as contacts on a code one reads aloud to
-the other. One sends the other a message while every device of the other's is off; it waits
-sealed at the recipient's vault and is read when a device of theirs wakes. One shares a file,
-and the other opens it from their own tree. The test needs no machine and no party beyond the
-two people's own devices and hosts. First contact between two people who stand at different
-relays is not settled by this text. The run is made from the release's own archives on fresh
-machines, and `v0.1.0` is not tagged before it passes.
+vault they stood up from the lines `host mint` prints, and each with their device standing at
+their own relay. They pair as contacts on a code and a relay's address that one reads aloud to
+the other (`contact pair`, `contact join <code> --relay <address>`). One sends the other a
+message while every device of the other's is off; it waits sealed at the recipient's vault and
+is read when a device of theirs wakes. One shares a file, and the other opens it from their own
+tree. The test needs no machine and no party beyond the two people's own devices and hosts.
+Through the run each device holds a connection to the relay it stands at and to no other machine
+beyond its own network, and each relay is shown the other relay's address and no device's (RFC
+0007). The run is made from the release's own archives on fresh machines, and `v0.1.0` is not
+tagged before it passes.
 
 ### Where it runs
 
@@ -282,15 +293,16 @@ meaning this RFC gives it, and each line of the Decision that names one says so 
   registry registers is either in the Decision or in a "Today" cell of the table, and nothing
   in the Decision is absent from the binary, but for a verb the Decision says follows the first
   release, which the first release need not carry; the REPL's tree is held equal to the CLI's.
-- `v0.1.0` is tagged when three things are true, and not before. A stranger can test what the
+- `v0.1.0` is tagged when four things are true, and not before. A stranger can test what the
   first release holds: identity and recovery; devices; drives, `pin` and `sync`; the file
   verbs; `share`; contacts, messages, channels and both `attach` verbs; records and schemas;
   the keychain; `log`, `host` and `status`; each on the three operating systems the gate builds
   and tests; and with them every other line above that does not say it follows the first
-  release. The test of the release has passed from the release's own archives. And RFC 0005's
+  release. The test of the release has passed from the release's own archives. RFC 0005's
   handshake is the way in at every connection to a drive, between a person's devices and at a
-  contact's door. When the work lands is the distribution's tracking issue's to say, not this
-  RFC's.
+  contact's door. And a device connects to the relay it stands at and to nothing else beyond its
+  own network, as RFC 0007 has it. When the work lands is the distribution's tracking issue's to
+  say, not this RFC's.
 - Contacts, messages, channels and sharing are the user daemon's. They seal and sign with the
   identity's key, which no other process holds, so they have no repository of their own, and
   they ship in the system archive and in no other: a vault and a relay link none of them.
