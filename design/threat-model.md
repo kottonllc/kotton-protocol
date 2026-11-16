@@ -35,21 +35,24 @@ vault's line, which door is that vault's and so the vault's key. Cannot learn: w
 who operates one, a tenant's name, which of the people who stand at it asked for a circuit
 beyond the address they asked from, or any durable identity of a person on any route, because
 every handle is per contact and per epoch. Holds nothing past delivery, of what it carries
-outward as of what it carries in: it writes down no far relay, no handle and no address. A relay
-reached by a device whose person set it to dial directly learns that device's address. Today no
-relay carries outward and a device connects itself to each contact's relay, so that relay learns
-the device's address and the device's own relay learns nothing of which relays it reaches, until
-the reference's issue under that RFC lands.
+outward as of what it carries in: it writes down no far relay, no handle and no address. That is
+the project's relay as built; a tenant cannot check it of a relay someone else runs, and no line
+here rests on it. What a relay is handed of a person who runs it is that person's own record. Of
+a tenant it is routing, at a relay the tenant chose and leaves asking no one. A relay reached by
+a device whose person set it to dial directly learns that device's address. Today no relay
+carries outward and a device connects itself to each contact's relay, so that relay learns the
+device's address and the device's own relay learns nothing of which relays it reaches, until the
+reference's issue under that RFC lands.
 
 ## The network a device is on
 
-By design (RFC 0007) sees one remote address beyond itself, the relay the device stands at,
-always the same, with when and how much, and how many connections the device holds there, one
-for each door it stands at, a number that follows its contacts; and on that connection a
-version byte, fresh values, lengths and sealed bytes. Cannot learn which relays the person
-reaches, or whom. A device whose person set it to dial directly shows this network each relay,
-or the vault, it connects to. Today a device connects to each contact's relay and to its vault
-itself, and this network sees each of them, until the reference's issue under that RFC lands.
+By design (RFC 0007) sees one remote address beyond itself for each relay the device stands at,
+the same each day, with when and how much, and how many connections the device holds there, one
+for each door it stands at, a number that follows its contacts; and on that connection a version
+byte, fresh values, lengths and sealed bytes. Cannot learn which relays the person reaches, or
+whom. A device whose person set it to dial directly shows this network each relay, or the vault,
+it connects to. Today a device connects to each contact's relay and to its vault itself, and
+this network sees each of them, until the reference's issue under that RFC lands.
 
 ## A listener between two relays
 
@@ -154,10 +157,11 @@ server of ours.
 Anonymity: the relay you stand at sees your source address and which relays you reach, and a
 relay you reach sees your relay's address; where your relay carries you alone, that address is
 yours at every relay you reach (RFC 0007). Nothing here hides who is talking to a relay, only
-what they say and to whom. Traffic analysis across relays, and padding and timing on any leg. A
-compromised build of Kotton itself, which is what reproducible builds and signed releases are
-for and which are only partly in place. A release's signature proves its sums were signed by a
-key in `infra/release/allowed_signers`, read from the repository at the release's tag, so a
-first install trusts the host that serves the repository for that key ([decision
-0007](decisions/0007-the-release-key-is-read-from-the-repository.md)). A post-quantum adversary:
-the ciphers are modern and not post-quantum, and this model takes no position on it.
+what they say and to whom. Kotton runs over the network you choose and adds no hop to it; a
+tunnel or an onion route beneath is yours to add. Traffic analysis across relays, and padding
+and timing on any leg. A compromised build of Kotton itself, which is what reproducible builds
+and signed releases are for and which are only partly in place. A release's signature proves its
+sums were signed by a key in `infra/release/allowed_signers`, read from the repository at the
+release's tag, so a first install trusts the host that serves the repository for that key
+([decision 0007](decisions/0007-the-release-key-is-read-from-the-repository.md)). A post-quantum
+adversary: the ciphers are modern and not post-quantum, and this model takes no position on it.
