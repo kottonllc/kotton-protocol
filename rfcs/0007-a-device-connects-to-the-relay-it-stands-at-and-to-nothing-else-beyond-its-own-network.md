@@ -71,10 +71,12 @@ names them all. Where this page says the relay a device stands at, it is each of
   relays for a call. Neither document was reached when this page was written, and each is named
   and not quoted. A note that lists relays is what a reach note already is, and a delivery made
   on every path at once, of which one copy is kept, is what the reference already does. What
-  this page takes is the list and every path at once. It takes no order of preference, because
-  an order would be one more thing for a person to set and would change nothing a relay in the
-  set is handed for long: what a person sends by one relay is answered at every relay their note
-  names. What it does not take is a list anyone else publishes.
+  this page takes is the list and every path at once. It takes no order of preference. An order
+  would be one more thing for a person to set, and at the relays not asked to carry it would
+  change two things only: the times and sizes of what is sent, and the far relays of contacts
+  who never answer. Everything else a relay in the set is handed is the same with an order or
+  without: it holds every door, and what a person sends by one relay is answered at every relay
+  their note names. What it does not take is a list anyone else publishes.
 - *Not built.* A device that stands at more than one relay. The reference's device stands at
   one, which is the smallest set, and a reach note and a vault already hold several.
 
@@ -442,6 +444,17 @@ again, asking no one. Nothing falls back to a direct dial by itself.
   the note and the device's own, by opening each itself; it keeps one copy by the envelope's key
   and takes the first acknowledgement that holds, as this page keeps; and nothing a person reads
   there names the path that worked, which this page changes.
+- *What it costs.* A person who stands at S relays, sending to a person whose note names R,
+  makes S times R paths, with the same sealed bytes on each; the reference, whose device stands
+  at one relay, makes R. As the reference does it, the paths are raced: as soon as one door's
+  answer settles the delivery, the paths still out are dropped, and a copy of theirs that lands
+  anyway is dropped by its id and signed for again. A range of a share is delivered as a message
+  is, so a large share sent by a person with several relays is sent on each of them until one
+  path settles each range. With one relay on each side it is one path. With several, a person
+  notices a large share taking more of their own line out, by up to as many times as the paths,
+  for as long as the race for each range lasts. What bounds it is the size of the two sets,
+  which are the two people's own, the size of a range, and that a race ends at the first answer
+  that settles.
 
 **What a relay says of a far relay is its own word, in one form, and changes nothing a device
 holds.** Everything a device is told of a far relay, but for a circuit that joined and then
@@ -559,7 +572,7 @@ surface: does what is held there compose into a record, and whose would it be?
 |---|---|---|---|
 | A relay the person runs, that their device stands at | the address the device connects from; the doors it holds, by label and hour; of what arrives, the address of the relay that carried it; of what the device sends, the far relay's key and address, when and how much, and the two labels of each open for their hour | addresses and relays' keys | the person's own record of where they reach and are reached from. They hold it; they can be asked for it, and nobody else can be asked instead |
 | A relay the person rents, that their device stands at; each such relay in a set | what the row above is handed, and which of the relay's keys made each tag. No content, no identity and no key of the person's arrives | the device's address for as long as its network keeps it; the far relays' addresses and keys; nothing else outlasts its hour | if its operator keeps what passes: one address beside the relays it reaches and is reached from, over time, at a party the person chose and leaves asking no one. Whether it is kept is the operator's doing and not this page's. An identity only where one landlord runs the person's vault too |
-| A contact's relay; each relay a contact stands at | the address of each relay that carried for the sender, which is every relay the sender stands at, within one hour's labels; the two labels for their hour, when and how much; the address the door's holder connects from | those relays' addresses | where that relay carries many, a crowd; where it carries one, that person, the same at every relay they reach. Nothing of where a device is |
+| A contact's relay; each relay a contact stands at | the address of each relay that carried for the sender, which is every relay the sender stands at, within one hour's labels; the two labels for their hour, when and how much; the address the door's holder connects from | those relays' addresses, and that they are one set: they arrive together, within one hour's labels | the sender's set of relays, seen together each hour. Where every relay in it carries many, a crowd; where any one of them carries that person alone, or no one else stands at the same set, that person, the same at every relay their contacts stand at. Nothing of where a device is |
 | A contact's vault | the pair's key for the hour, and sealed bytes | nothing | nothing; it is handed no address of the sender or of any relay of the sender's |
 | The person's own vault | who, by the log; when its tenant's devices are awake, and how much they write | the log | no address: it is handed no device's, and no relay's but those it stands at |
 | The relay a vault stands at | every byte to and from the vault, by label and hour; the address of each relay that carries to it | those relays' addresses; the vault's endpoint | a vault-shaped node beside the relays that reach it; the vault's key, where it holds the vault's line; not a person, unless one landlord runs the vault too |
@@ -573,7 +586,7 @@ removes is the device's address at every relay the person did not choose. What i
 relays the person did choose: a relay a device stands at is handed both the device's address and
 the far relays it carries to, and that relay's address is handed to every relay a contact stands
 at, which the contact chose. A person who runs the relay holds both themselves. A person who
-rents it has chosen who is handed them, and changes that by adding a relay, running one, or
+rents it has chosen who is handed them, and changes that by removing the relay, running one, or
 choosing the network beneath, asking no one. Each is stated in Consequences.
 
 **The threat model says of each party what this table says.** For each party that carries, keeps
@@ -620,8 +633,8 @@ without being told, by a default or a directory. A relay is stood up from the li
 prints, and the test of the release is two people who each run one. And a relay that serves
 anyone carries outward for nobody, so there is no open carrier for small relays to be judged by.
 One force pulls the other way and is stated: a relay one person runs alone is that person's
-address at every relay they reach, so standing in a crowd is worth something. The answer this
-page gives is a relay a few people share, run by one of them.
+address at every relay their contacts stand at, so standing in a crowd is worth something. The
+answer this page gives is a relay a few people share, run by one of them.
 
 ## Consequences
 
@@ -656,18 +669,20 @@ page gives is a relay a few people share, run by one of them.
   has with one rented relay and no more said, and `status` says it. (2) A relay one person alone
   stands at is that person's address at every relay their contacts stand at: one lasting
   address, the relay's and no device's, and where the relay is kept at home, the home's. The way
-  back is to stand at a relay others stand at too, which asks whoever runs it. (3) Those
-  admitted to a relay share a key, so one person is removed by a key rotated for all; the seam
-  is a token of admission that cannot be linked, which is not designed. (4) A vault's door for
-  the hour is a label whoever holds the vault's line can make, so a relay admits to it any such
-  holder its rule lets stand; the seam is a label only the vault can stand under, a key blinded
-  for each hour, which is not designed. (5) A device set to dial a vault directly reaches it by
-  datagrams, which an onion route does not carry, so that setting and such a route are not used
-  together; the seam is the stream RFC 0005 already names for a vault that cannot accept QUIC.
-  And a relay that answers only on an onion route is carried to by no other relay; no seam is
-  sought, since its person adds another relay to be reached at. (6) The network a device is on
-  is shown how many doors the device holds, a count that follows its contacts; the seam is a
-  reservation that carries many labels on one connection, which is not built.
+  back is to stand at a relay others stand at too, which asks whoever runs it, and to remove the
+  relay they stand at alone: a delivery goes by every relay a person stands at, so a relay kept
+  is a relay still handed on. (3) Those admitted to a relay share a key, so one person is
+  removed by a key rotated for all; the seam is a token of admission that cannot be linked,
+  which is not designed. (4) A vault's door for the hour is a label whoever holds the vault's
+  line can make, so a relay admits to it any such holder its rule lets stand; the seam is a
+  label only the vault can stand under, a key blinded for each hour, which is not designed. (5)
+  A device set to dial a vault directly reaches it by datagrams, which an onion route does not
+  carry, so that setting and such a route are not used together; the seam is the stream RFC 0005
+  already names for a vault that cannot accept QUIC. And a relay that answers only on an onion
+  route is carried to by no other relay; no seam is sought, since its person adds another relay
+  to be reached at. (6) The network a device is on is shown how many doors the device holds, a
+  count that follows its contacts; the seam is a reservation that carries many labels on one
+  connection, which is not built.
 - **`status` names each relay a person has, what is held there, and which relay said what.** Of
   a relay the person operates it says the record of where they reach is on their own machine. Of
   a relay they rent it says that where the device is and which relays it reaches are held there,
@@ -855,11 +870,14 @@ reached when this page was written, the entry says so and asserts nothing.
   failure said by name, a far relay's as the word of the relay that carried; a vault's door for
   the hour, and no address published for a vault; the setting to dial directly; the reach note
   handing the key that opens. Done when it includes the same run, in which the device holds one
-  remote address for each relay it stands at, and the test of the release as amended.
+  remote address for each relay it stands at, and the test of the release as amended; and,
+  following it, when a device stands at two relays, a run in which a delivery goes by both and
+  the recipient files one copy.
 - `kotton-vault`: its door for the hour; its line names the relay it stands at; it asks no relay
   to carry.
 - `kotton-cli`: `host relay add|remove`, `contact pair` shows the relay beside the code,
   `contact join --relay`, `device direct`, and `status` names each relay, what is held there,
-  which relay said what and since when, the setting and each failure.
+  which relay said what of which far relay and since when, of a delivery which path was signed
+  for, the setting and each failure.
 - `kotton-dist`: the test of the release, with each person at their own relay.
 - `kotton-gateway`, `kotton-portal`: nothing.

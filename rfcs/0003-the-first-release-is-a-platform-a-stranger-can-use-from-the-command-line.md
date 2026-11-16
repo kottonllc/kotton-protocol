@@ -172,18 +172,19 @@ your own, for the people you admit; `host relay invite` hands a person the key t
 devices stand at the relay, and with it the key their own contacts open doors there with, RFC
 0007).
 
-**Seeing it.** `status` (daemon, drives, devices, host, each relay this person has, what is held
-there, and of what is waiting which relay said what and since when, whether this device dials
-directly, what is waiting to be sent and which relay it waits on, what is syncing, and what
-arrived: a message, a share and, after the first release, a transfer offer, delivered to the
-daemon without polling and shown here and by `message inbox`; while every device of the person's
-is asleep a message or a share waits sealed at their vault until a device of theirs takes it) ·
-`log` (what this device's daemon was asked: which device or app read or wrote what, when, from
-where; kept as sealed records on this device, shown per device, and replicated to a drive only
-if the person pins it there, so no host learns a person's rhythm from it; it does not see reads
-of ciphertext at a host nor what happens to a copy handed out) · `doctor` (follows the first
-release: the machine's fitness, and `doctor logs` for the daemon's own event log, which is about
-the daemon and not about the person) · `repl`.
+**Seeing it.** `status` (daemon, drives, devices, host, each relay this person has, what is
+held there, of what is waiting which relay said what of which far relay and since when, and of
+a delivery which path was signed for, whether this device dials directly, what is waiting to be
+sent and which relay it waits on, what is syncing, and what arrived: a message, a share and,
+after the first release, a transfer offer, delivered to the daemon without polling and shown
+here and by `message inbox`; while every device of the person's is asleep a message or a share
+waits sealed at their vault until a device of theirs takes it) · `log` (what this device's
+daemon was asked: which device or app read or wrote what, when, from where; kept as sealed
+records on this device, shown per device, and replicated to a drive only if the person pins it
+there, so no host learns a person's rhythm from it; it does not see reads of ciphertext at a
+host nor what happens to a copy handed out) · `doctor` (follows the first release: the
+machine's fitness, and `doctor logs` for the daemon's own event log, which is about the daemon
+and not about the person) · `repl`.
 
 ### The test of the release
 

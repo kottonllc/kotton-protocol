@@ -96,11 +96,11 @@ reference's issue under that RFC lands.
 ## A contact
 
 Holds the key to what you shared with them and nothing else, and keeps what they were once sent.
-One who operates the relay they stand at sees which relay you reach them from (RFC 0007), which
-the reach note on their card already names, and never where your device is, unless you set that
-device to dial directly. Can prove delivery only under a device key your own reach note lists,
-so neither a vault nor a relay can forge a receipt. A member removed from a channel cannot open
-the next epoch.
+One who operates the relay they stand at sees which relays you reach them from, every relay you
+stand at, together (RFC 0007), which the reach note on their card already names, and never where
+your device is, unless you set that device to dial directly. Can prove delivery only under a
+device key your own reach note lists, so neither a vault nor a relay can forge a receipt. A
+member removed from a channel cannot open the next epoch.
 
 ## A remote caller
 
