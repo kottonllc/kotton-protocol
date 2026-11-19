@@ -43,7 +43,7 @@ make of another, what crosses with it, and what it means; versioned; depended on
 | `kotton-sdk` | the language bindings of the app surface |
 | `kotton-infer` | the inference runtime: the first native guest, confined by the system's sandbox host under the native-guest contract |
 | `kotton-dist` | the distribution: which version of each archive goes together, the installers, the launcher, the nine lines a person types to install and run it, the signed sums over the set |
-| `kotton-ahead` | the reference: the whole in one tree, read-only, from which each repository is cut when its turn comes |
+| `kotton-ahead` | the reference: the whole in one tree, read-only, from which a repository is cut when no other tree holds its code |
 | `kotton-kernel` | reserved: the capability kernel, the last implementation of this protocol; empty until the protocol is stable enough that bare metal is a defined task |
 
 No repository but this one defines a request. A change a dependent needs lands here first, as
@@ -55,6 +55,33 @@ crate boundary is drawn where there is an authority boundary. The system's daemo
 crates that are the system's insides, not the contract, and stay in one workspace, each
 binary held to the crates it may link.
 
+A repository is cut from the tree that holds its code. `kotton` holds the code of the
+contract's crates, the client library, the CLI, the relay and the vault, with the system's;
+the reference holds the rest. Until a part is cut, `kotton`'s tree is laid out as the table
+above: one top-level directory for each repository a part of it becomes, and a check that
+holds each directory to the directories its repository may link. An edge the table does not
+allow is on that directory's owed list, by name, or the check fails. The lists are printed on
+every run, and one only shrinks.
+
+A cut is a move, with its history. What a part may link is settled in the tree that holds it,
+before its cut, and a part is cut when its owed list is empty. The parts the first release
+ships are cut before it, in this order:
+
+1. The contract's crates, into this repository, after the first release's changes to the wire
+   have landed in `kotton`. Until this cut, a change to a request and to what answers it is
+   one pull request in one tree.
+2. The relay, into `kotton-relay`.
+3. The CLI, into `kotton-cli`. Until the next cut it takes the client library from `kotton`,
+   by a pinned commit.
+4. The client library, into this repository.
+5. The vault, into `kotton-vault`, after the RFC that says what a vault needs to know.
+
+From a cut until this repository's first tag, a dependent pins the commit, as `VERSIONING.md`
+says of a commit between tags. The tags are the first release's last step, after every cut
+above and after the release's lines have been run from archives built from checkouts: this
+repository's tag, then each implementation's, then the distribution's. A repository the first
+release ships nothing from is cut after it.
+
 A native guest is a process the system's sandbox host spawns and confines: it is given its
 channel to the daemon at spawn and nothing else, no key, no store, no network. What crosses
 that channel, and what the guest may assume, is one contract the protocol defines and holds for
@@ -65,7 +92,7 @@ Repositories are named for the surface or the role, never for the technology tha
 them. `cli`, `desktop` and `portal` name surfaces a person uses; `gateway`, `relay`, `vault`,
 `compositor` and `infer` name roles a process plays; `protocol`, `sdk` and `dist` name what an
 implementer, an app developer or an installer takes; `ahead` names the reference's role, the
-tree each repository is cut from; `kernel` names the role reserved for the last implementation.
+whole in one tree; `kernel` names the role reserved for the last implementation.
 The system carries the bare name: it is the node, the root of trust, which every other
 repository reaches, implements against, or holds ciphertext for. The rule binds repositories; a
 crate inside one may still be named for what it does.

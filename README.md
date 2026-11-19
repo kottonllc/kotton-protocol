@@ -22,8 +22,19 @@ implementations exist to prove it, not to be mandatory.
 - [`papers/`](papers/): what the platform is for ([the ownership thesis](papers/ownership-thesis.md))
   and how it is achieved ([the confinement thesis](papers/confinement-thesis.md)).
 
-The protocol and type crates arrive here from the reference repository when their turn comes,
-as RFC 0001's table says. Until then this repository is prose and the record schemas.
+The protocol and type crates arrive here from [`kotton`](https://github.com/kottonllc/kotton),
+which holds them today, once the first release's changes to the wire have landed there; the
+client library follows. RFC 0001 gives the order of the cuts. Until then this repository is
+prose and the record schemas, and this is where the code of each repository in RFC 0001's
+table is:
+
+| Repository | Where its code is today |
+|---|---|
+| `kotton-protocol` | the RFCs, the pages and the record schemas here; the crates and the client library in `kotton` |
+| `kotton`, `kotton-cli`, `kotton-relay`, `kotton-vault` | in `kotton` |
+| `kotton-dist` | in `kotton-dist` |
+| `kotton-gateway`, `kotton-portal`, `kotton-compositor`, `kotton-desktop`, `kotton-sdk`, `kotton-infer` | in the reference |
+| `kotton-kernel` | reserved, and empty |
 
 ## Licence
 
