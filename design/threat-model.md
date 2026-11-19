@@ -28,22 +28,24 @@ that RFC lands.
 By design (RFC 0007) learns: handles, bytes and timing; which handles are awake; the address
 each device and vault that stands at it connects from, and which of its admission keys made each
 tag; for each circuit one of those devices asks it to carry to another relay, that relay's key
-and address, when and how much, and the two handles of the open for their hour; and of a circuit
-that arrives from another relay, that relay's address and no device's. Can tell that a node
-which holds many doors at the end of many busy circuits is likely a vault, and, where it holds a
-vault's line, which door is that vault's and so the vault's key. Cannot learn: whose a vault is,
-who operates one, a tenant's name, which of the people who stand at it asked for a circuit
-beyond the address they asked from, or any durable identity of a person on any route, because
-every handle is per contact and per epoch. The reference's relay is built to hold nothing past
-delivery, of what it carries outward as of what it carries in, and to write down no far relay,
-no handle and no address; the run that would hold that of what it carries outward is not built,
-a tenant cannot check it of a relay someone else runs, and no line here rests on it. Where a
-person stands at several relays, each is handed the same. What a relay is handed of a person who
-runs it is that person's own record. Of a tenant it is routing, at a relay the tenant chose and
-leaves asking no one. A relay reached by a device whose person set it to dial directly learns
-that device's address. Today no relay carries outward and a device connects itself to each
-contact's relay, so that relay learns the device's address and the device's own relay learns
-nothing of which relays it reaches, until the reference's issue under that RFC lands.
+and address, when and how much, a sealed open it cannot open and the kind of its answer, and no
+handle; and of a circuit that arrives from another relay, that relay's address and no device's.
+Can tell that a node which holds many doors at the end of many busy circuits is likely a vault,
+and, where it holds a vault's line, which door is that vault's and so the vault's key. Cannot
+learn: whose a vault is, who operates one, a tenant's name, which of the people who stand at it
+asked for a circuit beyond the address they asked from, which door at another relay a circuit it
+carries opens or how many doors a device reaches there, or any durable identity of a person on
+any route, because every handle is per contact and per epoch. The reference's relay is built to
+hold nothing past delivery, of what it carries outward as of what it carries in, and to write
+down no far relay, no handle and no address; the run that would hold that of what it carries
+outward is not built, a tenant cannot check it of a relay someone else runs, and no line here
+rests on it. Where a person stands at several relays, each is handed the same. What a relay is
+handed of a person who runs it is that person's own record. Of a tenant it is routing, at a
+relay the tenant chose and leaves asking no one. A relay reached by a device whose person set it
+to dial directly learns that device's address. Today no relay carries outward and a device
+connects itself to each contact's relay, so that relay learns the device's address and the
+device's own relay learns nothing of which relays it reaches, until the reference's issue under
+that RFC lands.
 
 ## The network a device is on
 
