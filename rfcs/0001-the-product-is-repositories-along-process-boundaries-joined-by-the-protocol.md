@@ -56,14 +56,14 @@ crates that are the system's insides, not the contract, and stay in one workspac
 binary held to the crates it may link.
 
 A repository is cut from the tree that holds its code. `kotton` holds the code of the
-contract's crates, the client library, the CLI, the relay and the vault, with the system's but
-for the sandbox host's; `kotton-dist` holds the distribution's; the reference tree,
-`kotton-ahead`, holds the rest. Until a part is cut, `kotton`'s tree is laid out as the table
-above: one top-level directory for each part that is cut, and for the system's, each part named
-in the table's row it belongs to, and a check in `kotton`'s gate that holds each directory to
-what that part may link. An edge the table does not allow is on that directory's owed list, by
-name, or the check fails. Each list is printed on every run, and the check refuses a list that
-grew, but for one that grew because an RFC narrowed its row.
+contract's crates, the client library, the CLI, the relay and the vault, with the system's, in
+which the sandbox host is not yet a process of its own; `kotton-dist` holds the distribution's;
+the reference tree, `kotton-ahead`, holds the rest. Until a part is cut, `kotton`'s tree is laid
+out as the table above: a top-level directory for each part that is cut, and the system's
+directories, each named in the table's row it belongs to, and a check in `kotton`'s gate that
+holds each directory to what that part may link. An edge the table does not allow is on that
+directory's owed list, by name, or the check fails. Each list is printed on every run, and the
+check refuses a list that grew, but for one that grew because an RFC narrowed its row.
 
 A cut is a move, with its history. What a part may link is settled in the tree that holds it,
 before its cut, and a part is cut when its owed list is empty. The parts the first release
