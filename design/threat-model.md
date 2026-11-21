@@ -28,13 +28,18 @@ that RFC lands.
 By design (RFC 0007) learns: handles, bytes and timing; which handles are awake; the address
 each device and vault that stands at it connects from, and which of its admission keys made each
 tag; for each circuit one of those devices asks it to carry to another relay, that relay's key
-and address, when and how much, and the two handles of the open for their hour; and of a circuit
-that arrives from another relay, that relay's address and no device's. Can tell that a node
-which holds many doors at the end of many busy circuits is likely a vault, and, where it holds a
-vault's line, which door is that vault's and so the vault's key. Cannot learn: whose a vault is,
-who operates one, a tenant's name, which of the people who stand at it asked for a circuit
-beyond the address they asked from, or any durable identity of a person on any route, because
-every handle is per contact and per epoch. The reference's relay is built to hold nothing past
+and address, when and how much, a sealed open and the kind of its answer, and nothing that names
+a door there; and of a circuit that arrives from another relay, that relay's address and no
+device's. Can tell that a node which holds many doors at the end of many busy circuits is likely
+a vault, and, where it holds a vault's line, which door is that vault's and so the vault's key.
+Cannot learn: whose a vault is, who operates one, a tenant's name, which of the people who stand
+at it asked for a circuit beyond the address they asked from, or any durable identity of a
+person on any route, because every handle is per contact and per epoch. Of a door at another
+relay it is handed nothing that names it; what is left to judge doors by is times, sizes, the
+kind of each answer and which far relays a device opens together, and timing is not covered.
+That it is handed no handle rests, for an open it carries, on the fresh value it reports being
+the far relay's, which is its own word, and at first contact on the key it reports, which is its
+word too (RFC 0007, the seventh concession). The reference's relay is built to hold nothing past
 delivery, of what it carries outward as of what it carries in, and to write down no far relay,
 no handle and no address; the run that would hold that of what it carries outward is not built,
 a tenant cannot check it of a relay someone else runs, and no line here rests on it. Where a
