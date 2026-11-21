@@ -31,9 +31,10 @@ table is:
 | Repository | Where its code is today |
 |---|---|
 | `kotton-protocol` | the RFCs, the pages and the record schemas here; the crates and the client library in `kotton` |
-| `kotton`, `kotton-cli`, `kotton-relay`, `kotton-vault` | in `kotton` |
+| `kotton` | in `kotton`, but for the sandbox host, which is not a process of its own there |
+| `kotton-cli`, `kotton-relay`, `kotton-vault` | in `kotton` |
 | `kotton-dist` | in `kotton-dist` |
-| `kotton-gateway`, `kotton-portal`, `kotton-compositor`, `kotton-desktop`, `kotton-sdk`, `kotton-infer` | in the reference |
+| `kotton-gateway`, `kotton-portal`, `kotton-compositor`, `kotton-desktop`, `kotton-sdk`, `kotton-infer` | in the reference tree, `kotton-ahead` |
 | `kotton-kernel` | reserved, and empty |
 
 ## Licence
