@@ -6,9 +6,9 @@ and not by design," it says so.
 ## A vault's landlord
 
 Learns: that a tenant exists and under which operator key; the tenant's identity, as its key
-log, which the vault holds from enrolment, the keys of the tenant's devices it was told of, and
-the address a device connects from when it dials the vault and not a relay; how many trees it
-keeps for them, the size of each, and when one appears or leaves; when those bytes change; and
+log, which the vault holds from enrolment, and the keys of the tenant's devices it was told of;
+how many trees it keeps for them, the size of each, and when one appears or leaves; when those
+bytes change; and
 which packs are read and written and when; and which of the tenant's devices is moving or making
 a drive, and when. For a move it sees that already from which device writes. For a making, the
 making lease is taken at one of the tenant's vaults whichever vault the drive is made at, so
@@ -17,23 +17,73 @@ drive, and when, with no name and no place. Cannot learn: a filename, a file's s
 files there are, which chunks belong together, or the shape of a drive's folders. Cannot be
 compelled to produce plaintext, because it holds none and has no verb that returns any. A
 warrant yields a byte count. Volume and access pattern are the known leaks; fixed allocation and
-oblivious access are the known answers and are not built.
+oblivious access are the known answers and are not built. By design (RFC 0007) a vault is
+reached at the relay it stands at and learns no address a device connects from, but for a device
+whose person set it to dial that vault directly. Today a device dials a vault's address before
+it tries a relay's circuit, so the vault learns that address, until the reference's issue under
+that RFC lands.
 
 ## A relay's operator
 
-Learns: handles, bytes, timing and source addresses, and which handles are awake. Cannot
-learn: which node is a vault, whose it is, who operates one, a tenant's name, or any durable
-identity on any route, because every handle is per contact and per epoch. Holds nothing past
-delivery.
+By design (RFC 0007) learns: handles, bytes and timing; which handles are awake; the address
+each device and vault that stands at it connects from, and which of its admission keys made each
+tag; for each circuit one of those devices asks it to carry to another relay, that relay's key
+and address, when and how much, a sealed open and the kind of its answer, and nothing that names
+a door there; and of a circuit that arrives from another relay, that relay's address and no
+device's. Can tell that a node which holds many doors at the end of many busy circuits is likely
+a vault, and, where it holds a vault's line, which door is that vault's and so the vault's key.
+Cannot learn: whose a vault is, who operates one, a tenant's name, which of the people who stand
+at it asked for a circuit beyond the address they asked from, or any durable identity of a
+person on any route, because every handle is per contact and per epoch. Of a door at another
+relay it is handed nothing that names it; what is left to judge doors by is times, sizes, the
+kind of each answer and which far relays a device opens together, and timing is not covered.
+That it is handed no handle rests, for an open it carries, on the fresh value it reports being
+the far relay's, which is its own word, and at first contact on the key it reports, which is its
+word too (RFC 0007, the seventh concession). The reference's relay is built to hold nothing past
+delivery, of what it carries outward as of what it carries in, and to write down no far relay,
+no handle and no address; the run that would hold that of what it carries outward is not built,
+a tenant cannot check it of a relay someone else runs, and no line here rests on it. Where a
+person stands at several relays, each is handed the same. What a relay is handed of a person who
+runs it is that person's own record. Of a tenant it is routing, at a relay the tenant chose and
+leaves asking no one. A relay reached by a device whose person set it to dial directly learns
+that device's address. Today no relay carries outward and a device connects itself to each
+contact's relay, so that relay learns the device's address and the device's own relay learns
+nothing of which relays it reaches, until the reference's issue under that RFC lands.
+
+## The network a device is on
+
+By design (RFC 0007) sees one remote address beyond itself for each relay the device stands at,
+the same each day, with when and how much, and how many connections the device holds there, one
+for each door it stands at, a number that follows its contacts; and on that connection a version
+byte, fresh values, lengths and sealed bytes. Cannot learn which relays the person reaches, or
+whom. A device whose person set it to dial directly shows this network each relay, or the vault,
+it connects to. Today a device connects to each contact's relay and to its vault itself, and
+this network sees each of them, until the reference's issue under that RFC lands.
+
+## A listener between two relays
+
+Sees the two relays' addresses, when and how much, and a version byte, fresh values, lengths and
+sealed bytes: no handle, no key and no signature (RFC 0007). Where each relay carries one
+person, it sees that those two people's relays speak.
+
+## One who holds a vault's line and stands at its relay
+
+By design (RFC 0007) can make the label of that vault's door for the hour and, where the relay's
+rule lets them stand, hold a place at it. Learns when a first knock is made at that vault.
+Holds, durably, the vault's key, which the line already gave. Joins that to the vault, and to no
+person and no address. Is answered as nobody: what answers a knock is proved by the vault's key.
 
 ## One landlord running both
 
 Learns what the two above learn, joined: which handles belong to the same person, when that
-person's devices are awake, and how often they write. This is the cost of renting both from
-one provider. It is shown to each of your contacts as a readout, and the way out is to rent
-the vault elsewhere and move, which needs the first landlord to serve while the move runs and
-nothing else; a device of yours that keeps the drive whole cannot feed the move instead today,
-and should.
+person's devices are awake, how often they write, and, where the relay is the one that person's
+devices stand at (RFC 0007), which relays that person reaches and is reached from, and when. A
+landlord who runs a vault and the relay that vault stands at, where the person's devices stand
+elsewhere, learns the address of the person's relay and no device's. This is the cost of renting
+both from one provider. It is shown to each of your contacts as a readout, and the way out is to
+rent the vault elsewhere and move, which needs the first landlord to serve while the move runs
+and nothing else; a device of yours that keeps the drive whole cannot feed the move instead
+today, and should.
 
 ## An app
 
@@ -50,9 +100,12 @@ reference's issue under that RFC lands.
 
 ## A contact
 
-Holds the key to what you shared with them and nothing else, and keeps what they were once
-sent. Can prove delivery only under a device key your own reach note lists, so neither a vault
-nor a relay can forge a receipt. A member removed from a channel cannot open the next epoch.
+Holds the key to what you shared with them and nothing else, and keeps what they were once sent.
+One who operates the relay they stand at sees which relays you reach them from, every relay you
+stand at, together (RFC 0007), which the reach note on their card already names, and never where
+your device is, unless you set that device to dial directly. Can prove delivery only under a
+device key your own reach note lists, so neither a vault nor a relay can forge a receipt. A
+member removed from a channel cannot open the next epoch.
 
 ## A remote caller
 
@@ -107,12 +160,14 @@ server of ours.
 
 ## What this model does not cover
 
-Anonymity: a relay sees your source address, and nothing here hides who is talking to a relay,
-only what they say and to whom. Traffic analysis across relays. A compromised build of
-Kotton itself, which is what reproducible builds and signed releases are for and which are
-only partly in place. A release's signature proves its sums were signed by a key in
-`infra/release/allowed_signers`, read from the repository at the release's tag, so a first
-install trusts the host that serves the repository for that key
-([decision 0007](decisions/0007-the-release-key-is-read-from-the-repository.md)). A
-post-quantum adversary: the ciphers are modern and not post-quantum, and this model takes no
-position on it.
+Anonymity: the relay you stand at sees your source address and which relays you reach, and a
+relay you reach sees your relay's address; where your relay carries you alone, that address is
+yours at every relay you reach (RFC 0007). Nothing here hides who is talking to a relay, only
+what they say and to whom. Kotton runs over the network you choose and adds no hop to it; a
+tunnel or an onion route beneath is yours to add. Traffic analysis across relays, and padding
+and timing on any leg. A compromised build of Kotton itself, which is what reproducible builds
+and signed releases are for and which are only partly in place. A release's signature proves its
+sums were signed by a key in `infra/release/allowed_signers`, read from the repository at the
+release's tag, so a first install trusts the host that serves the repository for that key
+([decision 0007](decisions/0007-the-release-key-is-read-from-the-repository.md)). A post-quantum
+adversary: the ciphers are modern and not post-quantum, and this model takes no position on it.

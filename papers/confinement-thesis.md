@@ -119,6 +119,6 @@ principle Kotton does not yet keep, and [the principles](../docs/design/principl
 false rather than quiet.
 
 What is conceded is convenience, performance, decentralisation and time. **What is never
-conceded is that you hold the keys.** [The concessions](../docs/design/concessions.md) list each
+conceded is that you hold the keys.** [The concessions](../design/concessions.md) list each
 concession with its way back. A concession that is not on that page is not a concession. It is a
 bug.

@@ -81,7 +81,9 @@ A drive serves a connection only from a key in the set it admits, but for the on
 gives a recovery claim, and a key removed from the set is refused at its next connection once
 the drive holds the removal (RFC 0005). A transport carries bytes and confers no identity: QUIC
 on a local network or across the internet, a circuit through a relay, and a link such as
-Bluetooth are transports, and a drive is reached over any of them the same way. The QUIC path
+Bluetooth are transports, and a drive is reached over any of them the same way. Which of them a
+device takes to a drive kept on a host is RFC 0007's: a relay's circuit, unless its person set
+the device otherwise. The QUIC path
 that exists is the first transport, and until the handshake exists it keeps its mutual TLS.
 
 **The relay joins what cannot reach each other directly.** It carries circuits and holds
@@ -161,7 +163,8 @@ of it is unfinished. A drive's sealed name is its name and its id.
   protocol's; that cost is accepted for one identity story over every transport. "Nothing
   listens for strangers" becomes "nothing answers a stranger past the handshake", and the
   threat model says so when the system changes.
-- The relay learns no more than it does now: a circuit's two ends, as handles.
+- The relay learns no more of a circuit than it does now: its two ends, as handles. What a
+  relay learns when it carries for a device that stands at it is RFC 0007's.
 - A landlord holds only the drives the person put there, so two landlords do not each hold a
   complete copy whose sizes and timings match. Redundancy across vaults is a thing the person
   does, by export or by a later verb, not a default: the device that makes `personal` keeps it
