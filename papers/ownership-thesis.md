@@ -30,7 +30,7 @@ That is the leverage, and it shows up in plain places. A demand for your records
 because you are the one who holds them; a landlord who keeps your sealed packs, asked for them,
 can produce a byte count. The exception is a host that runs your daemon for you: that daemon
 holds your keys on the host's machine, which is why a node's unproven posture is a named
-[concession](../docs/design/concessions.md) and why
+[concession](../design/concessions.md) and why
 [the principles](../docs/design/principles.md) mark leaving such a host as not yet whole. No
 broker sits in the middle, because there is no middle where your life is gathered to be sold.
 And "we promise not to look" was never an answer. A promise is the holder describing its own
@@ -70,7 +70,7 @@ The test also says where the work is not finished, and Kotton says so rather tha
 be found. A host still sees how much you keep and when you touch it. One landlord who runs both
 your relay and your vault can join what each learns, which is why that arrangement is shown to
 each of your contacts. [The design](../docs/design/README.md) names these, and
-[the concessions](../docs/design/concessions.md) give the way back from each.
+[the concessions](../design/concessions.md) give the way back from each.
 
 ## Said as value, not grievance
 
